@@ -1,0 +1,101 @@
+/* Styling for the main container */
+.min-h-screen {
+    background-color: #f5f5f5;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .card {
+    background-color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .card-header {
+    padding: 20px;
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+  }
+  
+  .card-title {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .card-content {
+    padding: 20px;
+  }
+  
+  .form-input {
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    padding: 12px;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+  
+  .form-input:focus {
+    border-color: #4CAF50;
+    outline: none;
+  }
+  
+  .relative {
+    position: relative;
+  }
+  
+  .input-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9CA3AF;
+  }
+  
+  .text-sm {
+    font-size: 14px;
+  }
+  
+  .error-message {
+    background-color: #f8d7da;
+    color: #842029;
+    padding: 12px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+  
+  .button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 14px;
+    width: 100%;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .button:disabled {
+    background-color: #d1d5db;
+    cursor: not-allowed;
+  }
+  
+  .button:hover:enabled {
+    background-color: #45a049;
+  }
+  
+  .text-blue-500 {
+    color: #1D4ED8;
+  }
+  
+  .text-blue-500:hover {
+    text-decoration: underline;
+  }
+  

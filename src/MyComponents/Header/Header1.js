@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./Header.css";
+import { useNavigate } from 'react-router-dom';
 import logo from "./1.png";
 
 const menuItems = [
@@ -80,13 +81,14 @@ const Dropdown = ({ label, options }) => {
 };
 
 export default function Header1() {
+  const navigate = useNavigate();
   return (
     <div className="header-container">
       <div className="header-top">
         <img src={logo} alt="kukuu" className="logo" />
         <input type="text" placeholder="Search for Products and more" className="search-bar" />
         <button className="search-button">Search</button>
-        <button className="login-button">Login</button>
+        <button className="login-button"  onClick={() => navigate('/login')}>Login</button>
         <button className="membership-button">Apply For Membership</button>
       </div>
       <div className="dropdown-container">

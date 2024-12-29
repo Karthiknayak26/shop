@@ -58,7 +58,11 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/a
 This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
 
+<<<<<<< HEAD
+this is very nicee
+=======
 this is very nice
+>>>>>>> 3e9b8a5 (Initial commit)
 
 
 ### Advanced Configuration
