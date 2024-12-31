@@ -1,0 +1,55 @@
+/* App.css */
+.Home {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.Home header h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+
+}
+
+.app {
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+header {
+  background-color: #f8f8f8;
+  padding: 20px;
+}
+
+.deals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.deal-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.deal-card img {
+  max-width: 100%;
+  border-radius: 5px;
+}
+
+.deal-card h3 {
+  margin: 10px 0 5px;
+  color: #28a745;
+}
+
+.deal-card p {
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+}

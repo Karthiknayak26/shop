@@ -1,6 +1,33 @@
 import React, { useState } from "react";
 import "./Header.css";
+import { useNavigate } from 'react-router-dom';
 import logo from "./1.png";
+import logo1 from "./2.png";
+import { Link } from 'react-router-dom';
+import Search from '../../Components/search/index';
+import Badge, { BadgeProps } from '@mui/material/Badge';
+import { styled } from '@mui/material/styles';
+import IconButton from '@mui/material/IconButton';
+import { IoCartOutline } from "react-icons/io5";
+import Tooltip from '@mui/material/Tooltip';
+import Button from '@mui/material/Button';
+import Navigation from './Navigation/Navigation';
+
+
+
+
+
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    right: -3,
+    top: 13,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: '0 4px',
+  },
+}));
+
+
+
 
 const menuItems = [
   {
@@ -8,7 +35,7 @@ const menuItems = [
     options: [
       { label: "electronics", subOptions: ["TVs", "Laptops", "Gaming", "Smartphones"], },
       { label: "groceries", subOptions: ["vegetables", "fruits", "dry fruits", "special fruits"] },
-      { label: "dairy & bakery", subOptions: ["milk & milk products", "toast and khari", "cakes and muffins"] },
+      { label: "home essential", subOptions: ["milk & milk products", "toast and khari", "cakes and muffins"] },
     ],
   },
   {
@@ -80,20 +107,28 @@ const Dropdown = ({ label, options }) => {
 };
 
 export default function Header1() {
+  const navigate = useNavigate();
   return (
     <div className="header-container">
-      <div className="header-top">
-        <img src={logo} alt="kukuu" className="logo" />
-        <input type="text" placeholder="Search for Products and more" className="search-bar" />
-        <button className="search-button">Search</button>
-        <button className="login-button">Login</button>
+      <div className="header-top flex items-center">
+        <Link to={"/"}> <img src={logo} alt="kukuu" className="logo" /></Link>
+
+        <Search />
+        <li className='no-underline'>
+          <Tooltip title="cart">
+            <IconButton aria-label="cart">
+              <StyledBadge badgeContent={4} color="secondary">
+                <IoCartOutline />
+              </StyledBadge>
+            </IconButton>
+          </Tooltip>
+        </li>
+
+
+        <button className="login-button" onClick={() => navigate('/login')}>Login | <Link to="/registor" >registor</Link></button>
         <button className="membership-button">Apply For Membership</button>
       </div>
-      <div className="dropdown-container">
-        {menuItems.map((item, index) => (
-          <Dropdown key={index} label={item.label} options={item.options} />
-        ))}
-      </div>
-    </div>
+      <Navigation />
+    </div >
   );
 }

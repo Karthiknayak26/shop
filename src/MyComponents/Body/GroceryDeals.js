@@ -3,21 +3,21 @@ import "./grocery-deals.css";
 
 function GroceryDeals() {
   const deals = [
-    { category: "Biscuits & Rusk", discount: "Up To 50% Off", img: "url-to-image" },
-    { category: "Tea & Coffee", discount: "Up To 30% Off", img: "url-to-image" },
-    { category: "Cold Drinks & Juices", discount: "Up To 25% Off", img: "url-to-image" },
-    { category: "Detergent Liquids", discount: "Up To 30% Off", img: "url-to-image" },
-    { category: "Oral Care", discount: "Up To 50% Off", img: "url-to-image" },
-    { category: "Soaps & Shampoo", discount: "Up To 50% Off", img: "url-to-image" },
-    { category: "Grains", discount: "Up To 40% Off", img: "url-to-image" },
-    { category: "Cooking Oil", discount: "Up To 30% Off", img: "url-to-image" },
-    { category: "Nuts & Dry Fruits", discount: "Up To 30% Off", img: "url-to-image" },
+    { category: "Biscuits & Packaged foods", discount: "Up To 50% Off", img: "./image/download.jpeg" },
+    { category: "cooking essentials", discount: "Up To 30% Off", img: "url-to-image" },
+    { category: "Frozen Products", discount: "Up To 25% Off", img: "url-to-image" },
+    { category: "Baby Care", discount: "Up To 30% Off", img: "url-to-image" },
+    { category: "Personal Care", discount: "Up To 50% Off", img: "url-to-image" },
+    { category: "Home care", discount: "Up To 50% Off", img: "url-to-image" },
+    { category: "KitchenWare", discount: "Up To 40% Off", img: "url-to-image" },
+    { category: "Disposables", discount: "Up To 30% Off", img: "url-to-image" },
+    { category: "Stationary", discount: "Up To 30% Off", img: "url-to-image" },
   ];
 
   return (
     <div className="grocery-deals">
       <header>
-        <h1>BEST DEALS ON GROCERY</h1>
+        <h1>Best Deals On Grocery</h1>
       </header>
       <div className="deals-grid">
         {deals.map((deal, index) => (
@@ -33,3 +33,7 @@ function GroceryDeals() {
 }
 
 export default GroceryDeals;
+
+
+
+

@@ -3,6 +3,7 @@ import './Header.css';
 import Container from 'react-bootstrap/Container';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import Navbar from 'react-bootstrap/Navbar';
+import { Link } from 'react-router-dom';
 
 export default function Header() {
   // State to manage selected address
@@ -51,11 +52,19 @@ export default function Header() {
 
         {/* Right-Aligned Content */}
         <div className="d-flex align-items-center">
-          <span className="me-4">Helpline: 1800 103 1003</span>
-          <a href="#download" className="text-white download-app" id="downloadAppLink">
-            Download App
-          </a>
-
+          <div className='col2 flex items-center justify-between w-100'>
+            <ul className='flex items-center gap-4 custom-list'>
+              <li>
+                <Link to="/help-center" className='no-underline'>Help Center</Link>
+              </li>
+              <li>
+                <Link to="/order-tracking" className='no-underline'>Order Tracking</Link>
+              </li>
+            </ul>
+            <div className='ml-8'>
+              <Link to="/download-app" className='no-underline'>Download App</Link>
+            </div>
+          </div>
         </div>
       </Container>
     </Navbar>
