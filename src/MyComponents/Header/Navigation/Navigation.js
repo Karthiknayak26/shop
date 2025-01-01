@@ -6,8 +6,12 @@ import Button from "@mui/material/Button";
 const Navigation = () => {
   const [openSubmenu, setOpenSubmenu] = useState(null);
 
-  const handleSubmenuToggle = (submenu) => {
-    setOpenSubmenu((prev) => (prev === submenu ? null : submenu));
+  const handleMouseEnter = (submenu) => {
+    setOpenSubmenu(submenu);
+  };
+
+  const handleMouseLeave = () => {
+    setOpenSubmenu(null);
   };
 
   return (
@@ -18,27 +22,26 @@ const Navigation = () => {
         </Link>
         <div className="submenu">
           <ul>
-
-            <li className="list-none w-full relative">
+            {/* Buiscut */}
+            <li
+              className="list-none w-full relative"
+              onMouseEnter={() => handleMouseEnter("buiscut")}
+              onMouseLeave={handleMouseLeave}
+            >
               <Link to="/" className="link">
-                <Button
-                  className="w-full"
-                  onClick={() => handleSubmenuToggle("buiscut")}
-                >
-                  busicut
-                </Button>
+                <Button className="w-full">Buiscut</Button>
               </Link>
               {openSubmenu === "buiscut" && (
                 <div className="submenu">
                   <ul>
                     <li className="list-none w-full relative">
                       <Link to="/cream" className="w-full">
-                        <Button className="w-full">cream </Button>
+                        <Button className="w-full">Cream</Button>
                       </Link>
                     </li>
                     <li className="list-none w-full relative">
                       <Link to="/nuts" className="w-full">
-                        <Button className="w-full">nuts</Button>
+                        <Button className="w-full">Nuts</Button>
                       </Link>
                     </li>
                   </ul>
@@ -46,27 +49,26 @@ const Navigation = () => {
               )}
             </li>
 
-
-            <li className="list-none w-full relative">
+            {/* Household */}
+            <li
+              className="list-none w-full relative"
+              onMouseEnter={() => handleMouseEnter("household")}
+              onMouseLeave={handleMouseLeave}
+            >
               <Link to="/" className="link">
-                <Button
-                  className="w-full"
-                  onClick={() => handleSubmenuToggle("household")}
-                >
-                  household
-                </Button>
+                <Button className="w-full">Household</Button>
               </Link>
               {openSubmenu === "household" && (
                 <div className="submenu">
                   <ul>
                     <li className="list-none w-full relative">
                       <Link to="/dryer" className="w-full">
-                        <Button className="w-full">dryer</Button>
+                        <Button className="w-full">Dryer</Button>
                       </Link>
                     </li>
                     <li className="list-none w-full relative">
-                      <Link to="/household" className="w-full">
-                        <Button className="w-full">household</Button>
+                      <Link to="/cleaning" className="w-full">
+                        <Button className="w-full">Cleaning</Button>
                       </Link>
                     </li>
                   </ul>
@@ -75,14 +77,13 @@ const Navigation = () => {
             </li>
 
             {/* Kids */}
-            <li className="list-none w-full relative">
+            <li
+              className="list-none w-full relative"
+              onMouseEnter={() => handleMouseEnter("kids")}
+              onMouseLeave={handleMouseLeave}
+            >
               <Link to="/" className="link">
-                <Button
-                  className="w-full"
-                  onClick={() => handleSubmenuToggle("kids")}
-                >
-                  Kids
-                </Button>
+                <Button className="w-full">Kids</Button>
               </Link>
               {openSubmenu === "kids" && (
                 <div className="submenu">
@@ -103,20 +104,19 @@ const Navigation = () => {
             </li>
 
             {/* Electronics */}
-            <li className="list-none w-full relative">
+            <li
+              className="list-none w-full relative"
+              onMouseEnter={() => handleMouseEnter("electronics")}
+              onMouseLeave={handleMouseLeave}
+            >
               <Link to="/" className="link">
-                <Button
-                  className="w-full"
-                  onClick={() => handleSubmenuToggle("electronics")}
-                >
-                  Electronics
-                </Button>
+                <Button className="w-full">Electronics</Button>
               </Link>
               {openSubmenu === "electronics" && (
                 <div className="submenu">
                   <ul>
                     <li className="list-none w-full relative">
-                      <Link to="/phoones" className="w-full">
+                      <Link to="/phones" className="w-full">
                         <Button className="w-full">Mobile Phones</Button>
                       </Link>
                     </li>

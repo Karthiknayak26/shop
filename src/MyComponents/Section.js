@@ -3,26 +3,36 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "../App.css"; // Ensure this includes the custom styles
+import { useNavigate } from 'react-router-dom'
+
+
 
 const Section = () => {
+  const navigate = useNavigate();
   const cards = [
     {
+      id: "1",  // Added ID for selection
       title: "Energy Drinks",
+      price: "20.99",
+      description: "A refreshing energy drink to keep you charged throughout the day.",
       discount: "15",
       discountType: "Min.",
       bgColor: "bg-gradient-purple", // Gradient background
       buttonText: "Shop Now",
       image: "./Header/1.png", // Replace with your energy drinks image
-      bgClass: "bg-energy-drinks", // Unique class for background image
+      bgClass: "bg-energy-drinks",
     },
     {
+      id: "2",  // Added ID for selection
       title: "Glam Up Range",
+      price: "49.99",
+      description: "Makeup and skincare essentials for your glam look.",
       discount: "50",
       discountType: "FLAT",
       bgColor: "bg-gradient-pink", // Gradient background
       buttonText: "Shop Now",
       image: "./Header/1.png", // Replace with your glam products image
-      bgClass: "bg-glam-up", // Unique class for background image
+      bgClass: "bg-glam-up",
     },
     {
       title: "Perfumes & Deodorants",
@@ -69,6 +79,14 @@ const Section = () => {
     ],
   };
 
+  const handleProductClick = (id) => {
+    // Navigate to the product details page using useNavigate
+    navigate(`/product/${id}`);
+
+    // Alternatively, you can show a modal or product details on the same page
+    // Example: showProductDetails(id);
+  };
+
   return (
     <section className="w-full py-12 bg-gray-100">
       <div className="container mx-auto px-4">
@@ -113,8 +131,10 @@ const Section = () => {
                   />
                 </div>
 
+
+
                 {/* Shop Now Button */}
-                <button className="mt-auto bg-black text-gray-800 px-6 py-3 rounded-full w-full button-hover text-lg font-semibold">
+                <button className="mt-auto bg-black text-gray-800 px-6 py-3 rounded-full w-full button-hover text-lg font-semibold" onClick={() => handleProductClick(card.id)} >
                   {card.buttonText}
                 </button>
               </div>

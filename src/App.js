@@ -10,6 +10,8 @@ import GroceryDeals from './MyComponents/Body/GroceryDeals';
 import Login from './MyComponents/Header/Login';
 import Electronics from './MyComponents/Body/Electronics';
 import Homelifestyle from './MyComponents/Body/Homelifestyle';
+// Import the new ProductDetail component
+import ProductDetail from './MyComponents/ProductDetail';
 
 // import Login  from './MyComponents/Header/Login';
 
@@ -31,6 +33,9 @@ function App() {
           </>
         } />
         <Route path="/login" element={<Login />} />
+
+
+        <Route path="/product/:id" element={<ProductDetail />} />
       </Routes>
     </BrowserRouter>
   );
