@@ -6,7 +6,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^6.3.0",
-    "@mui/material": "^6.3.0",
+    "@mui/material": "^6.3.1",
     "@mui/styled-engine-sc": "^6.3.0",
     "bootstrap": "^5.3.3",
     "cra-template": "1.2.0",
@@ -22,8 +22,8 @@
     "styled-components": "^6.1.13"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start:frontend": "cd frontend && npm start",
+    "build:frontend": "cd frontend && npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
