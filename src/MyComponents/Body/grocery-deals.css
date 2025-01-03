@@ -1,8 +1,5 @@
-.deals {
-  margin-top: 30px;
-}
-
-.grocery-deals {
+/* Enhanced grocery-deals.css */
+.grocery-categories {
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
@@ -11,14 +8,14 @@
   min-height: 100vh;
 }
 
-header {
+.grocery-categories header {
   background: linear-gradient(135deg, #0d7ff1 0%, #2c3e50 100%);
   padding: 30px;
   margin: -20px -20px 30px -20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.grocery-deals header h1 {
+.grocery-categories header h1 {
   font-size: 2.5rem;
   font-weight: 700;
   margin: 0;
@@ -28,9 +25,7 @@ header {
   animation: fadeInDown 0.5s ease-out;
 }
 
-/* Enhanced App.css */
-
-.deals-grid {
+.categories-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 25px;
@@ -39,7 +34,7 @@ header {
   margin: 0 auto;
 }
 
-.deal-card {
+.category-card {
   border: none;
   border-radius: 15px;
   padding: 15px;
@@ -51,81 +46,159 @@ header {
   backdrop-filter: blur(5px);
 }
 
-.deal-card:hover {
+.category-card:hover {
   transform: translateY(-5px);
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
   background: linear-gradient(135deg, #ffffff, #c2d9e8);
 }
 
-.deal-card a {
+.category-card a {
   text-decoration: none;
   color: inherit;
   display: block;
 }
 
-.deal-card img {
+.category-card img {
   max-width: 100%;
   border-radius: 10px;
   transition: transform 0.3s ease;
 }
 
-.deal-card:hover img {
+.category-card:hover img {
   transform: scale(1.05);
 }
 
-.deal-card h3 {
+.category-content h3 {
   margin: 15px 0 10px;
   color: #e74c3c;
   font-size: 1.4rem;
   font-weight: 600;
 }
 
-.deal-card p {
+.category-content p {
   margin: 0;
   font-size: 1rem;
   color: #34495e;
   font-weight: 500;
 }
 
-/* Add animation keyframes */
-@keyframes fadeInDown {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
+.grocery-products {
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
 
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.breadcrumb span {
+  margin-right: 5px;
+}
+
+.breadcrumb .active-category {
+  font-weight: bold;
+  color: #333;
+}
+
+.category-filters {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.category-filters button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  background: #0d7ff1;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.category-filters button.active {
+  background: #e74c3c;
+}
+
+.category-filters button:hover {
+  background: #0b6ac8;
+}
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.product-card {
+  border: none;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  background: #fff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.product-card img {
+  max-width: 100%;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.product-content h3 {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+}
+
+.product-content p {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.add-to-cart {
+  padding: 10px 15px;
+  background: #0d7ff1;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.add-to-cart:hover {
+  background: #0b6ac8;
+}
+
+.no-products {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #555;
 }
 
 /* Add responsive styles */
 @media (max-width: 768px) {
-  .Home header h1 {
-    font-size: 1.8rem;
+  .breadcrumb {
+    flex-wrap: wrap;
   }
 
-  .deals-grid {
+  .products-grid {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 15px;
-    padding: 15px;
-  }
-}
-
-/* Add loading animation for images */
-.deal-card img {
-  opacity: 0;
-  animation: fadeIn 0.3s ease-in forwards;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-
-  to {
-    opacity: 1;
   }
 }
 

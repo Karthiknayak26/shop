@@ -37,7 +37,7 @@ function Slider() {
               <Tab
                 label="Grocerys"
                 onClick={() => {
-                  const targetElement = document.querySelector(".grocery-deals");
+                  const targetElement = document.querySelector(".grocery-categories");
                   const offset = 100; // Adjust as needed
                   const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - offset;
 

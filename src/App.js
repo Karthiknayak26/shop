@@ -17,55 +17,61 @@ import OrderTracking from './MyComponents/Header/OrderTracking';
 import CartPage from './MyComponents/Header/CartPage';
 import CheckoutPage from './MyComponents/Header/CheckoutPage';
 import OrderConfirmationPage from './MyComponents/Header/OrderConfirmationPage';
-// import GroceryDeals, { GroceryCategories, GroceryProducts } from './MyComponents/Body/GroceryDeals';
-import GroceryDeals from './MyComponents/Body/GroceryDeals';
+import GroceryDeals, { GroceryCategories, GroceryProducts } from './MyComponents/Body/GroceryDeals';
+
+import { CartProvider } from './MyComponents/Header/CartContext';
+// import GroceryDeals from './MyComponents/Body/GroceryDeals';
 
 
 
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* Main page route */}
-        <Route
-          path="/"
-          element={
-            <>
-              <Header />
-              <Header1 />
-              <Section />
-              <Slider />
-              <GroceryDeals />
-              <Electronics />
-              <Homelifestyle />
-              <Footer />
-            </>
-          }
-        />
+    <CartProvider>
+      <BrowserRouter>
 
-        {/* Login page route */}
-        <Route path="/login" element={<Login />} />
+        <Routes>
+          {/* Main page route */}
+          <Route
+            path="/"
+            element={
+              <>
+                <Header />
+                <Header1 />
+                <Section />
+                <Slider />
+                <GroceryDeals />
+                <Electronics />
+                <Homelifestyle />
+                <Footer />
+              </>
+            }
+          />
 
-        <Route path="/help-center" element={<HelpCenter />} />
+          {/* Login page route */}
+          <Route path="/login" element={<Login />} />
 
-        <Route path="/cart" element={<CartPage />} />
-        <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/help-center" element={<HelpCenter />} />
 
-        {/* Product detail page route */}
-        <Route path="/product/:id" element={<ProductDetail />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/checkout" element={<CheckoutPage />} />
 
-        <Route path="/order-tracking" element={<OrderTracking />} />
+          {/* Product detail page route */}
+          <Route path="/product/:id" element={<ProductDetail />} />
 
-        <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
+          <Route path="/order-tracking" element={<OrderTracking />} />
 
-        <Route path="/register" element={<Register />} />
+          <Route path="/order-confirmation" element={<OrderConfirmationPage />} />
 
-        {/* <Route path="/groceries" element={<GroceryCategories />} />
-        <Route path="/groceries/products" element={<GroceryProducts />} />
-        <Route path="/groceries/products/:categoryId" element={<GroceryProducts />} /> */}
-      </Routes>
-    </BrowserRouter>
+          <Route path="/register" element={<Register />} />
+
+          <Route path="/groceries" element={<GroceryCategories />} />
+          <Route path="/groceries/products" element={<GroceryProducts />} />
+          <Route path="/groceries/products/:categoryId" element={<GroceryProducts />} />
+        </Routes>
+
+      </BrowserRouter>
+    </CartProvider>
   );
 }
 

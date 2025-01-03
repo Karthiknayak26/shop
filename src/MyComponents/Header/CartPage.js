@@ -1,22 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./CartPage.css";
 import { IoTrashOutline } from "react-icons/io5";
 import { Button } from "@mui/material";
+import { useCart } from './CartContext';
 
 const CartPage = () => {
   const navigate = useNavigate();
-  const [cartItems, setCartItems] = useState([
-    { id: 1, name: "Product 1", price: 100, quantity: 1 },
-    { id: 2, name: "Product 2", price: 200, quantity: 2 },
-  ]);
+  const { cartItems, removeFromCart, updateQuantity } = useCart();
 
   const handleRemoveItem = (id) => {
-    setCartItems(cartItems.filter(item => item.id !== id));
+    removeFromCart(id);
   };
 
-  const handleCheckout = () => {
-    navigate("/checkout");
+  const handleQuantityChange = (id, newQuantity) => {
+    if (newQuantity < 1) {
+      removeFromCart(id);
+    } else {
+      updateQuantity(id, newQuantity);
+    }
   };
 
   const getTotalPrice = () => {
@@ -34,10 +36,37 @@ const CartPage = () => {
           cartItems.map(item => (
             <div key={item.id} className="cart-item">
               <div className="item-info">
-                <p>{item.name}</p>
-                <p>{item.price} x {item.quantity}</p>
+                <img
+                  src={item.img}
+                  alt={item.name}
+                  className="cart-item-image"
+                />
+                <div className="item-details">
+                  <h3>{item.name}</h3>
+                  <p className="item-price">₹{item.price}</p>
+                  <div className="quantity-controls">
+                    <button
+                      className="quantity-btn"
+                      onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
+                    >
+                      -
+                    </button>
+                    <span className="quantity">{item.quantity}</span>
+                    <button
+                      className="quantity-btn"
+                      onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
+                    >
+                      +
+                    </button>
+                  </div>
+                  <p className="item-total">Total: ₹{item.price * item.quantity}</p>
+                </div>
               </div>
-              <button className="remove-button" onClick={() => handleRemoveItem(item.id)}>
+              <button
+                className="remove-button"
+                onClick={() => handleRemoveItem(item.id)}
+                aria-label="Remove item"
+              >
                 <IoTrashOutline />
               </button>
             </div>
@@ -46,8 +75,27 @@ const CartPage = () => {
       </div>
 
       <div className="cart-summary">
-        <p>Total: ${getTotalPrice()}</p>
-        <Button variant="contained" color="primary" onClick={() => navigate('/checkout')}>
+        <div className="summary-details">
+          <div className="summary-row">
+            <span>Subtotal:</span>
+            <span>₹{getTotalPrice()}</span>
+          </div>
+          <div className="summary-row">
+            <span>Shipping:</span>
+            <span>Free</span>
+          </div>
+          <div className="summary-row total">
+            <span>Total:</span>
+            <span>₹{getTotalPrice()}</span>
+          </div>
+        </div>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => navigate('/checkout')}
+          fullWidth
+          disabled={cartItems.length === 0}
+        >
           Proceed to Checkout
         </Button>
       </div>

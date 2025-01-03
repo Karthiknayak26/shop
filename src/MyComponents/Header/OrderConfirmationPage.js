@@ -1,67 +1,139 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./OrderConfirmationPage.css";
+import { Button, Paper, Typography, Divider, Box } from "@mui/material";
+import { ShoppingBag, Home } from "@mui/icons-material";
 
 const OrderConfirmationPage = () => {
   const navigate = useNavigate();
-
-  // Example order details (you would typically fetch this from your backend or context)
-  const orderDetails = {
-    orderId: "ORD123456",
-    cartItems: [
-      { id: 1, name: "Product 1", price: 100, quantity: 1 },
-      { id: 2, name: "Product 2", price: 200, quantity: 2 },
-    ],
-    shippingAddress: {
-      name: "John Doe",
-      email: "johndoe@example.com",
-      address: "123 Main St, City, Country",
-      postalCode: "12345",
-    },
-    paymentMethod: "Credit Card",
-    totalPrice: 500,
+  const location = useLocation();
+  const orderData = location.state?.orderData || {
+    items: [],
+    shippingAddress: {},
+    paymentMethod: "",
+    totalAmount: 0,
+    orderDate: new Date().toISOString(),
   };
 
-  const handleReturnHome = () => {
-    navigate("/");
+  const orderId = `ORD${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
   };
 
   return (
-    <div className="confirmation-container">
-      <h2>Thank You for Your Order!</h2>
-      <p>Your order has been successfully placed. You will receive an email confirmation shortly.</p>
+    <div className="checkout-container">
+      <h2>Order Confirmation</h2>
+      <div className="checkout-grid">
+        {/* Left Side - Order Details */}
+        <div className="shipping-form">
+          <Box sx={{ mb: 4 }}>
+            <Typography variant="h6" gutterBottom>
+              Order Details
+            </Typography>
+            <Typography variant="body1" color="success.main" gutterBottom>
+              Thank you for your purchase!
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Order ID: {orderId}
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              Placed on: {formatDate(orderData.orderDate)}
+            </Typography>
+          </Box>
 
-      <div className="order-summary">
-        <h3>Order Details</h3>
-        <p><strong>Order ID:</strong> {orderDetails.orderId}</p>
+          <Divider sx={{ my: 3 }} />
 
-        <h4>Items Purchased</h4>
-        <ul>
-          {orderDetails.cartItems.map(item => (
-            <li key={item.id}>
-              {item.name} - ${item.price} x {item.quantity}
-            </li>
-          ))}
-        </ul>
+          <Box sx={{ mb: 4 }}>
+            <Typography variant="h6" gutterBottom>
+              Shipping Information
+            </Typography>
+            <Typography variant="body1">{orderData.shippingAddress.name}</Typography>
+            <Typography variant="body2">{orderData.shippingAddress.email}</Typography>
+            <Typography variant="body2">{orderData.shippingAddress.address}</Typography>
+            <Typography variant="body2">
+              {orderData.shippingAddress.city}, {orderData.shippingAddress.postalCode}
+            </Typography>
+            <Typography variant="body2">Phone: {orderData.shippingAddress.phone}</Typography>
+          </Box>
 
-        <p><strong>Shipping Address:</strong></p>
-        <p>{orderDetails.shippingAddress.name}</p>
-        <p>{orderDetails.shippingAddress.email}</p>
-        <p>{orderDetails.shippingAddress.address}</p>
-        <p>{orderDetails.shippingAddress.postalCode}</p>
+          <Divider sx={{ my: 3 }} />
 
-        <p><strong>Payment Method:</strong> {orderDetails.paymentMethod}</p>
+          <Box sx={{ mb: 4 }}>
+            <Typography variant="h6" gutterBottom>
+              Payment Method
+            </Typography>
+            <Typography variant="body1">
+              {orderData.paymentMethod.replace(/([A-Z])/g, ' $1').trim()}
+            </Typography>
+          </Box>
+        </div>
 
-        <p><strong>Total Price:</strong> ${orderDetails.totalPrice}</p>
-      </div>
+        {/* Right Side - Order Summary */}
+        <div className="order-summary">
+          <h3>Order Summary</h3>
+          <div className="order-items">
+            {orderData.items.map((item) => (
+              <div key={item.id} className="order-item">
+                <div className="item-info">
+                  <img src={item.img} alt={item.name} className="item-image" />
+                  <div className="item-details">
+                    <h4>{item.name}</h4>
+                    <p>₹{item.price} x {item.quantity}</p>
+                  </div>
+                </div>
+                <p className="item-total">₹{item.price * item.quantity}</p>
+              </div>
+            ))}
+          </div>
 
-      <div className="confirmation-buttons">
-        <button className="return-button" onClick={handleReturnHome}>
-          Return to Homepage
-        </button>
-        <button className="shop-more-button" onClick={() => navigate("/")} >
-          Continue Shopping
-        </button>
+          <div className="order-totals">
+            <div className="total-row">
+              <span>Subtotal:</span>
+              <span>₹{orderData.totalAmount}</span>
+            </div>
+            <div className="total-row">
+              <span>Shipping:</span>
+              <span>Free</span>
+            </div>
+            <div className="total-row grand-total">
+              <span>Total:</span>
+              <span>₹{orderData.totalAmount}</span>
+            </div>
+          </div>
+
+          <Box
+            sx={{
+              display: "flex",
+              gap: 2,
+              justifyContent: "space-between",
+              mt: 4,
+            }}
+          >
+            <Button
+              variant="contained"
+              startIcon={<Home />}
+              onClick={() => navigate("/")}
+              fullWidth
+            >
+              Return Home
+            </Button>
+            <Button
+              variant="outlined"
+              startIcon={<ShoppingBag />}
+              onClick={() => navigate("/products")}
+              fullWidth
+            >
+              Continue Shopping
+            </Button>
+          </Box>
+        </div>
       </div>
     </div>
   );
