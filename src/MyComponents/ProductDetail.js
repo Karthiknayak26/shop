@@ -1,38 +1,31 @@
-// src/MyComponents/ProductDetail.js
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom'; // For getting the product ID from the URL
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const ProductDetail = () => {
-  const { id } = useParams();  // Extract the product ID from the URL
+  const { id } = useParams();
   const [product, setProduct] = useState(null);
 
   useEffect(() => {
-    // Fetch product details from your backend API
+    // Simulate fetching product data by ID
     const fetchProduct = async () => {
-      try {
-        const response = await fetch(`/api/products/${id}`);
-        const data = await response.json();
-        setProduct(data);
-      } catch (error) {
-        console.error('Error fetching product details:', error);
-      }
+      const response = await fetch(`http://localhost:5000/api/products/${id}`);
+      const data = await response.json();
+      setProduct(data);
     };
 
     fetchProduct();
-  }, [id]);  // Fetch when the product ID changes
+  }, [id]);
 
   if (!product) {
-    return <div>Loading...</div>;  // Show loading while fetching
+    return <div>Loading...</div>;
   }
 
   return (
-    <div className="product-detail">
-      <h2>{product.title}</h2>
-      <img src={product.imageUrl} alt={product.title} />
+    <div className="container mx-auto py-12">
+      <h1 className="text-3xl font-bold mb-6">{product.title}</h1>
       <p>{product.description}</p>
-      <p>Price: ${product.price}</p>
-      <p>Discount: {product.discount}% OFF</p>
-      <button>Add to Cart</button> {/* Optional functionality */}
+      <p className="text-xl font-semibold">{`Price: $${product.price}`}</p>
+      <p className="text-gray-500">{`Discount: ${product.discountType} ${product.discount}%`}</p>
     </div>
   );
 };

@@ -1,0 +1,99 @@
+/* General Section Styling */
+.deals {
+  background-color: #ffffff;
+  padding: 20px 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+/* Flex Container */
+.container1 {
+  display: flex;
+  align-items: center;
+  /* Aligns items vertically */
+  justify-content: space-between;
+  /* Spaces out left and right sections */
+  gap: 10px;
+  /* Reduces the gap between sections */
+  padding: 0 20px;
+  /* Adds horizontal padding to the container */
+  max-width: 1200px;
+  /* Sets a maximum width for better alignment */
+  margin: 0 auto;
+  /* Centers the container horizontally */
+}
+
+/* Left Section: Text */
+.left-section {
+  flex: 1;
+  /* Ensures the left section takes available space */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 60%;
+  /* Limits the width of the text for better alignment */
+}
+
+.left-section h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+  color: #333;
+}
+
+.left-section p {
+  font-size: 16px;
+  font-weight: 400;
+  margin: 10px 0 0;
+  color: #666;
+}
+
+/* Right Section: Slider */
+.right-section {
+  flex: 1;
+  /* Ensures the right section takes available space */
+  display: flex;
+  justify-content: flex-end;
+  /* Aligns slider to the right */
+  max-width: 40%;
+  /* Limits the width of the slider */
+}
+
+.right-section .MuiTabs-root {
+  background: #f1f1f1;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  /* Ensures the tabs span the available space */
+}
+
+.right-section .MuiTab-root {
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
+  transition: color 0.3s ease, transform 0.2s ease;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container1 {
+    flex-direction: column;
+    /* Stacks items vertically on smaller screens */
+    align-items: center;
+    /* Centers the sections */
+    gap: 20px;
+    /* Adds spacing between sections */
+  }
+
+  .left-section {
+    max-width: 100%;
+    /* Ensures the text spans the full width */
+    text-align: center;
+    /* Centers the text */
+  }
+
+  .right-section {
+    max-width: 100%;
+    /* Ensures the slider spans the full width */
+  }
+}

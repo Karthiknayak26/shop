@@ -86,63 +86,65 @@ const Section = () => {
     // Alternatively, you can show a modal or product details on the same page
     // Example: showProductDetails(id);
   };
-
   return (
-    <section className="w-full py-12 bg-gray-100">
-      <div className="container mx-auto px-4">
-        <Slider {...sliderSettings}>
-          {cards.map((card, index) => (
-            <div key={index} className="px-3">
-              <div
-                className={`group ${card.bgColor} rounded-3xl overflow-hidden relative p-6 h-[320px] flex flex-col shadow-2xl transition-transform duration-500 ${card.bgClass}`}
-              >
-                {/* Title */}
-                <h2 className="text-2xl font-bold text-gray-800 mb-4 transition-colors duration-300 group-hover:text-indigo-600">
-                  {card.title}
-                </h2>
+    <>
+      <section className="w-full py-12 bg-gray-100">
+        <div className="container mx-auto px-4">
+          <Slider {...sliderSettings}>
+            {cards.map((card, index) => (
+              <div key={index} className="px-3">
+                <div
+                  className={`group ${card.bgColor} rounded-3xl overflow-hidden relative p-6 h-[320px] flex flex-col shadow-2xl transition-transform duration-500 ${card.bgClass}`}
+                >
+                  {/* Title */}
+                  <h2 className="text-2xl font-bold text-gray-800 mb-4 transition-colors duration-300 group-hover:text-indigo-600">
+                    {card.title}
+                  </h2>
 
-                {/* Discount Badge */}
-                <div className="absolute top-6 left-6">
-                  <div
-                    className={`
+                  {/* Discount Badge */}
+                  <div className="absolute top-6 left-6">
+                    <div
+                      className={`
                       rounded-full p-4 text-white text-center transition-transform duration-300 transform group-hover:scale-110
                       ${index === 0
-                        ? "bg-purple-600"
-                        : index === 1
-                          ? "bg-pink-500"
-                          : index === 2
-                            ? "bg-teal-500"
-                            : "bg-orange-500"
-                      }
+                          ? "bg-purple-600"
+                          : index === 1
+                            ? "bg-pink-500"
+                            : index === 2
+                              ? "bg-teal-500"
+                              : "bg-orange-500"
+                        }
                     `}
-                  >
-                    <div className="text-xs">{card.discountType}</div>
-                    <div className="text-xl font-bold">{card.discount}%</div>
-                    <div className="text-xs">OFF</div>
+                    >
+                      <div className="text-xs">{card.discountType}</div>
+                      <div className="text-xl font-bold">{card.discount}%</div>
+                      <div className="text-xs">OFF</div>
+                    </div>
                   </div>
+
+                  {/* Product Image */}
+                  <div className="absolute right-4 bottom-4 w-40 h-40 transition-transform duration-500 transform group-hover:rotate-12 group-hover:scale-125">
+                    <img
+                      src={card.image}
+                      alt={card.title}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+
+
+
+                  {/* Shop Now Button */}
+                  <button className="mt-auto bg-black text-gray-800 px-6 py-3 rounded-full w-full button-hover text-lg font-semibold" onClick={() => handleProductClick(card.id)} >
+                    {card.buttonText}
+                  </button>
                 </div>
-
-                {/* Product Image */}
-                <div className="absolute right-4 bottom-4 w-40 h-40 transition-transform duration-500 transform group-hover:rotate-12 group-hover:scale-125">
-                  <img
-                    src={card.image}
-                    alt={card.title}
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-
-
-
-                {/* Shop Now Button */}
-                <button className="mt-auto bg-black text-gray-800 px-6 py-3 rounded-full w-full button-hover text-lg font-semibold" onClick={() => handleProductClick(card.id)} >
-                  {card.buttonText}
-                </button>
               </div>
-            </div>
-          ))}
-        </Slider>
-      </div>
-    </section>
+            ))}
+          </Slider>
+        </div>
+      </section>
+
+    </>
   );
 };
 

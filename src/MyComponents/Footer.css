@@ -1,17 +1,22 @@
+/* Main Footer Styling */
 .footer {
-  background-color: #2075d6;
-  color: #333;
-  padding: 20px 40px;
-  border-radius: 5px;
+  background-color: #1a3d7d;
+  /* Darker blue background */
+  color: #fff;
+  /* White text */
+  padding: 40px 60px;
+  border-radius: 10px;
+  font-family: 'Roboto', sans-serif;
+  /* Modern font */
 }
 
+/* Footer Top Styling */
 .footer-top {
   display: flex;
   justify-content: space-between;
-  border-bottom: 1px solid #ddd;
-
-  padding-bottom: 20px;
-  margin-bottom: 20px;
+  border-bottom: 1px solid #e4e4e4;
+  padding-bottom: 25px;
+  margin-bottom: 25px;
 }
 
 .footer-logo {
@@ -27,32 +32,37 @@
   gap: 10px;
 }
 
-.footer-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
 .logo-image {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  border-radius: 8px;
+  /* Soft rounded corners */
 }
 
 .logo-text {
-  font-size: 18px;
-  font-weight: bold;
-  color: #ffffff;
+  font-size: 22px;
+  font-weight: 600;
+  color: #ffcc00;
+  /* Vibrant yellow for logo text */
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: 'Poppins', sans-serif;
+  /* Stylish, modern font */
+  white-space: nowrap;
 }
 
-
+/* Footer Links Section */
 .footer-links {
   display: flex;
-  gap: 40px;
+  gap: 50px;
 }
 
 .footer-links h4 {
-  font-size: 16px;
-  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: #ffcc00;
 }
 
 .footer-links ul {
@@ -61,16 +71,18 @@
 }
 
 .footer-links ul li {
-  margin-bottom: 8px;
-  font-size: 14px;
+  font-size: 16px;
+  margin-bottom: 10px;
+  transition: color 0.3s ease;
 }
 
 .footer-links ul li:hover {
-  color: #ffcc00;
-  /* Change text color on hover */
+  color: #ff5733;
+  /* Soft red hover effect */
   cursor: pointer;
 }
 
+/* Footer Bottom Section */
 .footer-bottom {
   display: flex;
   justify-content: space-between;
@@ -79,12 +91,15 @@
 }
 
 .footer-bottom>div {
-  margin-right: 20px;
+  margin-right: 30px;
+  margin-bottom: 20px;
 }
 
 .footer-bottom h4 {
-  font-size: 16px;
-  margin-bottom: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #ffcc00;
 }
 
 .footer-bottom ul {
@@ -93,35 +108,96 @@
 }
 
 .footer-bottom ul li {
-  font-size: 14px;
-  margin-bottom: 5px;
+  font-size: 16px;
+  margin-bottom: 8px;
 }
 
 .company-info p {
-  font-size: 12px;
-  margin: 5px 0;
+  font-size: 14px;
+  margin: 6px 0;
+  color: #ccc;
+  /* Light grey for the company info text */
 }
 
+/* App Section Image */
 .app-section img {
-  max-width: 150px;
-  margin-top: 10px;
+  max-width: 160px;
+  margin-top: 12px;
+  transition: transform 0.3s ease;
 }
 
-.logo-image {
-  width: 50px;
-  /* Set the desired width */
-  height: 50px;
-  /* Maintain aspect ratio */
-  object-fit: contain;
-  /* Prevent image distortion */
+.app-section img:hover {
+  transform: scale(1.1);
+  /* Slight zoom effect on hover */
 }
 
-.logo-text {
-  font-size: 18px;
-  font-weight: bold;
-  color: rgba(108, 15, 34, 0.845);
-  /* Set the text color */
-  white-space: nowrap;
-  margin-left: 10px;
-  /* Prevent text wrapping */
+/* Delivery Modes */
+.delivery-modes ul li {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.payment-solutions ul li {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+/* Adding Gradient Background */
+.footer {
+  background: linear-gradient(135deg, #3b7bf3, #004b87);
+}
+
+/* Smooth Animation */
+.footer-links ul li {
+  position: relative;
+}
+
+.footer-links ul li::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #ff5733;
+  transition: width 0.3s ease;
+}
+
+.footer-links ul li:hover::before {
+  width: 100%;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .footer-top {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer-bottom>div {
+    margin-right: 0;
+  }
+}
+
+.google-play-button {
+  max-width: 160px;
+  /* Size adjustment */
+  transition: transform 0.3s ease;
+  background-image: url(1.png);
+}
+
+.google-play-button:hover {
+  transform: scale(1.05);
+  /* Slight zoom on hover */
 }

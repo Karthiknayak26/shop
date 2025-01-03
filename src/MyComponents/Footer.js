@@ -1,6 +1,6 @@
 import React from "react";
 import "./Footer.css";
-
+import googlePlayLogo from './1.png';
 const Footer = () => {
   return (
     <footer className="footer">
@@ -40,8 +40,18 @@ const Footer = () => {
       </div>
       <div className="footer-bottom">
         <div className="app-section">
-          <h4>All item in your hand</h4>
-          <img src="path-to-google-play-image" alt="Google Play" />
+          <h4>All items in your hand</h4>
+          <a
+            href="https://play.google.com/store/apps/details?id=com.yourapp"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src={googlePlayLogo}
+              alt="Google Play"
+              className="google-play-button"
+            />
+          </a>
         </div>
         <div className="delivery-modes">
           <h4>Delivery Modes</h4>

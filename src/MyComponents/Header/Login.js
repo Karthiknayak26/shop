@@ -3,9 +3,11 @@ import { Card, CardHeader, CardTitle, CardContent } from '../../Components/UI/Ca
 import { Button } from '../../Components/UI/Button';
 import { Input } from '../../Components/UI/Input';
 import { Mail, Lock, Loader2 } from 'lucide-react';
-import './Login.css';  // Import the CSS file
+import './Login.css';
+import { useNavigate } from 'react-router-dom';  // Import the CSS file
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -90,6 +92,17 @@ const LoginPage = () => {
                 'Login'
               )}
             </Button>
+
+            <p>
+              No account?{' '}
+              <span
+                className="signup-link"
+                onClick={() => navigate('/register')}
+                style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
+              >
+                Please Sign Up
+              </span>
+            </p>
 
             <div className="text-center text-sm">
               <a href="#" className="text-blue-500 hover:text-blue-600">

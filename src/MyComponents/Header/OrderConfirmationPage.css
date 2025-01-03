@@ -1,0 +1,53 @@
+.confirmation-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: auto;
+  text-align: center;
+}
+
+h2 {
+  color: green;
+}
+
+h3 {
+  margin-top: 20px;
+}
+
+h4 {
+  margin-top: 10px;
+  font-size: 1.2em;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  font-size: 1em;
+  margin: 5px 0;
+}
+
+strong {
+  font-weight: bold;
+}
+
+.confirmation-buttons {
+  margin-top: 30px;
+}
+
+.return-button,
+.shop-more-button {
+  padding: 10px 20px;
+  font-size: 1em;
+  cursor: pointer;
+  margin: 10px;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+  border-radius: 5px;
+}
+
+.shop-more-button {
+  background-color: #007BFF;
+}

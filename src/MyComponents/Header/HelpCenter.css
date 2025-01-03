@@ -1,0 +1,152 @@
+/* General Styles */
+.help-center {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 20px 30px;
+  font-family: 'Arial', sans-serif;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+/* Header */
+.help-center h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #007bff;
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+/* Section Titles */
+.help-center h2 {
+  font-size: 1.8rem;
+  color: #444;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #007bff;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+/* Common Questions Section */
+.help-topics ul {
+  list-style-type: none;
+  padding-left: 0;
+  margin-top: 10px;
+}
+
+.help-topics ul li {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  padding: 10px 15px;
+  background-color: #ffffff;
+  border-left: 4px solid #007bff;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease-in-out;
+}
+
+.help-topics ul li:hover {
+  background-color: #e7f0ff;
+  transform: scale(1.02);
+  cursor: pointer;
+}
+
+/* Contact Support Form */
+.contact-support form {
+  margin-top: 20px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.contact-support .form-group {
+  margin-bottom: 15px;
+}
+
+.contact-support label {
+  display: block;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #444;
+  margin-bottom: 5px;
+}
+
+.contact-support input,
+.contact-support textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  transition: all 0.2s ease-in-out;
+}
+
+.contact-support input:focus,
+.contact-support textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.contact-support textarea {
+  resize: vertical;
+}
+
+.contact-support .submit-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 1.1rem;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.contact-support .submit-button:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
+
+/* Success Message */
+.contact-support p {
+  text-align: center;
+  color: #28a745;
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .help-center {
+    padding: 15px;
+  }
+
+  .help-center h1 {
+    font-size: 2rem;
+  }
+
+  .help-center h2 {
+    font-size: 1.5rem;
+  }
+
+  .help-topics ul li {
+    font-size: 1rem;
+    padding: 8px 12px;
+  }
+
+  .contact-support input,
+  .contact-support textarea {
+    font-size: 0.9rem;
+  }
+
+  .contact-support .submit-button {
+    font-size: 1rem;
+    padding: 10px;
+  }
+}

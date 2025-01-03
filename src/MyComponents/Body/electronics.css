@@ -7,10 +7,21 @@
 }
 
 .Electronics header h1 {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  letter-spacing: 1px;
+  animation: fadeInDown 0.5s ease-out;
 
+}
+
+header {
+  background: linear-gradient(135deg, #0d7ff1 0%, #2c3e50 100%);
+  padding: 30px;
+  margin: -20px -20px 30px -20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 

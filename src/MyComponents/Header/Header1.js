@@ -37,7 +37,7 @@ export default function Header1() {
         <Search />
         <li className='no-underline'>
           <Tooltip title="cart">
-            <IconButton aria-label="cart">
+            <IconButton aria-label="cart" onClick={() => navigate('/cart')}>
               <StyledBadge badgeContent={4} color="secondary">
                 <IoCartOutline />
               </StyledBadge>
@@ -46,7 +46,8 @@ export default function Header1() {
         </li>
 
 
-        <button className="login-button" onClick={() => navigate('/login')}>Login | <Link to="/registor" >registor</Link></button>
+        <button className="login-button" onClick={() => navigate('/login')}>Login</button>
+        {/* <button className="register-button" onClick={() => navigate('/register')}>Register</button> */}
         <button className="membership-button">Apply For Membership</button>
       </div>
       <Navigation />
