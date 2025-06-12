@@ -1,47 +1,45 @@
 const express = require('express');
-const app = express.Router();
-const Location = require('../models/Location');
+const router = express.Router();
+const Location = require('../models/location');
 
 // GET all locations
-app.get('/', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    // Fetch all locations
-    const locations = await Location.find(); // Return all locations
-    res.status(200).json(locations); // Send the array of locations
+    const locations = await Location.find();
+    res.status(200).json(locations);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching locations', error });
   }
 });
 
-// GET location by address (for the selected address fetching)
-app.get('/address/:address', async (req, res) => {
+// GET location by address
+router.get('/address/:address', async (req, res) => {
   const { address } = req.params;
   try {
-    // Find the location by address
     const location = await Location.findOne({ address });
     if (!location) {
       return res.status(404).json({ message: 'Location not found' });
     }
-    res.status(200).json(location); // Send the location details
+    res.status(200).json(location);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching location details', error });
   }
 });
 
 // POST create a location
-app.post('/', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
-    const { name, address, latitude, longitude } = req.body;
-    const location = new Location({ name, address, latitude, longitude });
+    const { name, address, city, state, latitude, longitude } = req.body;
+    const location = new Location({ name, address, city, state, latitude, longitude });
     await location.save();
-    res.status(201).json(location); // Return the created location
+    res.status(201).json(location);
   } catch (error) {
     res.status(400).json({ message: 'Error creating location', error });
   }
 });
 
-// DELETE a location
-app.delete('/:id', async (req, res) => {
+// DELETE a location by ID
+router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     await Location.findByIdAndDelete(id);
@@ -51,4 +49,4 @@ app.delete('/:id', async (req, res) => {
   }
 });
 
-module.exports = app;
+module.exports = router;

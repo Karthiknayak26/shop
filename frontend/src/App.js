@@ -23,6 +23,7 @@ import { CartProvider } from './MyComponents/Header/CartContext';
 // import GroceryDeals from './MyComponents/Body/GroceryDeals';
 
 import { UserProvider } from './MyComponents/Header/UserContext';
+import ProductSearch from './Components/ProductSearch';
 
 
 
@@ -45,6 +46,7 @@ function App() {
                   <Electronics />
                   <Homelifestyle />
                   <Footer />
+                  <ProductSearch />
                 </>
               }
             />

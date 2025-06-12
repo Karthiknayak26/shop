@@ -1,11 +1,10 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 import { useCart } from '../Header/CartContext';
 import './grocery-deals.css';
 
-// Main Categories Component
+// 📌 Grocery Categories Component
 const GroceryCategories = () => {
   const navigate = useNavigate();
 
@@ -13,14 +12,12 @@ const GroceryCategories = () => {
     {
       id: 'biscuits-packaged',
       name: "Biscuits & Packaged Foods",
-      discount: "Up To 50% Off",
-      img: "/images/1.png", // Update path
+      img: "https://cdn-icons-png.flaticon.com/512/1046/1046784.png",
     },
     {
       id: 'cooking',
       name: "Cooking Essentials",
-      discount: "Up To 30% Off",
-      img: "/images/2.png", // Update path
+      img: "https://cdn-icons-png.flaticon.com/512/3174/3174880.png",
     },
   ];
 
@@ -34,13 +31,12 @@ const GroceryCategories = () => {
           <div
             key={category.id}
             onClick={() => navigate(`/groceries/products/${category.id}`)}
-            className="category-card"
+            className="category-card hover-effect"
           >
             <div className="category-image">
               <img src={category.img} alt={category.name} />
             </div>
             <div className="category-content">
-              <h3>{category.discount}</h3>
               <p>{category.name}</p>
             </div>
           </div>
@@ -50,38 +46,35 @@ const GroceryCategories = () => {
   );
 };
 
-// Products Component
+// 📌 Grocery Products Component (Dynamic)
 const GroceryProducts = () => {
   const { categoryId } = useParams();
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState(categoryId);
+  const [products, setProducts] = useState([]);
   const { addToCart } = useCart();
-
-  const products = [
-    {
-      id: 1,
-      name: "Parle-G Biscuits",
-      price: 20,  // Changed to number for easier calculations
-      category: "biscuits-packaged",
-      img: "/images/1.png",
-    },
-    {
-      id: 2,
-      name: "Good Day Biscuits",
-      price: 30,  // Changed to number for easier calculations
-      category: "biscuits-packaged",
-      img: "/images/2.png",
-    },
-  ];
 
   const categories = [
     { id: 'biscuits-packaged', name: 'Biscuits & Packaged Foods' },
     { id: 'cooking', name: 'Cooking Essentials' },
   ];
 
-  const filteredProducts = activeCategory
-    ? products.filter((product) => product.category === activeCategory)
-    : products;
+  // ✅ Fetch products from Google Sheet API
+  useEffect(() => {
+    fetch('https://api.sheetbest.com/sheets/db3a7b06-d00d-4c6f-9866-e11353521ecf')
+      .then((res) => res.json())
+      .then((data) => {
+        const formatted = data.map((item, index) => ({
+          id: item.id || `${item.name}-${index}`,
+          name: item.name,
+          price: parseFloat(item.price),
+          img: item.img,
+          category: item.category,
+        }));
+        setProducts(formatted);
+      })
+      .catch((err) => console.error('Error fetching sheet data', err));
+  }, []);
 
   useEffect(() => {
     if (activeCategory) {
@@ -91,9 +84,12 @@ const GroceryProducts = () => {
     }
   }, [activeCategory, navigate]);
 
+  const filteredProducts = activeCategory
+    ? products.filter((product) => product.category === activeCategory)
+    : products;
+
   const handleAddToCart = (product) => {
     addToCart(product);
-    // Optional: Add visual feedback
     alert(`${product.name} added to cart!`);
   };
 
@@ -156,7 +152,7 @@ const GroceryProducts = () => {
   );
 };
 
-// GroceryDeals Component
+// 📌 Combined Export
 const GroceryDeals = () => {
   return <GroceryCategories />;
 };

@@ -64,6 +64,15 @@
   transition: transform 0.3s ease;
 }
 
+.category-image img {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  margin: 0 auto;
+  display: block;
+}
+
+
 .category-card:hover img {
   transform: scale(1.05);
 }
@@ -218,4 +227,50 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #0b6ac8;
+}
+
+.category-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+  padding: 1rem;
+  border-radius: 12px;
+  background-color: #f8f8f8;
+}
+
+.category-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.category-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
+
+.category-content p {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  color: #333;
+}
+
+.category-card {
+  text-align: center;
+  padding: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+  background-color: #f8f8f8;
+}
+
+.category-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.category-content p {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 0.6rem;
 }

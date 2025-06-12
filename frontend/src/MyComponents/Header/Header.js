@@ -5,8 +5,6 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import Navbar from 'react-bootstrap/Navbar';
 import { Link } from 'react-router-dom';
 
-
-
 export default function Header() {
   // State to manage selected address
   const [selectedAddress, setSelectedAddress] = useState('Bhopal, Misrod');
@@ -14,37 +12,90 @@ export default function Header() {
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
 
-
   useEffect(() => {
     const fetchLocations = async () => {
       try {
         // Fetching location data from backend API
-        const response = await fetch('http://localhost:5000/api/locations'); // Correct the URL if needed
+        const response = await fetch('http://localhost:5000/api/locations');
         if (!response.ok) {
           throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
         const data = await response.json();
 
-        // Log the fetched data (for debugging)
-        console.log('Fetched locations:', data);
+        // DETAILED DEBUGGING - Log everything
+        console.log('=== DEBUG INFO ===');
+        console.log('Raw API Response:', data);
+        console.log('Is data an array?', Array.isArray(data));
+        console.log('Data length:', data?.length);
 
-        // Map through the locations and extract city, state
-        setAddresses(data.map(location => `${location.city}, ${location.state}`));
+        if (data && data.length > 0) {
+          console.log('First location object:', data[0]);
+          console.log('First location keys:', Object.keys(data[0]));
+
+          // Check each location's properties
+          data.forEach((location, index) => {
+            console.log(`Location ${index}:`, {
+              name: location.name,
+              address: location.address,
+              city: location.city,
+              state: location.state,
+              hasCity: location.hasOwnProperty('city'),
+              hasState: location.hasOwnProperty('state')
+            });
+          });
+        }
+
+        // Try different mapping strategies
+        let mappedAddresses;
+
+        if (data && data.length > 0) {
+          // Strategy 1: Try city, state (your original approach)
+          if (data[0].city && data[0].state) {
+            mappedAddresses = data.map(location => `${location.city}, ${location.state}`);
+            console.log('Using city, state strategy');
+          }
+          // Strategy 2: Try name, address
+          else if (data[0].name && data[0].address) {
+            mappedAddresses = data.map(location => `${location.name} - ${location.address}`);
+            console.log('Using name, address strategy');
+          }
+          // Strategy 3: Just use address
+          else if (data[0].address) {
+            mappedAddresses = data.map(location => location.address);
+            console.log('Using address only strategy');
+          }
+          // Strategy 4: Just use name
+          else if (data[0].name) {
+            mappedAddresses = data.map(location => location.name);
+            console.log('Using name only strategy');
+          }
+          else {
+            // Fallback: show what we have
+            mappedAddresses = data.map((location, index) => `Location ${index + 1}`);
+            console.log('Using fallback strategy');
+          }
+
+          console.log('Final mapped addresses:', mappedAddresses);
+          setAddresses(mappedAddresses);
+        } else {
+          console.log('No data received or empty array');
+          setAddresses([]);
+        }
 
       } catch (err) {
         console.error('Error fetching locations:', err);
-        setError('Error loading locations');
+        setError(`Error loading locations: ${err.message}`);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchLocations(); // Calling the function to fetch locations on component mount
-  }, []); // Empty dependency array means this effect runs only once (on mount)
+    fetchLocations();
+  }, []);
 
   // Handle address change when user selects a new address from the dropdown
   const handleAddressChange = (address) => {
-    setSelectedAddress(address); // This updates the selected address
+    setSelectedAddress(address);
   };
 
   return (
@@ -71,7 +122,7 @@ export default function Header() {
               </NavDropdown.Item>
             ))
           ) : (
-            <NavDropdown.Item>No locations available</NavDropdown.Item>
+            <NavDropdown.Item>No locations available (addresses.length: {addresses.length})</NavDropdown.Item>
           )}
         </NavDropdown>
 

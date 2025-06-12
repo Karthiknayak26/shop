@@ -66,4 +66,31 @@ app.delete('/:id', async (req, res) => {
   }
 });
 
+
+const router = express.Router();
+const ProductService = require('../services/ProductService');
+
+router.get('/products/search', async (req, res) => {
+  try {
+    const { query, page = 1 } = req.query;
+    const products = await ProductService.searchProducts(query, page);
+    res.json(products);
+  } catch (error) {
+    console.error('Search error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+router.get('/products/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const product = await ProductService.getProductDetails(id);
+    res.json(product);
+  } catch (error) {
+    console.error('Product detail error:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+module.exports = router;
+
 module.exports = app;
