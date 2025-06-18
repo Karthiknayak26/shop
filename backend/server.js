@@ -3,8 +3,9 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const locationRoutes = require('./routes/locationRoutes');
+const authRoutes = require('./routes/userRoutes');
+const OrderRoutes = require('./routes/order'); // ⬅️ Added
 require('dotenv').config();
-const authRoutes = require('./routes/userRoutes'); // Load environment variables
 
 const app = express();
 
@@ -21,6 +22,7 @@ mongoose
 // API Routes
 app.use('/api/locations', locationRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/orders', OrderRoutes); // ⬅️ Added
 
 // Test Route
 app.get('/', (req, res) => {
@@ -28,5 +30,5 @@ app.get('/', (req, res) => {
 });
 
 // Start Server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000; // Default to 5000 if PORT is not set
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

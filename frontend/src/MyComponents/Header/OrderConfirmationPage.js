@@ -20,7 +20,18 @@ const OrderConfirmationPage = () => {
 
   if (!orderData) return null;
 
-  const orderId = `ORD${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+  // Use the MongoDB _id or displayId if available
+  const getOrderId = () => {
+    if (orderData.displayId) {
+      return `ORD${orderData.displayId}`;
+    }
+    if (orderData._id) {
+      // Use last 6 characters of MongoDB _id for consistency
+      return `ORD${orderData._id.toString().substring(18, 24).toUpperCase()}`;
+    }
+    // Fallback (shouldn't happen if order was properly created)
+    return `ORD${Math.random().toString(36).substr(2, 6).toUpperCase()}`;
+  };
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleString("en-IN", {
@@ -42,7 +53,7 @@ const OrderConfirmationPage = () => {
             <Typography variant="body1" color="success.main" gutterBottom>
               Thank you for your purchase!
             </Typography>
-            <Typography variant="body2">Order ID: {orderId}</Typography>
+            <Typography variant="body2">Order ID: {getOrderId()}</Typography>
             <Typography variant="body2">Placed on: {formatDate(orderData.orderDate)}</Typography>
           </Box>
 
@@ -53,7 +64,9 @@ const OrderConfirmationPage = () => {
             <Typography variant="body1">{orderData.shippingAddress.name}</Typography>
             <Typography variant="body2">{orderData.shippingAddress.email}</Typography>
             <Typography variant="body2">{orderData.shippingAddress.address}</Typography>
-            <Typography variant="body2">{orderData.shippingAddress.city}, {orderData.shippingAddress.postalCode}</Typography>
+            <Typography variant="body2">
+              {orderData.shippingAddress.city}, {orderData.shippingAddress.postalCode}
+            </Typography>
             <Typography variant="body2">Phone: {orderData.shippingAddress.phone}</Typography>
           </Box>
 
@@ -76,7 +89,7 @@ const OrderConfirmationPage = () => {
                   <img src={item.img} alt={item.name} className="item-image" />
                   <div className="item-details">
                     <h4>{item.name}</h4>
-                    <p>₹{item.price} x {item.quantity}</p>
+                    <p>₹{item.price} × {item.quantity}</p>
                   </div>
                 </div>
                 <p className="item-total">₹{item.price * item.quantity}</p>
@@ -85,16 +98,35 @@ const OrderConfirmationPage = () => {
           </div>
 
           <div className="order-totals">
-            <div className="total-row"><span>Subtotal:</span><span>₹{orderData.totalAmount}</span></div>
-            <div className="total-row"><span>Shipping:</span><span>Free</span></div>
-            <div className="total-row grand-total"><span>Total:</span><span>₹{orderData.totalAmount}</span></div>
+            <div className="total-row">
+              <span>Subtotal:</span>
+              <span>₹{orderData.totalAmount}</span>
+            </div>
+            <div className="total-row">
+              <span>Shipping:</span>
+              <span>Free</span>
+            </div>
+            <div className="total-row grand-total">
+              <span>Total:</span>
+              <span>₹{orderData.totalAmount}</span>
+            </div>
           </div>
 
           <Box sx={{ display: "flex", gap: 2, justifyContent: "space-between", mt: 4 }}>
-            <Button variant="contained" startIcon={<Home />} onClick={() => navigate("/")} fullWidth>
+            <Button
+              variant="contained"
+              startIcon={<Home />}
+              onClick={() => navigate("/")}
+              fullWidth
+            >
               Return Home
             </Button>
-            <Button variant="outlined" startIcon={<ShoppingBag />} onClick={() => navigate("/products")} fullWidth>
+            <Button
+              variant="outlined"
+              startIcon={<ShoppingBag />}
+              onClick={() => navigate("/")}
+              fullWidth
+            >
               Continue Shopping
             </Button>
           </Box>

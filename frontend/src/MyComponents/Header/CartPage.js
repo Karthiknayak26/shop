@@ -4,6 +4,7 @@ import "./CartPage.css";
 import { IoTrashOutline } from "react-icons/io5";
 import { Button } from "@mui/material";
 import { useCart } from './CartContext';
+import { IoArrowBack } from "react-icons/io5";
 
 const CartPage = () => {
   const navigate = useNavigate();
@@ -27,8 +28,16 @@ const CartPage = () => {
 
   return (
     <div className="cart-container">
-      <h2>Your Cart</h2>
-
+      <div className="cart-header">
+        <button
+          className="back-button"
+          onClick={() => navigate('/')}
+          aria-label="Back to home"
+        >
+          <IoArrowBack />
+        </button>
+        <h2>Your Cart</h2>
+      </div>
       <div className="cart-items">
         {cartItems.length === 0 ? (
           <p>Your cart is empty!</p>

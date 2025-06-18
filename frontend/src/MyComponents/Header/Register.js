@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Registor.css';
+import { Home } from 'lucide-react';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -63,73 +64,82 @@ const Register = () => {
   };
 
   return (
-    <div className="register-page">
-      <h1>Register</h1>
-      <form onSubmit={handleSubmit} className="registration-form">
-        {error && <p className="error">{error}</p>}
-        {success && <p className="success">{success}</p>}
-        <div className="form-group">
-          <label htmlFor="name">Name:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-            placeholder="Enter your full name"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            placeholder="Enter your email"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            placeholder="Enter your password"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="confirmPassword">Confirm Password:</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleInputChange}
-            placeholder="Confirm your password"
-            required
-          />
-        </div>
-        <button type="submit" className="register-button">
-          Register
-        </button>
-      </form>
-      <p>
-        Already have an account?{' '}
-        <span
-          className="login-link"
-          onClick={() => navigate('/login')}
-          style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
-        >
-          Login
-        </span>
-      </p>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+      <button
+        onClick={() => navigate('/')}
+        className="fab-home"
+        aria-label="Go back to home"
+      >
+        <Home className="h-6 w-6" />
+      </button>
+      <div className="register-page">
+        <h1>Register</h1>
+        <form onSubmit={handleSubmit} className="registration-form">
+          {error && <p className="error">{error}</p>}
+          {success && <p className="success">{success}</p>}
+          <div className="form-group">
+            <label htmlFor="name">Name:</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              placeholder="Enter your full name"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="email">Email:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="confirmPassword">Confirm Password:</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleInputChange}
+              placeholder="Confirm your password"
+              required
+            />
+          </div>
+          <button type="submit" className="register-button">
+            Register
+          </button>
+        </form>
+        <p>
+          Already have an account?{' '}
+          <span
+            className="login-link"
+            onClick={() => navigate('/login')}
+            style={{ color: 'blue', textDecoration: 'underline', cursor: 'pointer' }}
+          >
+            Login
+          </span>
+        </p>
+      </div>
     </div>
   );
 };

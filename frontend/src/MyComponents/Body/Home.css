@@ -1,5 +1,5 @@
 /* Enhanced App.css */
-.Home {
+/* .Home {
   padding: 20px;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
@@ -82,7 +82,7 @@
   font-weight: 500;
 }
 
-/* Add animation keyframes */
+
 @keyframes fadeInDown {
   from {
     opacity: 0;
@@ -95,7 +95,7 @@
   }
 }
 
-/* Add responsive styles */
+
 @media (max-width: 768px) {
   .Home header h1 {
     font-size: 1.8rem;
@@ -108,7 +108,7 @@
   }
 }
 
-/* Add loading animation for images */
+
 .deal-card img {
   opacity: 0;
   animation: fadeIn 0.3s ease-in forwards;
@@ -124,7 +124,7 @@
   }
 }
 
-/* Add custom scrollbar */
+
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -140,4 +140,196 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #0b6ac8;
+} */
+
+
+/* Mantralaya Supermarket Styles */
+.Home {
+  padding: 20px;
+  font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  margin-bottom: 30px;
+  background-color: #fff9f5;
+  /* Warm off-white */
+  min-height: 100vh;
+}
+
+.Home header {
+  background: linear-gradient(135deg, #0d7ff1 0%, #2c3e50 100%);
+  /* Gold tones */
+  padding: 30px;
+  margin: -20px -20px 30px -20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.Home header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><text x="10" y="50" font-family="Arial" font-size="20" fill="rgba(255,255,255,0.1)">ॐ</text></svg>');
+  opacity: 0.1;
+  background-repeat: repeat;
+}
+
+.Home header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 1px;
+  animation: fadeInDown 0.5s ease-out;
+  position: relative;
+}
+
+.deals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.deal-card {
+  border: none;
+  border-radius: 10px;
+  padding: 15px;
+  text-align: center;
+  background: white;
+  box-shadow: 0 5px 15px rgba(210, 180, 140, 0.2);
+  /* Light sand color shadow */
+  transition: all 0.3s ease;
+  overflow: hidden;
+  position: relative;
+  border-top: 3px solid #d4a017;
+  /* Gold accent */
+}
+
+.deal-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(210, 180, 140, 0.3);
+}
+
+.deal-card a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.deal-card img {
+  max-width: 100%;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+  border: 1px solid #f0e6d2;
+  /* Light sand border */
+}
+
+.deal-card:hover img {
+  transform: scale(1.03);
+}
+
+.deal-card h3 {
+  margin: 15px 0 10px;
+  color: #b8860b;
+  /* Dark gold */
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.deal-card p {
+  margin: 0;
+  font-size: 1rem;
+  color: #5a4a3a;
+  /* Dark brown */
+  font-weight: 500;
+}
+
+/* Special badge for best deals */
+.deal-card::after {
+  content: "Special";
+  position: absolute;
+  top: 10px;
+  right: -30px;
+  background: #e74c3c;
+  color: white;
+  padding: 3px 30px;
+  font-size: 0.8rem;
+  transform: rotate(45deg);
+  transform-origin: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.deal-card:hover::after {
+  opacity: 1;
+}
+
+/* Animation keyframes */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .Home header h1 {
+    font-size: 1.8rem;
+  }
+
+  .deals-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    padding: 15px;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #d4a017;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b8860b;
+}
+
+/* Add traditional touch */
+.welcome-message {
+  font-style: italic;
+  color: #5a4a3a;
+  margin-bottom: 20px;
+  border-bottom: 1px dashed #d4a017;
+  padding-bottom: 10px;
+  font-size: 1.1rem;
 }

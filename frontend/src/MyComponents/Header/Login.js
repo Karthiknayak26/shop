@@ -5,7 +5,8 @@ import { Input } from '../../Components/UI/Input';
 import { Mail, Lock, Loader2 } from 'lucide-react';
 import './Login.css';
 import { useNavigate } from 'react-router-dom';
-import { useUser } from './UserContext'; // Import the CSS file
+import { useUser } from './UserContext';
+import { Home } from 'lucide-react';// Import the CSS file
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -53,6 +54,13 @@ const LoginPage = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+      <button
+        onClick={() => navigate('/')}
+        className="fab-home"
+        aria-label="Go back to home"
+      >
+        <Home className="h-6 w-6" />
+      </button>
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">Welcome back</CardTitle>

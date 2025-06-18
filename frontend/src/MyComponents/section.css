@@ -1,0 +1,219 @@
+Section-specific CSS for Mantralaya Temple Supermarket
+
+/* Base Section Styling */
+section.w-full {
+  background-color: #f8f3e9 !important;
+  /* Warm, temple-inspired background */
+  padding: 3rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+section.w-full::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #FF9933, #138808, #FF9933);
+
+  /* Saffron and green*/
+}
+
+/* Section Title */
+.section-title {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #5c2c0d;
+  /* Deep brown */
+  margin-bottom: 2rem;
+  position: relative;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+}
+
+.section-title::after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 3px;
+  background: #D4AF37;
+  /* Gold */
+}
+
+/* Card Styling */
+.group {
+  border-radius: 12px !important;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.4s ease;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e8d9b5 !important;
+  background-color: #fff !important;
+}
+
+.group:hover {
+  transform: translateY(-8px) !important;
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Card Background Overrides */
+.bg-energy-drinks {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+    url('./Header/1.png') center/cover no-repeat !important;
+}
+
+.bg-glam-up {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+    url('./Header/1.png') center/cover no-repeat !important;
+}
+
+.bg-perfumes {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+    url('./Header/1.png') center/cover no-repeat !important;
+}
+
+.bg-health-essentials {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)),
+    url('./Header/1.png') center/cover no-repeat !important;
+}
+
+/* Card Title */
+.group h2 {
+  color: #5c2c0d !important;
+
+  font-size: 1.8rem !important;
+  font-weight: 600 !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  margin-top: 1rem !important;
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 2;
+}
+
+.group:hover h2 {
+  color: #9E2B2B !important;
+  /* Deep red */
+}
+
+/* Discount Badge */
+.group .rounded-full {
+  width: 70px !important;
+  height: 70px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  align-items: center !important;
+  border: 2px solid white !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
+  transition: all 0.3s ease !important;
+}
+
+.group:hover .rounded-full {
+  transform: scale(1.1) rotate(5deg) !important;
+}
+
+/* Product Image */
+.group .absolute.right-4.bottom-4 {
+  width: 150px !important;
+  height: 150px !important;
+  transition: all 0.5s ease !important;
+  filter: drop-shadow(2px 4px 6px rgba(0, 0, 0, 0.2));
+}
+
+.group:hover .absolute.right-4.bottom-4 {
+  transform: rotate(5deg) scale(1.1) !important;
+}
+
+/* Shop Now Button */
+.group .button-hover {
+  background-color: #138808 !important;
+  /* Holy green */
+  color: white !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 12px 0 !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.5px;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.group .button-hover:hover {
+  background-color: #0e6e06 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Slider Customization */
+.slick-dots li button:before {
+  color: #D4AF37 !important;
+  /* Gold */
+  font-size: 10px !important;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #9E2B2B !important;
+  /* Deep red */
+}
+
+.slick-prev:before,
+.slick-next:before {
+  color: #9E2B2B !important;
+  /* Deep red */
+  font-size: 24px !important;
+}
+
+.slick-prev,
+.slick-next {
+  width: 40px !important;
+  height: 40px !important;
+  background: rgba(255, 255, 255, 0.8) !important;
+  border-radius: 50% !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+  z-index: 1;
+}
+
+.slick-prev:hover,
+.slick-next:hover {
+  background: white !important;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .group {
+    height: 280px !important;
+  }
+
+  .group h2 {
+    font-size: 1.5rem !important;
+  }
+
+  .group .absolute.right-4.bottom-4 {
+    width: 120px !important;
+    height: 120px !important;
+  }
+}
+
+/* Traditional Pattern Overlay */
+.group::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><circle cx="20" cy="20" r="1" fill="%23D4AF37" opacity="0.1"/><circle cx="50" cy="20" r="1" fill="%23D4AF37" opacity="0.1"/><circle cx="80" cy="20" r="1" fill="%23D4AF37" opacity="0.1"/><circle cx="20" cy="50" r="1" fill="%23D4AF37" opacity="0.1"/><circle cx="80" cy="50" r="1" fill="%23D4AF37" opacity="0.1"/><circle cx="20" cy="80" r="1" fill="%23D4AF37" opacity="0.1"/><circle cx="50" cy="80" r="1" fill="%23D4AF37" opacity="0.1"/><circle cx="80" cy="80" r="1" fill="%23D4AF37" opacity="0.1"/></svg>');
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.group:hover::after {
+  opacity: 0.3;
+}

@@ -13,7 +13,7 @@ const Navigation = () => {
   const handleMouseLeave = () => {
     setOpenSubmenu(null);
   };
-
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet"></link>
   return (
     <div className="center-container">
       <li className="list-item">
@@ -22,25 +22,25 @@ const Navigation = () => {
         </Link>
         <div className="submenu">
           <ul>
-            {/* Buiscut */}
+            {/* Biscuit */}
             <li
               className="list-none w-full relative"
-              onMouseEnter={() => handleMouseEnter("buiscut")}
+              onMouseEnter={() => handleMouseEnter("biscuit")}
               onMouseLeave={handleMouseLeave}
             >
-              <Link to="/" className="link">
-                <Button className="w-full">Buiscut</Button>
+              <Link to="/biscuits" className="link">
+                <Button className="w-full">Biscuits</Button>
               </Link>
-              {openSubmenu === "buiscut" && (
+              {openSubmenu === "biscuit" && (
                 <div className="submenu">
                   <ul>
                     <li className="list-none w-full relative">
-                      <Link to="/cream" className="w-full">
+                      <Link to="/biscuits/cream" className="w-full">
                         <Button className="w-full">Cream</Button>
                       </Link>
                     </li>
                     <li className="list-none w-full relative">
-                      <Link to="/nuts" className="w-full">
+                      <Link to="/biscuits/nuts" className="w-full">
                         <Button className="w-full">Nuts</Button>
                       </Link>
                     </li>
@@ -55,19 +55,19 @@ const Navigation = () => {
               onMouseEnter={() => handleMouseEnter("household")}
               onMouseLeave={handleMouseLeave}
             >
-              <Link to="/" className="link">
+              <Link to="/household" className="link">
                 <Button className="w-full">Household</Button>
               </Link>
               {openSubmenu === "household" && (
                 <div className="submenu">
                   <ul>
                     <li className="list-none w-full relative">
-                      <Link to="/dryer" className="w-full">
+                      <Link to="/household/dryer" className="w-full">
                         <Button className="w-full">Dryer</Button>
                       </Link>
                     </li>
                     <li className="list-none w-full relative">
-                      <Link to="/cleaning" className="w-full">
+                      <Link to="/household/cleaning" className="w-full">
                         <Button className="w-full">Cleaning</Button>
                       </Link>
                     </li>
@@ -82,19 +82,19 @@ const Navigation = () => {
               onMouseEnter={() => handleMouseEnter("kids")}
               onMouseLeave={handleMouseLeave}
             >
-              <Link to="/" className="link">
+              <Link to="/kids" className="link">
                 <Button className="w-full">Kids</Button>
               </Link>
               {openSubmenu === "kids" && (
                 <div className="submenu">
                   <ul>
                     <li className="list-none w-full relative">
-                      <Link to="/toys" className="w-full">
+                      <Link to="/kids/toys" className="w-full">
                         <Button className="w-full">Toys</Button>
                       </Link>
                     </li>
                     <li className="list-none w-full relative">
-                      <Link to="/clothes" className="w-full">
+                      <Link to="/kids/clothes" className="w-full">
                         <Button className="w-full">Clothes</Button>
                       </Link>
                     </li>
@@ -109,19 +109,19 @@ const Navigation = () => {
               onMouseEnter={() => handleMouseEnter("electronics")}
               onMouseLeave={handleMouseLeave}
             >
-              <Link to="/" className="link">
+              <Link to="/electronics" className="link">
                 <Button className="w-full">Electronics</Button>
               </Link>
               {openSubmenu === "electronics" && (
                 <div className="submenu">
                   <ul>
                     <li className="list-none w-full relative">
-                      <Link to="/phones" className="w-full">
+                      <Link to="/electronics/phones" className="w-full">
                         <Button className="w-full">Mobile Phones</Button>
                       </Link>
                     </li>
                     <li className="list-none w-full relative">
-                      <Link to="/laptops" className="w-full">
+                      <Link to="/electronics/laptops" className="w-full">
                         <Button className="w-full">Laptops</Button>
                       </Link>
                     </li>

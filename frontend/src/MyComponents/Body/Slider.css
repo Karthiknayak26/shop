@@ -1,4 +1,4 @@
-/* General Section Styling */
+/* 
 .deals {
   background-color: #ffffff;
   padding: 20px 0;
@@ -6,32 +6,31 @@
   border-radius: 8px;
 }
 
-/* Flex Container */
 .container1 {
   display: flex;
   align-items: center;
-  /* Aligns items vertically */
+  
   justify-content: space-between;
-  /* Spaces out left and right sections */
+  
   gap: 10px;
-  /* Reduces the gap between sections */
+  
   padding: 0 20px;
-  /* Adds horizontal padding to the container */
+  
   max-width: 1200px;
-  /* Sets a maximum width for better alignment */
+  
   margin: 0 auto;
-  /* Centers the container horizontally */
+  
 }
 
-/* Left Section: Text */
+
 .left-section {
   flex: 1;
-  /* Ensures the left section takes available space */
+  
   display: flex;
   flex-direction: column;
   justify-content: center;
   max-width: 60%;
-  /* Limits the width of the text for better alignment */
+  
 }
 
 .left-section h2 {
@@ -48,15 +47,15 @@
   color: #666;
 }
 
-/* Right Section: Slider */
+
 .right-section {
   flex: 1;
-  /* Ensures the right section takes available space */
+  
   display: flex;
   justify-content: flex-end;
-  /* Aligns slider to the right */
+  
   max-width: 40%;
-  /* Limits the width of the slider */
+  
 }
 
 .right-section .MuiTabs-root {
@@ -64,7 +63,7 @@
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   width: 100%;
-  /* Ensures the tabs span the available space */
+  
 }
 
 .right-section .MuiTab-root {
@@ -74,26 +73,139 @@
   transition: color 0.3s ease, transform 0.2s ease;
 }
 
-/* Responsive Design */
+
 @media (max-width: 768px) {
   .container1 {
     flex-direction: column;
-    /* Stacks items vertically on smaller screens */
+    
     align-items: center;
-    /* Centers the sections */
+    
     gap: 20px;
-    /* Adds spacing between sections */
+    
   }
 
   .left-section {
     max-width: 100%;
-    /* Ensures the text spans the full width */
+   
     text-align: center;
-    /* Centers the text */
+    
   }
 
   .right-section {
     max-width: 100%;
-    /* Ensures the slider spans the full width */
+  
+  }
+} */
+
+/* General Section Styling */
+.deals {
+  background-color: #ffffff;
+  padding: 20px 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  background-image: linear-gradient(to right, #fff, #f6f6f6);
+  border: 1px solid #e0d6b5;
+}
+
+/* Flex Container */
+.container1 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 0 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Left Section: Text */
+.left-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 60%;
+}
+
+.left-section h2 {
+  font-size: 26px;
+  font-weight: 700;
+  margin: 0;
+  color: #5a3e1f;
+  font-family: 'Arial', sans-serif;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.left-section p {
+  font-size: 16px;
+  font-weight: 500;
+  margin: 10px 0 0;
+  color: #8f7962;
+  font-style: italic;
+}
+
+/* Right Section: Slider */
+.right-section {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  max-width: 40%;
+}
+
+.right-section .MuiTabs-root {
+  background: #f8f3e6;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  border: 1px solid #d4c9a8;
+}
+
+.right-section .MuiTab-root {
+  font-size: 14px;
+  font-weight: 600;
+  color: #5a3e1f;
+  transition: all 0.3s ease;
+  text-transform: capitalize;
+  font-family: 'Arial', sans-serif;
+}
+
+.right-section .MuiTab-root:hover {
+  color: #c28a2e;
+  transform: translateY(-2px);
+}
+
+.right-section .Mui-selected {
+  color: #c28a2e !important;
+  background-color: rgba(194, 138, 46, 0.1);
+}
+
+.right-section .MuiTabs-indicator {
+  background-color: #c28a2e;
+  height: 3px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container1 {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .left-section {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .right-section {
+    max-width: 100%;
+  }
+
+  .left-section h2 {
+    font-size: 22px;
+  }
+
+  .left-section p {
+    font-size: 14px;
   }
 }

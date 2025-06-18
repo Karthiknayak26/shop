@@ -4,7 +4,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "../App.css"; // Ensure this includes the custom styles
 import { useNavigate } from 'react-router-dom'
-
+// import "./section.css"; // Import your custom CSS for the section
 
 
 const Section = () => {

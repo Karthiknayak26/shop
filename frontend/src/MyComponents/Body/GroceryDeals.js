@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 import { useCart } from '../Header/CartContext';
 import './grocery-deals.css';
+import { useLocation } from 'react-router-dom';
 
 // 📌 Grocery Categories Component
 const GroceryCategories = () => {
@@ -61,7 +62,7 @@ const GroceryProducts = () => {
 
   // ✅ Fetch products from Google Sheet API
   useEffect(() => {
-    fetch('https://api.sheetbest.com/sheets/db3a7b06-d00d-4c6f-9866-e11353521ecf')
+    fetch('https://api.sheetbest.com/sheets/dbb34df6-7687-434a-8b01-c7716da9e92b')
       .then((res) => res.json())
       .then((data) => {
         const formatted = data.map((item, index) => ({
@@ -96,9 +97,9 @@ const GroceryProducts = () => {
   return (
     <div className="grocery-products">
       <div className="breadcrumb">
-        <span>Home</span>
+        <span onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>Home</span>
         <ChevronRight size={16} />
-        <span>Groceries</span>
+        <span onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>Groceries</span>
         {activeCategory && (
           <>
             <ChevronRight size={16} />
@@ -154,6 +155,11 @@ const GroceryProducts = () => {
 
 // 📌 Combined Export
 const GroceryDeals = () => {
+  const { pathname } = useLocation();
+
+  if (pathname.startsWith('/groceries/products')) {
+    return <GroceryProducts />;
+  }
   return <GroceryCategories />;
 };
 

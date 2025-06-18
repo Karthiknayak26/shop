@@ -1,6 +1,7 @@
 import React from 'react'
 import "../../MyComponents/Header/Header.css";
 import Button from '@mui/material/Button';
+import './Search.css'; // Assuming you have a CSS file for styling
 
 const Search = () => {
   return (
