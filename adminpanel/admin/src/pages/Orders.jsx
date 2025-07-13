@@ -38,6 +38,7 @@ const Orders = () => {
                 <th className="text-left px-4 py-2">Shipping Address</th>
                 <th className="text-left px-4 py-2">Items (Qty)</th>
                 <th className="text-left px-4 py-2">Amount</th>
+                <th className="text-left px-4 py-2">Payment</th>
                 <th className="text-left px-4 py-2">Status</th>
                 <th className="text-left px-4 py-2">Date</th>
               </tr>
@@ -79,12 +80,35 @@ const Orders = () => {
                     </td>
                     <td className="px-4 py-2">₹{order.totalAmount}</td>
                     <td className="px-4 py-2">
+                      {order.paymentMethod === 'cod' ? (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                          💳 COD
+                        </span>
+                      ) : order.paymentMethod === 'creditCard' ? (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          💳 Credit
+                        </span>
+                      ) : order.paymentMethod === 'debitCard' ? (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                          💳 Debit
+                        </span>
+                      ) : order.paymentMethod === 'upi' ? (
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                          📱 UPI
+                        </span>
+                      ) : (
+                        <span className="text-sm text-gray-600">
+                          {order.paymentMethod || 'N/A'}
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-4 py-2">
                       <span
                         className={`px-3 py-1 text-sm rounded-full text-white font-medium ${order.status === 'Delivered'
-                            ? 'bg-green-500'
-                            : order.status === 'Pending'
-                              ? 'bg-yellow-500'
-                              : 'bg-blue-500'
+                          ? 'bg-green-500'
+                          : order.status === 'Pending'
+                            ? 'bg-yellow-500'
+                            : 'bg-blue-500'
                           }`}
                       >
                         {order.status || 'Pending'}
@@ -96,7 +120,7 @@ const Orders = () => {
                   </tr>
                   {expandedOrder === order._id && (
                     <tr className="bg-gray-50">
-                      <td colSpan="7" className="px-4 py-2">
+                      <td colSpan="8" className="px-4 py-2">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
                           <div className="space-y-4">
                             <h3 className="font-bold text-lg">Order Items</h3>
@@ -153,7 +177,58 @@ const Orders = () => {
                             </div>
                             <div className="bg-white p-4 rounded-lg shadow-sm mt-4">
                               <h4 className="font-medium mb-2">Payment Method</h4>
-                              <p>{order.paymentMethod || 'Not specified'}</p>
+                              <p>
+                                {order.paymentMethod === 'cod' ? (
+                                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                                    💳 Cash on Delivery (COD)
+                                  </span>
+                                ) : order.paymentMethod === 'creditCard' ? (
+                                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                    💳 Credit Card
+                                  </span>
+                                ) : order.paymentMethod === 'debitCard' ? (
+                                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                    💳 Debit Card
+                                  </span>
+                                ) : order.paymentMethod === 'upi' ? (
+                                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                    📱 UPI Payment
+                                  </span>
+                                ) : (
+                                  order.paymentMethod || 'Not specified'
+                                )}
+                              </p>
+                              {order.paymentMethod === 'cod' && (
+                                <p className="text-sm text-gray-600 mt-1">
+                                  Customer will pay in cash upon delivery
+                                </p>
+                              )}
+                              {order.paymentInfo && order.paymentMethod !== 'cod' && (
+                                <div className="mt-2 text-sm text-gray-600">
+                                  {order.paymentMethod === 'upi' && order.paymentInfo.upiId && (
+                                    <p>UPI ID: {order.paymentInfo.upiId}</p>
+                                  )}
+                                  {(order.paymentMethod === 'creditCard' || order.paymentMethod === 'debitCard') && order.paymentInfo.cardNumber && (
+                                    <p>Card ending in {order.paymentInfo.cardNumber}</p>
+                                  )}
+                                  {(order.paymentMethod === 'creditCard' || order.paymentMethod === 'debitCard') && order.paymentInfo.cardHolderName && (
+                                    <p>Card Holder: {order.paymentInfo.cardHolderName}</p>
+                                  )}
+                                  {order.paymentInfo.razorpayPaymentId && (
+                                    <p>Payment ID: {order.paymentInfo.razorpayPaymentId}</p>
+                                  )}
+                                  {order.paymentInfo.paymentStatus && (
+                                    <p>Payment Status:
+                                      <span className={`ml-1 px-2 py-1 rounded text-xs ${order.paymentInfo.paymentStatus === 'completed'
+                                          ? 'bg-green-100 text-green-800'
+                                          : 'bg-yellow-100 text-yellow-800'
+                                        }`}>
+                                        {order.paymentInfo.paymentStatus}
+                                      </span>
+                                    </p>
+                                  )}
+                                </div>
+                              )}
                             </div>
                           </div>
                         </div>
@@ -164,7 +239,7 @@ const Orders = () => {
               ))}
               {orders.length === 0 && (
                 <tr>
-                  <td colSpan="7" className="px-4 py-4 text-center text-gray-500">
+                  <td colSpan="8" className="px-4 py-4 text-center text-gray-500">
                     No orders found.
                   </td>
                 </tr>

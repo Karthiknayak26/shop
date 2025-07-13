@@ -5,6 +5,8 @@ const bodyParser = require('body-parser');
 const locationRoutes = require('./routes/locationRoutes');
 const authRoutes = require('./routes/userRoutes');
 const OrderRoutes = require('./routes/order'); // ⬅️ Added
+const cartRoutes = require('./routes/cartRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -23,6 +25,8 @@ mongoose
 app.use('/api/locations', locationRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/orders', OrderRoutes); // ⬅️ Added
+app.use('/api/cart', cartRoutes);
+app.use('/api/payments', paymentRoutes);
 
 // Test Route
 app.get('/', (req, res) => {

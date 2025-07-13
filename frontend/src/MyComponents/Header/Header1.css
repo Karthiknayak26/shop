@@ -103,12 +103,12 @@
 @keyframes fadeIn {
   from {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY10px);
   }
 
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY);
   }
 }
 
@@ -138,17 +138,16 @@
 
 .user-email {
   font-size: 12px;
-  color: #777;
+    color: #777;
 }
 
-.dropdown-divider {
-  height: 1px;
+.dropdown-divider { ght: 1px;
   background: #eee;
   margin: 5px 0;
 }
 
 .dropdown-item {
-  display: flex;
+    display: flex;
   align-items: center;
   padding: 12px 15px;
   gap: 10px;
@@ -285,7 +284,7 @@
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Input field styling */
+/* Input fld styling */
 .search-bar {
   flex: 1;
   padding: 12px 16px;
@@ -297,7 +296,7 @@
 }
 
 /* Button styling */
-.search-button {
+.search-butt */on {
   background-color: #f57c00;
   color: white;
   font-weight: bold;
@@ -411,7 +410,7 @@
 }
 
 /* Responsive Styles */
-@media (max-width: 1024px) {
+@media (max-wid: 1024px) {
   .header-top {
     padding: 1rem 2rem;
   }
@@ -518,7 +517,7 @@
 
 .header-categories span {
   cursor: pointer;
-  white-space: nowrap;
+  white-space: now rap;
   color: #444;
   transition: color 0.2s ease;
 }
@@ -563,7 +562,7 @@
 .dropdown-container {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: c enter;
   background-color: #f8f8f8;
   padding: 10px 0;
   border-top: 1px solid #ddd;
@@ -575,18 +574,18 @@
   margin: 0 15px;
 }
 
-.dropdown-button {
+.dr opdown-button {
   background: none;
   border: none;
   padding: 10px 15px;
-  font-size: 16px;
+  font-size: 16 px;
   font-weight: bold;
   color: #333;
   cursor: pointer;
   transition: color 0.2s ease;
 }
 
-.dropdown-button:hover {
+.dropdow n-button:hover {
   color: #ff9800;
 }
 
@@ -602,7 +601,7 @@
   padding: 5px 0;
 }
 
-.menu-item-wrapper {
+.menu-it em-wrapper {
   position: relative;
 }
 
@@ -613,11 +612,11 @@
   white-space: nowrap;
 }
 
-.menu-item:hover {
+.menu-i tem:hover {
   background: #f5f5f5;
 }
 
-.with-submenu {
+.with-subme nu {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -633,14 +632,14 @@
   top: 0;
   background: white;
   min-width: 200px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px r gba(0, 0, 0, 0.1);
   border-radius: 4px;
   z-index: 1001;
 }
 
-/* styles/navbar.css */
+/* s  tyles/navbar.css */
 
-/* Main container for the list item */
+/* Main container for   the list item */
 .list-item {
   list-style: none;
   position: relative;
@@ -679,14 +678,14 @@
   transition: opacity 0.3s ease;
 }
 
-/* Show submenu on hover */
+/* Show submenu   on hover */
 .list-item:hover .submenu {
   display: block;
   opacity: 1;
 }
 
 /* Styling for submenu items */
-.submenu ul {
+.sub menu ul {
   list-style: none;
   padding: 0;
 }
@@ -695,7 +694,7 @@
   margin: 10px 0;
 }
 
-/* Button inside submenu */
+/*   Button inside submenu */
 .submenu button {
   font-weight: 500;
   font-size: 14px;
@@ -729,7 +728,7 @@
 }
 
 /* Enhanced User Dropdown Styles */
-.user-dropdown {
+.user-drop down {
   position: absolute;
   right: 0;
   top: 50px;
@@ -1025,19 +1024,19 @@
 }
 
 
-/* User Section - Mantralaya Supermarket */
+/*   User Section - Mantralaya Supermarket */
 .user-section {
   position: relative;
   margin-left: auto;
-  /* Align to the right */
+  /*   Align to the right */
 }
 
 
 
-/* User Profile Button (When Logged In) */
+/* User Profile Button (When Logged I  n) */
 .user-profile-button {
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: transfor m 0.3s ease;
   width: 40px;
   height: 40px;
   display: flex;
@@ -1046,16 +1045,16 @@
   border-radius: 50%;
   background-color: #f8f8f8;
   border: 2px solid #ff6b35;
-  /* Matching the login button */
+  /* Matching the   login button */
 }
 
 .user-profile-button:hover {
   transform: scale(1.1);
 }
 
-.user-profile-button.active {
+.user-profil e-button.active {
   box-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
-  /* Glow effect when dropdown is open */
+  /* Gl  ow effect when dropdown is open */
 }
 
 /* User Avatar (Image or Icon) */
@@ -1070,7 +1069,7 @@
 }
 
 .user-avatar img {
-  object-fit: cover;
+  object-fit: cov er;
 }
 
 /* Dropdown Menu (Subtle Traditional Touch) */

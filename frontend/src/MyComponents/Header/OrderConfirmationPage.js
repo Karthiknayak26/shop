@@ -3,20 +3,28 @@ import { useNavigate, useLocation } from "react-router-dom";
 import "./OrderConfirmationPage.css";
 import { Button, Typography, Divider, Box } from "@mui/material";
 import { ShoppingBag, Home } from "@mui/icons-material";
+import { useCart } from "./CartContext";
 
 const OrderConfirmationPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [orderData, setOrderData] = useState(null);
+  const [paymentId, setPaymentId] = useState(null);
+  const { clearCart } = useCart();
 
   useEffect(() => {
     const data = location.state?.orderData || JSON.parse(localStorage.getItem("orderData"));
+    const payment = location.state?.paymentId;
+
     if (data) {
       setOrderData(data);
+      setPaymentId(payment);
+      // Clear the cart when order confirmation page is displayed
+      clearCart();
     } else {
       navigate("/"); // If no data, redirect to home
     }
-  }, [location, navigate]);
+  }, [location, navigate, clearCart]);
 
   if (!orderData) return null;
 
@@ -75,8 +83,57 @@ const OrderConfirmationPage = () => {
           <Box sx={{ mb: 4 }}>
             <Typography variant="h6" gutterBottom>Payment Method</Typography>
             <Typography variant="body1">
-              {orderData.paymentMethod.replace(/([A-Z])/g, " $1").trim()}
+              {orderData.paymentMethod === 'cod' ? (
+                <span style={{ color: '#e67e22', fontWeight: 'bold' }}>
+                  💳 Cash on Delivery (COD)
+                </span>
+              ) : orderData.paymentMethod === 'creditCard' ? (
+                <span style={{ color: '#4caf50', fontWeight: 'bold' }}>
+                  💳 Credit Card
+                </span>
+              ) : orderData.paymentMethod === 'debitCard' ? (
+                <span style={{ color: '#2196f3', fontWeight: 'bold' }}>
+                  💳 Debit Card
+                </span>
+              ) : orderData.paymentMethod === 'upi' ? (
+                <span style={{ color: '#9c27b0', fontWeight: 'bold' }}>
+                  📱 UPI Payment
+                </span>
+              ) : (
+                orderData.paymentMethod.replace(/([A-Z])/g, " $1").trim()
+              )}
             </Typography>
+            {orderData.paymentMethod === 'cod' && (
+              <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                Please have the exact amount ready when your order is delivered.
+              </Typography>
+            )}
+            {orderData.paymentInfo && orderData.paymentMethod !== 'cod' && (
+              <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                {orderData.paymentMethod === 'upi' && orderData.paymentInfo.upiId && (
+                  <>UPI ID: {orderData.paymentInfo.upiId}</>
+                )}
+                {(orderData.paymentMethod === 'creditCard' || orderData.paymentMethod === 'debitCard') && orderData.paymentInfo.cardNumber && (
+                  <>Card ending in {orderData.paymentInfo.cardNumber}</>
+                )}
+                {paymentId && (
+                  <div style={{ marginTop: '8px' }}>
+                    <strong>Payment ID:</strong> {paymentId}
+                  </div>
+                )}
+                {orderData.paymentInfo.paymentStatus && (
+                  <div style={{ marginTop: '4px' }}>
+                    <strong>Status:</strong>
+                    <span style={{
+                      color: orderData.paymentInfo.paymentStatus === 'completed' ? '#4caf50' : '#ff9800',
+                      marginLeft: '4px'
+                    }}>
+                      {orderData.paymentInfo.paymentStatus.charAt(0).toUpperCase() + orderData.paymentInfo.paymentStatus.slice(1)}
+                    </span>
+                  </div>
+                )}
+              </Typography>
+            )}
           </Box>
         </div>
 

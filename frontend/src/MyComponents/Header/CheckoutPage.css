@@ -393,3 +393,466 @@
   display: flex;
   gap: 15px;
 }
+
+/* COD Payment Method Styling */
+.cod-payment-note {
+  margin-top: 15px;
+  padding: 12px;
+  background-color: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 6px;
+  font-size: 14px;
+  color: #856404;
+  animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* COD Radio Button Styling */
+.cod-radio-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cod-radio-label .cod-icon {
+  color: #e67e22;
+  font-size: 18px;
+}
+
+.cod-radio-label .cod-text {
+  font-weight: bold;
+  color: #e67e22;
+}
+
+.cod-radio-label .cod-description {
+  font-size: 12px;
+  color: #666;
+  margin-top: 2px;
+}
+
+/* Payment Form Styling */
+.card-payment-form,
+.upi-payment-form {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.card-payment-form h4,
+.upi-payment-form h4 {
+  margin-bottom: 15px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.card-payment-form .MuiTextField-root,
+.upi-payment-form .MuiTextField-root {
+  margin-bottom: 10px;
+}
+
+/* Payment method radio button styling */
+.payment-method-radio {
+  margin-bottom: 10px;
+}
+
+.payment-method-radio .MuiFormControlLabel-root {
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.payment-method-radio .MuiRadio-root {
+  color: #e67e22;
+}
+
+.payment-method-radio .MuiRadio-root.Mui-checked {
+  color: #e67e22;
+}
+
+/* Secure payment badge */
+.secure-payment-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  background-color: #e8f5e8;
+  color: #2e7d32;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-left: 10px;
+}
+
+/* UPI payment badge */
+.upi-payment-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  background-color: #e3f2fd;
+  color: #1565c0;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-left: 10px;
+}
+
+/* Enhanced mobile responsive styles */
+@media (max-width: 768px) {
+  .checkout-container {
+    padding: 15px;
+  }
+
+  .checkout-container h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .checkout-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .checkout-details {
+    padding: 20px;
+  }
+
+  .shipping-info,
+  .payment-method {
+    margin-bottom: 25px;
+  }
+
+  .shipping-info h3,
+  .payment-method h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+  .order-summary {
+    padding: 20px;
+    position: static;
+  }
+
+  .order-summary h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+  .order-item {
+    padding: 12px 0;
+  }
+
+  .item-info {
+    gap: 12px;
+  }
+
+  .item-image {
+    width: 50px;
+    height: 50px;
+  }
+
+  .item-details h4 {
+    font-size: 15px;
+  }
+
+  .item-details p {
+    font-size: 13px;
+  }
+
+  .item-total {
+    font-size: 15px;
+  }
+
+  .total-row {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  .grand-total {
+    font-size: 16px;
+  }
+
+  .place-order-button {
+    padding: 12px 20px;
+    font-size: 16px;
+  }
+
+  .navigation-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .return-to-cart {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .button-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .cod-payment-note {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  .card-payment-form {
+    padding: 15px;
+  }
+
+  .card-payment-form h4 {
+    font-size: 18px;
+    margin-bottom: 15px;
+  }
+
+  .secure-payment-badge {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .upi-payment-badge {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .checkout-container {
+    padding: 10px;
+  }
+
+  .checkout-container h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+  .checkout-grid {
+    gap: 15px;
+  }
+
+  .checkout-details {
+    padding: 15px;
+  }
+
+  .shipping-info,
+  .payment-method {
+    margin-bottom: 20px;
+  }
+
+  .shipping-info h3,
+  .payment-method h3 {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+
+  .order-summary {
+    padding: 15px;
+  }
+
+  .order-summary h3 {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+
+  .order-item {
+    padding: 10px 0;
+  }
+
+  .item-info {
+    gap: 10px;
+  }
+
+  .item-image {
+    width: 45px;
+    height: 45px;
+  }
+
+  .item-details h4 {
+    font-size: 14px;
+  }
+
+  .item-details p {
+    font-size: 12px;
+  }
+
+  .item-total {
+    font-size: 14px;
+  }
+
+  .total-row {
+    font-size: 13px;
+    margin-bottom: 6px;
+  }
+
+  .grand-total {
+    font-size: 15px;
+  }
+
+  .place-order-button {
+    padding: 10px 16px;
+    font-size: 15px;
+  }
+
+  .return-to-cart {
+    padding: 8px 12px;
+    font-size: 13px;
+  }
+
+  .cod-payment-note {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .card-payment-form {
+    padding: 12px;
+  }
+
+  .card-payment-form h4 {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .secure-payment-badge {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
+  .upi-payment-badge {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 320px) {
+  .checkout-container {
+    padding: 8px;
+  }
+
+  .checkout-container h2 {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+
+  .checkout-grid {
+    gap: 12px;
+  }
+
+  .checkout-details {
+    padding: 12px;
+  }
+
+  .shipping-info,
+  .payment-method {
+    margin-bottom: 15px;
+  }
+
+  .shipping-info h3,
+  .payment-method h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .order-summary {
+    padding: 12px;
+  }
+
+  .order-summary h3 {
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .order-item {
+    padding: 8px 0;
+  }
+
+  .item-info {
+    gap: 8px;
+  }
+
+  .item-image {
+    width: 40px;
+    height: 40px;
+  }
+
+  .item-details h4 {
+    font-size: 13px;
+  }
+
+  .item-details p {
+    font-size: 11px;
+  }
+
+  .item-total {
+    font-size: 13px;
+  }
+
+  .total-row {
+    font-size: 12px;
+    margin-bottom: 5px;
+  }
+
+  .grand-total {
+    font-size: 14px;
+  }
+
+  .place-order-button {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  .return-to-cart {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .cod-payment-note {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .card-payment-form {
+    padding: 10px;
+  }
+
+  .card-payment-form h4 {
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+
+  .secure-payment-badge {
+    padding: 5px 8px;
+    font-size: 10px;
+  }
+
+  .upi-payment-badge {
+    padding: 5px 8px;
+    font-size: 10px;
+  }
+}

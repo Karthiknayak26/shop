@@ -547,6 +547,254 @@
   }
 }
 
+/* Enhanced mobile responsive styles */
+@media (max-width: 768px) {
+  .grocery-categories {
+    padding: 15px;
+  }
+
+  .grocery-categories header {
+    padding: 20px 15px;
+    margin: -15px -15px 20px -15px;
+  }
+
+  .grocery-categories header h1 {
+    font-size: 1.8rem;
+  }
+
+  .categories-grid,
+  .products-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .category-card {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .category-image img {
+    width: 100px;
+    height: 100px;
+  }
+
+  .category-content h3 {
+    font-size: 1.2rem;
+    margin: 12px 0 8px;
+  }
+
+  .category-content p {
+    font-size: 0.9rem;
+  }
+
+  .grocery-products {
+    padding: 15px;
+  }
+
+  .breadcrumb {
+    font-size: 0.8rem;
+    margin-bottom: 15px;
+  }
+
+  .category-filters {
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 15px;
+  }
+
+  .category-filters button {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+
+  .product-card {
+    padding: 12px;
+    border-radius: 8px;
+  }
+
+  .product-content h3 {
+    font-size: 1.1rem;
+  }
+
+  .product-content p {
+    font-size: 0.9rem;
+  }
+
+  .add-to-cart {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+
+  .no-products {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .grocery-categories {
+    padding: 10px;
+  }
+
+  .grocery-categories header {
+    padding: 15px 10px;
+    margin: -10px -10px 15px -10px;
+  }
+
+  .grocery-categories header h1 {
+    font-size: 1.5rem;
+  }
+
+  .categories-grid,
+  .products-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .category-card {
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  .category-image img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .category-content h3 {
+    font-size: 1.1rem;
+    margin: 10px 0 6px;
+  }
+
+  .category-content p {
+    font-size: 0.8rem;
+  }
+
+  .grocery-products {
+    padding: 10px;
+  }
+
+  .breadcrumb {
+    font-size: 0.75rem;
+    margin-bottom: 12px;
+  }
+
+  .category-filters {
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .category-filters button {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  .product-card {
+    padding: 10px;
+    border-radius: 6px;
+  }
+
+  .product-content h3 {
+    font-size: 1rem;
+  }
+
+  .product-content p {
+    font-size: 0.8rem;
+  }
+
+  .add-to-cart {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  .no-products {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .grocery-categories {
+    padding: 8px;
+  }
+
+  .grocery-categories header {
+    padding: 12px 8px;
+    margin: -8px -8px 12px -8px;
+  }
+
+  .grocery-categories header h1 {
+    font-size: 1.3rem;
+  }
+
+  .categories-grid,
+  .products-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .category-card {
+    padding: 8px;
+    border-radius: 8px;
+  }
+
+  .category-image img {
+    width: 60px;
+    height: 60px;
+  }
+
+  .category-content h3 {
+    font-size: 1rem;
+    margin: 8px 0 5px;
+  }
+
+  .category-content p {
+    font-size: 0.7rem;
+  }
+
+  .grocery-products {
+    padding: 8px;
+  }
+
+  .breadcrumb {
+    font-size: 0.7rem;
+    margin-bottom: 10px;
+  }
+
+  .category-filters {
+    gap: 5px;
+    margin-bottom: 10px;
+  }
+
+  .category-filters button {
+    padding: 5px 8px;
+    font-size: 0.75rem;
+  }
+
+  .product-card {
+    padding: 8px;
+    border-radius: 5px;
+  }
+
+  .product-content h3 {
+    font-size: 0.9rem;
+  }
+
+  .product-content p {
+    font-size: 0.7rem;
+  }
+
+  .add-to-cart {
+    padding: 5px 8px;
+    font-size: 0.75rem;
+  }
+
+  .no-products {
+    font-size: 0.9rem;
+  }
+}
+
 /* Animation keyframes */
 @keyframes fadeInDown {
   from {

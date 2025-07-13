@@ -8,6 +8,11 @@ const orderSchema = new mongoose.Schema({
     quantity: Number,
     img: String
   }],
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
   shippingAddress: {
     name: String,
     email: String,
@@ -17,6 +22,15 @@ const orderSchema = new mongoose.Schema({
     phone: String
   },
   paymentMethod: String,
+  paymentInfo: {
+    cardNumber: String,
+    cardHolderName: String,
+    cardType: String,
+    upiId: String,
+    razorpayOrderId: String,
+    razorpayPaymentId: String,
+    paymentStatus: { type: String, default: 'pending' }
+  },
   totalAmount: Number,
   orderDate: { type: Date, default: Date.now },
   status: { type: String, default: 'Pending' }

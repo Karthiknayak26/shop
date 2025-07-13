@@ -18,7 +18,7 @@ import OrderTracking from './MyComponents/Header/OrderTracking';
 import CartPage from './MyComponents/Header/CartPage';
 import CheckoutPage from './MyComponents/Header/CheckoutPage';
 import OrderConfirmationPage from './MyComponents/Header/OrderConfirmationPage';
-import OrderHistoryPage from './MyComponents/Header/OrderHistoryPage';
+import OrderHistoryPage from './MyComponents/OrderHistoryPage';
 import GroceryDeals, { GroceryCategories, GroceryProducts } from './MyComponents/Body/GroceryDeals';
 import { CartProvider } from './MyComponents/Header/CartContext';
 import { UserProvider } from './MyComponents/Header/UserContext';

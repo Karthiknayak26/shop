@@ -367,42 +367,110 @@
 
 /* Responsive design */
 @media (max-width: 768px) {
+  .dashboard-container {
+    padding: 10px;
+  }
+
   .dashboard-header {
-    padding: 1rem;
+    padding: 0.75rem 1rem;
+    flex-direction: column;
+    gap: 15px;
   }
 
   .header-actions {
     gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   .search-container {
-    max-width: none;
-    margin-bottom: 1rem;
+    max-width: 100%;
+    order: -1;
+  }
+
+  .search-input {
+    padding: 0.6rem 1rem 0.6rem 2rem;
+    font-size: 0.85rem;
+  }
+
+  .search-icon {
+    left: 0.6rem;
+    font-size: 0.9rem;
+  }
+
+  .action-button {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+
+  .user-avatar {
+    width: 2rem;
+    height: 2rem;
   }
 
   .welcome-section {
-    padding: 2rem 1.5rem;
-    text-align: center;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
   }
 
   .welcome-title {
-    font-size: 2rem;
+    font-size: 1.8rem;
+  }
+
+  .welcome-subtitle {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   .welcome-illustration {
     display: none;
   }
 
+  .add-product-btn {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.9rem;
+  }
+
   .stats-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .stat-card {
+    padding: 1.25rem;
+  }
+
+  .stat-header {
+    margin-bottom: 0.75rem;
+  }
+
+  .stat-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1rem;
+  }
+
+  .stat-details h3 {
+    font-size: 1.5rem;
+  }
+
+  .stat-details p {
+    font-size: 0.85rem;
   }
 
   .charts-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
 
   .chart-card {
-    padding: 1rem;
+    padding: 1.25rem;
+  }
+
+  .chart-title {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
   }
 
   .chart-container {
@@ -411,12 +479,61 @@
 }
 
 @media (max-width: 480px) {
+  .dashboard-container {
+    padding: 8px;
+  }
+
+  .dashboard-header {
+    padding: 0.5rem 0.75rem;
+    gap: 12px;
+  }
+
+  .header-actions {
+    gap: 0.4rem;
+  }
+
+  .search-input {
+    padding: 0.5rem 0.75rem 0.5rem 1.75rem;
+    font-size: 0.8rem;
+  }
+
+  .search-icon {
+    left: 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .action-button {
+    padding: 0.5rem;
+    font-size: 0.85rem;
+  }
+
+  .user-avatar {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
   .welcome-section {
-    padding: 1.5rem;
+    padding: 1.25rem;
+    margin-bottom: 1.25rem;
   }
 
   .welcome-title {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
+  }
+
+  .welcome-subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .add-product-btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+  }
+
+  .stats-grid {
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
   }
 
   .stat-card {
@@ -424,14 +541,136 @@
   }
 
   .stat-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
+    margin-bottom: 0.6rem;
   }
 
-  .stat-chart {
-    width: 100%;
-    height: 40px;
+  .stat-icon {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 0.9rem;
+  }
+
+  .stat-details h3 {
+    font-size: 1.3rem;
+  }
+
+  .stat-details p {
+    font-size: 0.8rem;
+  }
+
+  .charts-grid {
+    gap: 0.75rem;
+  }
+
+  .chart-card {
+    padding: 1rem;
+  }
+
+  .chart-title {
+    font-size: 1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .chart-container {
+    height: 200px;
+  }
+}
+
+@media (max-width: 320px) {
+  .dashboard-container {
+    padding: 6px;
+  }
+
+  .dashboard-header {
+    padding: 0.4rem 0.6rem;
+    gap: 10px;
+  }
+
+  .header-actions {
+    gap: 0.3rem;
+  }
+
+  .search-input {
+    padding: 0.4rem 0.6rem 0.4rem 1.5rem;
+    font-size: 0.75rem;
+  }
+
+  .search-icon {
+    left: 0.4rem;
+    font-size: 0.8rem;
+  }
+
+  .action-button {
+    padding: 0.4rem;
+    font-size: 0.8rem;
+  }
+
+  .user-avatar {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .welcome-section {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .welcome-title {
+    font-size: 1.3rem;
+  }
+
+  .welcome-subtitle {
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+  }
+
+  .add-product-btn {
+    padding: 0.5rem 0.8rem;
+    font-size: 0.8rem;
+  }
+
+  .stats-grid {
+    gap: 0.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .stat-card {
+    padding: 0.8rem;
+  }
+
+  .stat-header {
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-icon {
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.85rem;
+  }
+
+  .stat-details h3 {
+    font-size: 1.1rem;
+  }
+
+  .stat-details p {
+    font-size: 0.75rem;
+  }
+
+  .charts-grid {
+    gap: 0.6rem;
+  }
+
+  .chart-card {
+    padding: 0.8rem;
+  }
+
+  .chart-title {
+    font-size: 0.9rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .chart-container {
+    height: 180px;
   }
 }
 

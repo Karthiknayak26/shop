@@ -333,3 +333,124 @@
   padding-bottom: 10px;
   font-size: 1.1rem;
 }
+
+/* Enhanced mobile responsive styles */
+@media (max-width: 768px) {
+  .Home {
+    padding: 15px;
+  }
+
+  .Home header {
+    padding: 20px 15px;
+    margin: -15px -15px 20px -15px;
+  }
+
+  .Home header h1 {
+    font-size: 1.8rem;
+  }
+
+  .deals-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .deal-card {
+    padding: 12px;
+    border-radius: 8px;
+  }
+
+  .deal-card h3 {
+    font-size: 1.2rem;
+    margin: 12px 0 8px;
+  }
+
+  .deal-card p {
+    font-size: 0.9rem;
+  }
+
+  .welcome-message {
+    font-size: 1rem;
+    margin-bottom: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .Home {
+    padding: 10px;
+  }
+
+  .Home header {
+    padding: 15px 10px;
+    margin: -10px -10px 15px -10px;
+  }
+
+  .Home header h1 {
+    font-size: 1.5rem;
+  }
+
+  .deals-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .deal-card {
+    padding: 10px;
+    border-radius: 6px;
+  }
+
+  .deal-card h3 {
+    font-size: 1.1rem;
+    margin: 10px 0 6px;
+  }
+
+  .deal-card p {
+    font-size: 0.8rem;
+  }
+
+  .welcome-message {
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+  }
+}
+
+@media (max-width: 320px) {
+  .Home {
+    padding: 8px;
+  }
+
+  .Home header {
+    padding: 12px 8px;
+    margin: -8px -8px 12px -8px;
+  }
+
+  .Home header h1 {
+    font-size: 1.3rem;
+  }
+
+  .deals-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .deal-card {
+    padding: 8px;
+    border-radius: 5px;
+  }
+
+  .deal-card h3 {
+    font-size: 1rem;
+    margin: 8px 0 5px;
+  }
+
+  .deal-card p {
+    font-size: 0.7rem;
+  }
+
+  .welcome-message {
+    font-size: 0.8rem;
+    margin-bottom: 10px;
+  }
+}

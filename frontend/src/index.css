@@ -12,6 +12,14 @@ code {
     monospace;
 } */
 
+/* Mobile-specific enhancements */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   margin: 0;
@@ -20,6 +28,90 @@ body {
   /* soft warm background */
   color: #2e3d27;
   /* dark green for text */
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Prevent horizontal scrolling on mobile */
+html,
+body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* Touch-friendly button and link sizes */
+button,
+a,
+input,
+select,
+textarea {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Improve touch targets */
+@media (max-width: 768px) {
+
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    min-height: 48px;
+    min-width: 48px;
+  }
+}
+
+/* Prevent zoom on input focus for iOS */
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+/* Smooth scrolling for mobile */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Mobile-specific header adjustments */
+@media (max-width: 768px) {
+  .header {
+    padding: 0.75rem 1rem;
+  }
+
+  .banner {
+    min-height: 180px;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .banner {
+    min-height: 150px;
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .header {
+    padding: 0.4rem 0.6rem;
+  }
+
+  .banner {
+    min-height: 120px;
+    padding: 0.8rem;
+  }
 }
 
 .header {

@@ -42,8 +42,10 @@ const LoginPage = () => {
         throw new Error(data.message);
       }
 
-      // Store user data in context
-      setUser(data.user);
+      // Store user data and token in context
+      setUser({ user: data.user, token: data.token });
+      // Store user in localStorage for persistence
+      localStorage.setItem('user', JSON.stringify(data.user));
       navigate('/'); // Redirect to main page
     } catch (err) {
       setError(err.message || 'Failed to login');

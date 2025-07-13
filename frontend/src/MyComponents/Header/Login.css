@@ -514,6 +514,193 @@
   }
 }
 
+/* Enhanced mobile responsive styles */
+@media (max-width: 768px) {
+  .min-h-screen {
+    padding: 20px 15px;
+  }
+
+  .card {
+    max-width: 380px;
+    padding: 30px 25px;
+    border-radius: 20px;
+  }
+
+  .card::before {
+    font-size: 25px;
+    width: 50px;
+    height: 50px;
+    top: -12px;
+  }
+
+  .card-title {
+    font-size: 22px;
+    margin-bottom: 15px;
+  }
+
+  .card-title::after {
+    width: 60px;
+    height: 2px;
+  }
+
+  .form-input {
+    padding: 12px 15px;
+    font-size: 14px;
+    margin-bottom: 12px;
+  }
+
+  .input-icon {
+    left: 12px;
+    font-size: 16px;
+  }
+
+  .button {
+    padding: 12px;
+    font-size: 15px;
+    border-radius: 12px;
+  }
+
+  .error-message {
+    padding: 10px;
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .text-blue-500 {
+    font-size: 14px;
+  }
+
+  .fab-home {
+    width: 50px;
+    height: 50px;
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .min-h-screen {
+    padding: 15px 10px;
+  }
+
+  .card {
+    max-width: 320px;
+    padding: 25px 20px;
+    border-radius: 18px;
+  }
+
+  .card::before {
+    font-size: 22px;
+    width: 45px;
+    height: 45px;
+    top: -10px;
+  }
+
+  .card-title {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
+  .card-title::after {
+    width: 50px;
+    height: 2px;
+  }
+
+  .form-input {
+    padding: 10px 12px;
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+
+  .input-icon {
+    left: 10px;
+    font-size: 15px;
+  }
+
+  .button {
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+
+  .error-message {
+    padding: 8px;
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  .text-blue-500 {
+    font-size: 13px;
+  }
+
+  .fab-home {
+    width: 45px;
+    height: 45px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 320px) {
+  .min-h-screen {
+    padding: 10px 8px;
+  }
+
+  .card {
+    max-width: 280px;
+    padding: 20px 15px;
+    border-radius: 15px;
+  }
+
+  .card::before {
+    font-size: 20px;
+    width: 40px;
+    height: 40px;
+    top: -8px;
+  }
+
+  .card-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .card-title::after {
+    width: 40px;
+    height: 2px;
+  }
+
+  .form-input {
+    padding: 8px 10px;
+    font-size: 12px;
+    margin-bottom: 8px;
+  }
+
+  .input-icon {
+    left: 8px;
+    font-size: 14px;
+  }
+
+  .button {
+    padding: 8px;
+    font-size: 13px;
+    border-radius: 8px;
+  }
+
+  .error-message {
+    padding: 6px;
+    font-size: 11px;
+    margin-bottom: 8px;
+  }
+
+  .text-blue-500 {
+    font-size: 12px;
+  }
+
+  .fab-home {
+    width: 40px;
+    height: 40px;
+    font-size: 15px;
+  }
+}
+
 /* Accessibility improvements */
 @media (prefers-reduced-motion: reduce) {
   * {

@@ -62,9 +62,14 @@ const GroceryProducts = () => {
 
   // ✅ Fetch products from Google Sheet API
   useEffect(() => {
+    console.log('Fetching products from Google Sheet...');
     fetch('https://api.sheetbest.com/sheets/dbb34df6-7687-434a-8b01-c7716da9e92b')
-      .then((res) => res.json())
+      .then((res) => {
+        console.log('Response status:', res.status);
+        return res.json();
+      })
       .then((data) => {
+        console.log('Raw API data:', data);
         const formatted = data.map((item, index) => ({
           id: item.id || `${item.name}-${index}`,
           name: item.name,
@@ -72,9 +77,22 @@ const GroceryProducts = () => {
           img: item.img,
           category: item.category,
         }));
+        console.log('Formatted products:', formatted);
         setProducts(formatted);
       })
-      .catch((err) => console.error('Error fetching sheet data', err));
+      .catch((err) => {
+        console.error('Error fetching sheet data:', err);
+        // Set some fallback data for testing
+        setProducts([
+          {
+            id: 'test-1',
+            name: 'Test Product',
+            price: 99.99,
+            img: 'https://via.placeholder.com/150',
+            category: 'biscuits-packaged'
+          }
+        ]);
+      });
   }, []);
 
   useEffect(() => {
@@ -88,6 +106,10 @@ const GroceryProducts = () => {
   const filteredProducts = activeCategory
     ? products.filter((product) => product.category === activeCategory)
     : products;
+
+  console.log('Active category:', activeCategory);
+  console.log('All products:', products);
+  console.log('Filtered products:', filteredProducts);
 
   const handleAddToCart = (product) => {
     addToCart(product);

@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const Order = require('../models/order');
+const Order = require('../models/Order');
+const orderController = require('../controllers/orderController');
+const mongoose = require('mongoose'); // Add this at the top for ObjectId validation
 
 router.post('/', async (req, res) => {
   try {
@@ -26,6 +28,28 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Get all orders for a specific user
+router.get('/user/:userId', orderController.getOrdersByUser);
 
+// Cancel an order by ID
+router.put('/:orderId/cancel', async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    console.log('Cancel request for orderId:', orderId);
+    if (!mongoose.Types.ObjectId.isValid(orderId)) {
+      console.log('Invalid ObjectId for cancel:', orderId);
+      return res.status(400).json({ error: 'Invalid order ID' });
+    }
+    const order = await Order.findByIdAndUpdate(orderId, { status: 'Cancelled' }, { new: true });
+    if (!order) {
+      console.log('Order not found for cancel:', orderId);
+      return res.status(404).json({ error: 'Order not found' });
+    }
+    res.json({ message: 'Order cancelled', order });
+  } catch (err) {
+    console.error('Cancel order error:', err);
+    res.status(500).json({ error: 'Failed to cancel order' });
+  }
+});
 
 module.exports = router;

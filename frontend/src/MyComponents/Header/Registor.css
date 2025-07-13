@@ -568,35 +568,108 @@ body::after {
   }
 }
 
-/* Responsive design */
-@media (max-width: 480px) {
+/* Enhanced mobile responsive styles */
+@media (max-width: 768px) {
   .register-page {
-    margin: 20px;
-    padding: 35px 25px;
+    margin: 15px;
+    padding: 30px 20px;
     max-width: none;
+    border-radius: 15px;
   }
 
   .register-page h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 
   .register-page h1::after {
-    font-size: 0.3em;
-    white-space: nowrap;
-    overflow: hidden;
+    font-size: 0.25em;
   }
 
   .registration-form input {
-    padding: 14px 16px;
+    padding: 12px 14px;
+    font-size: 14px;
   }
 
   .register-button {
-    padding: 16px;
-    font-size: 1.1rem;
+    padding: 14px;
+    font-size: 1rem;
+  }
+
+  .fab-home {
+    width: 45px;
+    height: 45px;
+    top: 20px;
+    left: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-page {
+    margin: 10px;
+    padding: 25px 15px;
+    border-radius: 12px;
+  }
+
+  .register-page h1 {
+    font-size: 1.6rem;
+  }
+
+  .register-page h1::after {
+    font-size: 0.2em;
+  }
+
+  .registration-form input {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .register-button {
+    padding: 12px;
+    font-size: 0.95rem;
+  }
+
+  .fab-home {
+    width: 40px;
+    height: 40px;
+    top: 15px;
+    left: 15px;
   }
 
   .offer-banner {
     display: none;
+  }
+}
+
+@media (max-width: 320px) {
+  .register-page {
+    margin: 8px;
+    padding: 20px 12px;
+    border-radius: 10px;
+  }
+
+  .register-page h1 {
+    font-size: 1.4rem;
+  }
+
+  .register-page h1::after {
+    font-size: 0.18em;
+  }
+
+  .registration-form input {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  .register-button {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .fab-home {
+    width: 35px;
+    height: 35px;
+    top: 12px;
+    left: 12px;
   }
 }
 

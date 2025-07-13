@@ -4,11 +4,14 @@ import "./CartPage.css";
 import { IoTrashOutline } from "react-icons/io5";
 import { Button } from "@mui/material";
 import { useCart } from './CartContext';
+import { useUser } from './UserContext';
 import { IoArrowBack } from "react-icons/io5";
+import CartSyncIndicator from './CartSyncIndicator';
 
 const CartPage = () => {
   const navigate = useNavigate();
-  const { cartItems, removeFromCart, updateQuantity } = useCart();
+  const { cartItems, removeFromCart, updateQuantity, getTotalPrice, getTotalItems, isLoading, clearCart } = useCart();
+  const { user } = useUser();
 
   const handleRemoveItem = (id) => {
     removeFromCart(id);
@@ -22,8 +25,10 @@ const CartPage = () => {
     }
   };
 
-  const getTotalPrice = () => {
-    return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+  const handleClearCart = () => {
+    if (window.confirm('Are you sure you want to clear your cart?')) {
+      clearCart();
+    }
   };
 
   return (
@@ -37,6 +42,18 @@ const CartPage = () => {
           <IoArrowBack />
         </button>
         <h2>Your Cart</h2>
+        <div className="cart-header-actions">
+          <CartSyncIndicator />
+          {cartItems.length > 0 && (
+            <button
+              className="clear-cart-btn"
+              onClick={handleClearCart}
+              disabled={isLoading}
+            >
+              Clear Cart
+            </button>
+          )}
+        </div>
       </div>
       <div className="cart-items">
         {cartItems.length === 0 ? (
@@ -86,7 +103,7 @@ const CartPage = () => {
       <div className="cart-summary">
         <div className="summary-details">
           <div className="summary-row">
-            <span>Subtotal:</span>
+            <span>Items ({getTotalItems()}):</span>
             <span>₹{getTotalPrice()}</span>
           </div>
           <div className="summary-row">
@@ -97,6 +114,11 @@ const CartPage = () => {
             <span>Total:</span>
             <span>₹{getTotalPrice()}</span>
           </div>
+          {!user && (
+            <div className="summary-row guest-notice">
+              <span>💡 Guest user? <button onClick={() => navigate('/login')}>Login</button> to sync your cart across devices</span>
+            </div>
+          )}
         </div>
         <Button
           variant="contained"
