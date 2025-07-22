@@ -231,8 +231,8 @@ const CheckoutPage = () => {
           if (response.ok) {
             navigate("/order-confirmation", {
               state: {
-                orderData,
-                orderId: result.orderId
+                orderData: result.order, // Use the order object returned from backend
+                orderId: result.order._id // Pass the real order ID
               }
             });
           } else {

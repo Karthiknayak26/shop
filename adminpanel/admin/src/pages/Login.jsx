@@ -40,6 +40,7 @@ const Login = ({ onLogin }) => {
       if (formData.username === 'harshitha' && formData.password === 'harshu@123') {
         localStorage.setItem('isAuthenticated', 'true');
         localStorage.setItem('userRole', 'admin');
+        localStorage.setItem('adminName', formData.username); // Store admin name
         onLogin(); // Ensure this is called
         console.log('Navigating to dashboard...');
         navigate('/dashboard');

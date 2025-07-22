@@ -3,12 +3,18 @@ const router = express.Router();
 const Order = require('../models/Order');
 const orderController = require('../controllers/orderController');
 const mongoose = require('mongoose'); // Add this at the top for ObjectId validation
+const { setOutForDelivery } = require('../controllers/orderController');
 
 router.post('/', async (req, res) => {
   try {
     const newOrder = new Order(req.body);
+    // Generate a user-friendly orderId
+    const today = new Date();
+    const dateStr = today.toISOString().slice(0, 10).replace(/-/g, ''); // e.g., 20240714
+    const randomNum = Math.floor(1000 + Math.random() * 9000); // 4-digit random
+    newOrder.orderId = `ORD${dateStr}-${randomNum}`;
     await newOrder.save();
-    res.status(201).json({ message: 'Order saved successfully' });
+    res.status(201).json({ message: 'Order saved successfully', order: newOrder });
   } catch (err) {
     res.status(500).json({ error: 'Failed to save order' });
   }
@@ -17,10 +23,11 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const orders = await Order.find().sort({ orderDate: -1 });
-    // Add default status if not present
+    // Add default status and ensure orderId is present
     const ordersWithStatus = orders.map(order => ({
       ...order._doc,
-      status: order.status || 'Pending'
+      status: order.status || 'Pending',
+      orderId: order.orderId || `ORD${order._id.toString().substring(0, 8).toUpperCase()}`
     }));
     res.json(ordersWithStatus);
   } catch (err) {
@@ -49,6 +56,23 @@ router.put('/:orderId/cancel', async (req, res) => {
   } catch (err) {
     console.error('Cancel order error:', err);
     res.status(500).json({ error: 'Failed to cancel order' });
+  }
+});
+
+// Set order as Out for Delivery and set expected delivery date
+router.put('/:id/out-for-delivery', setOutForDelivery);
+
+// Track order by custom orderId
+router.get('/track/:orderId', async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const order = await Order.findOne({ orderId });
+    if (!order) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+    res.json(order);
+  } catch (err) {
+    res.status(500).json({ error: 'Server error' });
   }
 });
 

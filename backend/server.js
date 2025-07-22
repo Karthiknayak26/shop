@@ -7,6 +7,7 @@ const authRoutes = require('./routes/userRoutes');
 const OrderRoutes = require('./routes/order'); // ⬅️ Added
 const cartRoutes = require('./routes/cartRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
+const feedbackRoutes = require('./routes/feedbackRoutes');
 require('dotenv').config();
 
 const app = express();
@@ -27,6 +28,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/orders', OrderRoutes); // ⬅️ Added
 app.use('/api/cart', cartRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api/feedback', feedbackRoutes);
 
 // Test Route
 app.get('/', (req, res) => {

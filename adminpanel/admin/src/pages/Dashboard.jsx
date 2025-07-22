@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { api } from '../utils/api';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
@@ -18,18 +18,8 @@ import {
   Area,
   AreaChart
 } from 'recharts';
-
-// Enhanced mock data with more realistic information
-const mockOrders = [
-  { _id: '1', customerName: 'John Doe', totalPrice: 1250, status: 'Delivered', date: '2024-06-10' },
-  { _id: '2', customerName: 'Jane Smith', totalPrice: 890, status: 'Pending', date: '2024-06-12' },
-  { _id: '3', customerName: 'Mike Johnson', totalPrice: 2100, status: 'Processing', date: '2024-06-11' },
-  { _id: '4', customerName: 'Sarah Wilson', totalPrice: 1560, status: 'Delivered', date: '2024-06-09' },
-  { _id: '5', customerName: 'Tom Brown', totalPrice: 780, status: 'Pending', date: '2024-06-13' },
-  { _id: '6', customerName: 'Lisa Davis', totalPrice: 1890, status: 'Delivered', date: '2024-06-08' },
-  { _id: '7', customerName: 'Alex Chen', totalPrice: 3200, status: 'Processing', date: '2024-06-14' },
-  { _id: '8', customerName: 'Maria Garcia', totalPrice: 950, status: 'Delivered', date: '2024-06-07' }
-];
+import axios from 'axios';
+import dayjs from 'dayjs';
 
 const Dashboard = () => {
   const [orders, setOrders] = useState([]);
@@ -39,6 +29,24 @@ const Dashboard = () => {
   const [activeChart, setActiveChart] = useState('sales');
   const [notifications] = useState({ messages: 3, downloads: 2 });
   const navigate = useNavigate();
+  const [feedbacks, setFeedbacks] = useState([]);
+  const [feedbackLoading, setFeedbackLoading] = useState(true);
+  const [feedbackError, setFeedbackError] = useState(null);
+  const [showProfileDropdown, setShowProfileDropdown] = useState(false);
+  const profileRef = useRef(null);
+
+  const fetchFeedbacks = async () => {
+    setFeedbackLoading(true);
+    try {
+      const res = await axios.get('http://localhost:5000/api/feedback');
+      setFeedbacks(res.data);
+      setFeedbackError(null);
+    } catch {
+      setFeedbackError('Failed to fetch feedback');
+    } finally {
+      setFeedbackLoading(false);
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,31 +63,109 @@ const Dashboard = () => {
     };
 
     fetchData();
+    fetchFeedbacks();
   }, []);
+
+  const handleDeleteFeedback = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this feedback?')) return;
+    try {
+      await axios.delete(`http://localhost:5000/api/feedback/${id}`);
+      setFeedbacks(feedbacks.filter(fb => fb._id !== id));
+    } catch {
+      alert('Failed to delete feedback');
+    }
+  };
+
+  // Logout handler (should match App.jsx logic)
+  const handleLogout = () => {
+    localStorage.removeItem('isAuthenticated');
+    localStorage.removeItem('userEmail');
+    setShowProfileDropdown(false);
+    navigate('/'); // Redirect to login
+    window.location.reload(); // Force reload to reset state
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setShowProfileDropdown(false);
+      }
+    }
+    if (showProfileDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showProfileDropdown]);
 
 
   // Enhanced chart data with more variety
   const chartData = orders.slice(0, 8).map((order, index) => ({
     name: `Order ${index + 1}`,
-    amount: order.totalPrice || 0,
-    profit: Math.floor((order.totalPrice || 0) * 0.3),
+    amount: order.totalAmount || 0, // changed from totalPrice
+    profit: Math.floor((order.totalAmount || 0) * 0.3), // changed from totalPrice
     date: order.date || `2024-06-${10 + index}`
   }));
 
-  const pieData = [
-    { name: 'Delivered', value: orders.filter(o => o.status === 'Delivered').length, color: '#10B981' },
-    { name: 'Processing', value: orders.filter(o => o.status === 'Processing').length, color: '#3B82F6' },
-    { name: 'Pending', value: orders.filter(o => o.status === 'Pending').length, color: '#F59E0B' }
-  ];
+  // Dynamic status color mapping
+  const statusColors = {
+    Delivered: '#10B981',
+    Processing: '#3B82F6',
+    Pending: '#F59E0B',
+    'Out for Delivery': '#F472B6',
+    Cancelled: '#EF4444'
+  };
 
-  const areaData = [
-    { month: 'Jan', revenue: 12000, expenses: 8000 },
-    { month: 'Feb', revenue: 15000, expenses: 9500 },
-    { month: 'Mar', revenue: 18000, expenses: 11000 },
-    { month: 'Apr', revenue: 22000, expenses: 13500 },
-    { month: 'May', revenue: 25000, expenses: 15000 },
-    { month: 'Jun', revenue: 28000, expenses: 16500 }
-  ];
+  // Count orders by status
+  const statusCounts = orders.reduce((acc, order) => {
+    acc[order.status] = (acc[order.status] || 0) + 1;
+    return acc;
+  }, {});
+
+  // Generate pieData dynamically
+  const pieData = Object.entries(statusCounts).map(([status, value]) => ({
+    name: status,
+    value,
+    color: statusColors[status] || '#A3A3A3'
+  }));
+
+  // Helper: Get revenue for a given month and year
+  const getMonthlyRevenue = (month, year) => {
+    return orders
+      .filter(order => {
+        const date = order.orderDate ? new Date(order.orderDate) : null;
+        return (
+          date &&
+          date.getMonth() === month &&
+          date.getFullYear() === year
+        );
+      })
+      .reduce((sum, order) => sum + (order.totalAmount || 0), 0); // changed from totalPrice
+  };
+
+  // Generate areaData for the last 6 months
+  const now = new Date();
+  const areaData = Array.from({ length: 6 }).map((_, i) => {
+    const date = dayjs(now).subtract(5 - i, 'month');
+    const month = date.month();
+    const year = date.year();
+    const revenue = getMonthlyRevenue(month, year);
+    const expenses = Math.round(revenue * 0.6); // 60% of revenue as expenses
+    return {
+      month: date.format('MMM'),
+      revenue,
+      expenses
+    };
+  });
+
+  // Calculate current month's revenue for Monthly Revenue stat
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
+  const monthlyRevenue = getMonthlyRevenue(currentMonth, currentYear);
 
   const handleSearchKeyDown = useCallback((e) => {
     if (e.key === 'Enter') {
@@ -96,7 +182,7 @@ const Dashboard = () => {
   };
 
   const getTotalRevenue = () => {
-    return orders.reduce((sum, order) => sum + (order.totalPrice || 0), 0);
+    return orders.reduce((sum, order) => sum + (order.totalAmount || 0), 0); // changed from totalPrice
   };
 
   const getOrdersGrowth = () => {
@@ -107,6 +193,17 @@ const Dashboard = () => {
   const getSalesGrowth = () => {
     // Simulate growth calculation
     return -4.4;
+  };
+
+  const adminName = localStorage.getItem('adminName') || 'Admin';
+
+  // Greeting function based on time of day
+  const getGreeting = () => {
+    const hour = new Date().getHours();
+    if (hour >= 5 && hour < 12) return "Good Morning";
+    if (hour >= 12 && hour < 17) return "Good Afternoon";
+    if (hour >= 17 && hour < 21) return "Good Evening";
+    return "Good Night";
   };
 
   if (isLoading) {
@@ -168,10 +265,49 @@ const Dashboard = () => {
               </svg>
             </button>
 
-            <div className="user-avatar interactive-element" title="Profile">
+            <div
+              className="user-avatar interactive-element"
+              title="Profile"
+              ref={profileRef}
+              onClick={() => setShowProfileDropdown((prev) => !prev)}
+              style={{ position: 'relative' }}
+            >
               <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
+              {showProfileDropdown && (
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '110%',
+                    right: 0,
+                    background: 'white',
+                    boxShadow: '0 4px 16px rgba(0,0,0,0.12)',
+                    borderRadius: '10px',
+                    minWidth: '140px',
+                    zIndex: 100,
+                    padding: '0.5rem 0',
+                  }}
+                >
+                  <button
+                    onClick={handleLogout}
+                    style={{
+                      width: '100%',
+                      background: 'none',
+                      border: 'none',
+                      color: '#ef4444',
+                      padding: '0.75rem 1.5rem',
+                      textAlign: 'left',
+                      cursor: 'pointer',
+                      fontWeight: 500,
+                      fontSize: '1rem',
+                      borderRadius: '8px',
+                    }}
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -182,8 +318,8 @@ const Dashboard = () => {
         <div className="welcome-section slide-up">
           <div className="welcome-content">
             <h1 className="welcome-title">
-              Good Morning,<br />
-              Cameron 👋
+              {getGreeting()},<br />
+              {adminName}
             </h1>
             <p className="welcome-subtitle">
               Here's what's happening with your store today. Monitor your business performance in real-time.
@@ -287,7 +423,7 @@ const Dashboard = () => {
                 </div>
                 <div className="stat-details">
                   <h3>Monthly Revenue</h3>
-                  <p>{formatCurrency(getTotalRevenue() * 0.8)}</p>
+                  <p>{formatCurrency(monthlyRevenue)}</p>
                 </div>
               </div>
               <div className="stat-chart">
@@ -542,8 +678,7 @@ const Dashboard = () => {
         </div>
 
 
-        // In the recent orders table section, replace the existing table with this:
-
+        {/* Recent Orders Table Section */}
         <div className="chart-card fade-in" style={{ marginTop: '1.5rem' }}>
           <div className="chart-title">
             <span>Recent Orders</span>
@@ -635,6 +770,45 @@ const Dashboard = () => {
               </tbody>
             </table>
           </div>
+        </div>
+
+        {/* Feedback Container Section */}
+        <div className="chart-card fade-in" style={{ marginTop: '1.5rem' }}>
+          <div className="chart-title">
+            <span>Recent Customer Feedback</span>
+          </div>
+          {feedbackLoading ? (
+            <div>Loading feedback...</div>
+          ) : feedbackError ? (
+            <div style={{ color: 'red' }}>{feedbackError}</div>
+          ) : feedbacks.length === 0 ? (
+            <p>No feedback found.</p>
+          ) : (
+            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Message</th>
+                  <th>Date</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {feedbacks.slice(0, 5).map(fb => (
+                  <tr key={fb._id} style={{ borderBottom: '1px solid #ccc' }}>
+                    <td>{fb.name}</td>
+                    <td>{fb.email}</td>
+                    <td>{fb.message}</td>
+                    <td>{new Date(fb.createdAt).toLocaleString()}</td>
+                    <td>
+                      <button onClick={() => handleDeleteFeedback(fb._id)} style={{ color: 'red' }}>Delete</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
       </div>
     </div>

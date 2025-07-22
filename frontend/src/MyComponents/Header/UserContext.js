@@ -79,7 +79,10 @@ export const UserProvider = ({ children }) => {
   };
 
   const updateUser = (userData) => {
-    setUser(prevUser => ({ ...prevUser, ...userData }));
+    setUser(prevUser => ({
+      ...prevUser,
+      user: { ...prevUser.user, ...userData }
+    }));
   };
 
   return (

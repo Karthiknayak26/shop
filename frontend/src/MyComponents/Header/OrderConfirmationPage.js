@@ -28,17 +28,12 @@ const OrderConfirmationPage = () => {
 
   if (!orderData) return null;
 
-  // Use the MongoDB _id or displayId if available
+  // Use the MongoDB _id for a consistent Order ID display
   const getOrderId = () => {
-    if (orderData.displayId) {
-      return `ORD${orderData.displayId}`;
+    if (orderData.orderId) {
+      return orderData.orderId;
     }
-    if (orderData._id) {
-      // Use last 6 characters of MongoDB _id for consistency
-      return `ORD${orderData._id.toString().substring(18, 24).toUpperCase()}`;
-    }
-    // Fallback (shouldn't happen if order was properly created)
-    return `ORD${Math.random().toString(36).substr(2, 6).toUpperCase()}`;
+    return "ORD-UNKNOWN";
   };
 
   const formatDate = (dateString) => {

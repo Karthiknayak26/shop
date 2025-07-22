@@ -53,6 +53,7 @@ const GroceryProducts = () => {
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState(categoryId);
   const [products, setProducts] = useState([]);
+  const [fetchError, setFetchError] = useState(null); // <-- Add error state
   const { addToCart } = useCart();
 
   const categories = [
@@ -62,36 +63,31 @@ const GroceryProducts = () => {
 
   // ✅ Fetch products from Google Sheet API
   useEffect(() => {
-    console.log('Fetching products from Google Sheet...');
-    fetch('https://api.sheetbest.com/sheets/dbb34df6-7687-434a-8b01-c7716da9e92b')
-      .then((res) => {
-        console.log('Response status:', res.status);
-        return res.json();
-      })
+    fetch('https://script.google.com/macros/s/AKfycbxuuPq-bMzBGIuaR0R-z_uU2tk0yGXxDF3bhJ9feva8AJkI0P6xc4EW5PGgnMgj76xb1g/exec')
+      .then((res) => res.json())
       .then((data) => {
-        console.log('Raw API data:', data);
-        const formatted = data.map((item, index) => ({
-          id: item.id || `${item.name}-${index}`,
-          name: item.name,
-          price: parseFloat(item.price),
-          img: item.img,
-          category: item.category,
-        }));
-        console.log('Formatted products:', formatted);
+        console.log('Google Sheet API response:', data); // <-- Debug log
+        if (!Array.isArray(data)) {
+          setFetchError('API did not return an array.');
+          setProducts([]);
+          return;
+        }
+        const formatted = data.map((item, index) => {
+          console.log(`Product ${index} category:`, item.category); // <-- Debug log
+          return {
+            id: item.id || `${item.name}-${index}`,
+            name: item.name,
+            price: parseFloat(item.price),
+            img: item.img,
+            category: item.category,
+          };
+        });
         setProducts(formatted);
+        setFetchError(null);
       })
       .catch((err) => {
-        console.error('Error fetching sheet data:', err);
-        // Set some fallback data for testing
-        setProducts([
-          {
-            id: 'test-1',
-            name: 'Test Product',
-            price: 99.99,
-            img: 'https://via.placeholder.com/150',
-            category: 'biscuits-packaged'
-          }
-        ]);
+        console.error('Error fetching sheet data', err);
+        setFetchError('Failed to fetch products from Google Sheet API.');
       });
   }, []);
 
@@ -106,10 +102,6 @@ const GroceryProducts = () => {
   const filteredProducts = activeCategory
     ? products.filter((product) => product.category === activeCategory)
     : products;
-
-  console.log('Active category:', activeCategory);
-  console.log('All products:', products);
-  console.log('Filtered products:', filteredProducts);
 
   const handleAddToCart = (product) => {
     addToCart(product);
@@ -131,6 +123,12 @@ const GroceryProducts = () => {
           </>
         )}
       </div>
+
+      {fetchError && (
+        <div style={{ color: 'red', margin: '1em 0' }}>
+          {fetchError}
+        </div>
+      )}
 
       <div className="category-filters">
         <button

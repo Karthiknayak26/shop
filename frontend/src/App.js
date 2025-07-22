@@ -22,6 +22,8 @@ import OrderHistoryPage from './MyComponents/OrderHistoryPage';
 import GroceryDeals, { GroceryCategories, GroceryProducts } from './MyComponents/Body/GroceryDeals';
 import { CartProvider } from './MyComponents/Header/CartContext';
 import { UserProvider } from './MyComponents/Header/UserContext';
+import ProfilePage from './MyComponents/ProfilePage';
+import ProfileChangePassword from './MyComponents/ProfileChangePassword';
 
 // Create a theme instance
 const theme = createTheme({
@@ -99,6 +101,12 @@ function App() {
 
               {/* Support Routes */}
               <Route path="/help-center" element={<HelpCenter />} />
+
+              {/* Profile Route */}
+              <Route path="/profile" element={<ProfilePage />} />
+
+              {/* Change Password Route */}
+              <Route path="/settings/password" element={<ProfileChangePassword />} />
 
               {/* 404 Fallback Route */}
               <Route path="*" element={

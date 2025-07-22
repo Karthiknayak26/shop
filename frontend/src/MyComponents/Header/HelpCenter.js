@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './HelpCenter.css';
 import { Home } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const HelpCenter = () => {
   const [formData, setFormData] = useState({
@@ -17,11 +18,22 @@ const HelpCenter = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Submit form data to backend API
-    console.log('Form submitted:', formData);
-    setSubmitted(true);
+    // Get order info from localStorage
+    const orderData = JSON.parse(localStorage.getItem('orderData'));
+    const orderId = orderData?._id || '';
+    try {
+      await axios.post('http://localhost:5000/api/feedback', {
+        name: formData.name,
+        email: formData.email,
+        orderId,
+        message: formData.message,
+      });
+      setSubmitted(true);
+    } catch (error) {
+      alert('Failed to submit feedback. Please try again.');
+    }
   };
 
   return (

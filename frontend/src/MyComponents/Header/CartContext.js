@@ -50,15 +50,10 @@ export const CartProvider = ({ children }) => {
     }
   }, [cartItems, hasInitialized]);
 
-  // Sync with backend when user logs in (but only if we haven't synced recently)
+  // Sync with backend when user logs in (always, not just every 5 minutes)
   useEffect(() => {
     if (user && user.id && hasInitialized) {
-      const lastSyncTime = loadFromLocalStorage(CART_SYNC_KEY, null);
-      const shouldSync = !lastSyncTime || (Date.now() - new Date(lastSyncTime).getTime()) > 300000; // 5 minutes
-
-      if (shouldSync) {
-        syncCartWithBackend();
-      }
+      syncCartWithBackend();
     }
   }, [user, hasInitialized]);
 

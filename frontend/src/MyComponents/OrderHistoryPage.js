@@ -91,6 +91,7 @@ const OrderHistoryPage = () => {
         <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
             <tr>
+              <th>Order ID</th>
               <th>Order Date</th>
               <th>Total Amount</th>
               <th>Status</th>
@@ -100,6 +101,7 @@ const OrderHistoryPage = () => {
           <tbody>
             {filteredOrders.map(order => (
               <tr key={order._id} style={{ borderBottom: '1px solid #ccc' }}>
+                <td>{order.orderId ? order.orderId : 'ORD-UNKNOWN'}</td>
                 <td>{new Date(order.orderDate).toLocaleString()}</td>
                 <td>₹{order.totalAmount}</td>
                 <td>{order.status}</td>
@@ -125,6 +127,7 @@ const OrderHistoryPage = () => {
         }}>
           <div style={{ background: '#fff', padding: 24, borderRadius: 8, minWidth: 320, maxWidth: 500 }}>
             <h3>Order Details</h3>
+            <p><b>Order ID:</b> {selectedOrder.orderId ? selectedOrder.orderId : 'ORD-UNKNOWN'}</p>
             <p><b>Order Date:</b> {new Date(selectedOrder.orderDate).toLocaleString()}</p>
             <p><b>Status:</b> {selectedOrder.status}</p>
             <p><b>Total Amount:</b> ₹{selectedOrder.totalAmount}</p>

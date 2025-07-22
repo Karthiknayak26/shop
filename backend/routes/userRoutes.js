@@ -78,5 +78,58 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// Update user profile (name/email)
+router.put('/:id', async (req, res) => {
+  const { id } = req.params;
+  const { name, email } = req.body;
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { name, email },
+      { new: true, runValidators: true }
+    );
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    res.json({
+      message: 'Profile updated successfully',
+      user: {
+        id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email
+      }
+    });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+});
+
+// Change password route
+router.post('/change-password', async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+  try {
+    // Find user by email from session or token (for demo, get from body or hardcode)
+    // In production, use authentication middleware to get user from req.user
+    const userId = req.body.userId; // You may want to get this from session/token
+    if (!userId) {
+      return res.status(400).json({ message: 'User not authenticated.' });
+    }
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Current password is incorrect.' });
+    }
+    user.password = await bcrypt.hash(newPassword, 10);
+    await user.save();
+    res.json({ message: 'Password changed successfully.' });
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message });
+  }
+});
+
 
 module.exports = router;

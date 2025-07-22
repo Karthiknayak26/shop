@@ -33,7 +33,10 @@ const orderSchema = new mongoose.Schema({
   },
   totalAmount: Number,
   orderDate: { type: Date, default: Date.now },
-  status: { type: String, default: 'Pending' }
+  status: { type: String, default: 'Pending' },
+  orderId: { type: String, unique: true },
+  outForDeliveryDate: { type: Date },
+  expectedDelivery: { type: Date }
 });
 
 module.exports = mongoose.model('Order', orderSchema);

@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from 'react-router-dom';
 import "./Footer.css";
 import googlePlayLogo from './1.png';
+const policyDetails = {
+  Payment: "We accept credit/debit cards, net banking, and cash on delivery. All payments are secure.",
+  Shipping: "We offer doorstep delivery and in-store pickup. Delivery times vary by location.",
+  Returns: "Returns are accepted within 7 days of delivery. Please keep the invoice for reference."
+};
 const Footer = () => {
+  const [openPolicy, setOpenPolicy] = useState(null);
   return (
     <footer className="footer">
       <div className="footer-top">
@@ -22,18 +29,27 @@ const Footer = () => {
           <div>
             <h4>Help</h4>
             <ul>
-              <li>FAQs</li>
+              <li><Link to="/help-center" style={{ color: 'inherit', textDecoration: 'none' }}>FAQs</Link></li>
             </ul>
           </div>
           <div>
             <h4>Policies</h4>
             <ul>
-              <li>Payment</li>
-              <li>Shipping</li>
-              <li>Returns</li>
-              <li>Member Registration</li>
-              <li>Privacy Policy</li>
-              <li>Terms of Use</li>
+              {['Payment', 'Shipping', 'Returns'].map((policy) => (
+                <li key={policy} style={{ position: 'relative' }}>
+                  <button
+                    style={{ background: 'none', border: 'none', color: 'inherit', cursor: 'pointer', padding: 0, font: 'inherit' }}
+                    onClick={() => setOpenPolicy(openPolicy === policy ? null : policy)}
+                  >
+                    {policy}
+                  </button>
+                  {openPolicy === policy && policyDetails[policy] && (
+                    <div style={{ color: 'white', background: '#18376a', borderRadius: '4px', padding: '8px', marginTop: '4px', fontSize: '0.95em', boxShadow: '0 2px 8px rgba(0,0,0,0.08)' }}>
+                      {policyDetails[policy]}
+                    </div>
+                  )}
+                </li>
+              ))}
             </ul>
           </div>
         </div>

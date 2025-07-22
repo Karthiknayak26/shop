@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useUser } from './UserContext';
 import { Link } from 'react-router-dom';
-import Search from '../../Components/search/index';
+// import Search from '../../Components/search/index';
 import Badge from '@mui/material/Badge';
 import { styled } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
@@ -13,6 +13,7 @@ import Navigation from './Navigation/Navigation';
 import logo from './1.png';
 import './Header1.css';
 import { useCart } from './CartContext';
+import ProductSearch from '../../Components/ProductSearch';
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   '& .MuiBadge-badge': {
@@ -25,13 +26,16 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 export default function Header1() {
   const { user, setUser } = useUser();
-  const { cartItems } = useCart();
+  const { cartItems, clearCart } = useCart();
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [activePanel, setActivePanel] = useState('main');
   const dropdownRef = useRef(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [orderCount, setOrderCount] = useState(0);
+
+  // Debug: Log user object
+  console.log('User in Header1:', user);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -80,7 +84,11 @@ export default function Header1() {
   };
 
   const handleLogout = () => {
-    setUser(null);
+    setUser(null); // Clear user context and kandukuru_user/authToken
+    clearCart();   // Clear cart context and kandukuru_cart
+    localStorage.removeItem('user'); // Remove extra user info
+    localStorage.removeItem('kandukuru_cart'); // Remove cart
+    localStorage.removeItem('kandukuru_cart_sync'); // Remove cart sync info
     closeDropdown();
     navigate('/login');
   };
@@ -139,10 +147,6 @@ export default function Header1() {
               <Lock size={16} />
               <span>Change Password</span>
             </div>
-            <div className="dropdown-item" onClick={() => navigateTo('/settings/2fa')}>
-              <Shield size={16} />
-              <span>Two-Factor Auth</span>
-            </div>
           </div>
         );
       case 'preferences':
@@ -174,8 +178,8 @@ export default function Header1() {
                 )}
               </div>
               <div className="user-info">
-                <div className="user-name">{user.name}</div>
-                <div className="user-email">{user.email || user.id}</div>
+                <div className="user-name">{user.user?.name || user.user?.email || user.user?.id}</div>
+                <div className="user-email">{user.user?.email || user.user?.id}</div>
               </div>
               <button
                 className="edit-profile-btn"
@@ -200,11 +204,12 @@ export default function Header1() {
               )}
             </div>
 
-            <div className="dropdown-item" onClick={() => setActivePanel('profile')}>
+            {/* Remove the Profile Settings dropdown item */}
+            {/* <div className="dropdown-item" onClick={() => setActivePanel('profile')}>
               <Settings size={16} />
               <span>Profile Settings</span>
               <ChevronRight size={16} className="arrow" />
-            </div>
+            </div> */}
 
             <div className="dropdown-item" onClick={() => setActivePanel('security')}>
               <Lock size={16} />
@@ -235,9 +240,9 @@ export default function Header1() {
         <Link to={"/"}>
           <img src={logo} alt="kukuu" className="logo" />
         </Link>
-
-        <Search />
-
+        <div style={{ background: '#fff', padding: '10px 0', boxShadow: '0 2px 8px #eee', zIndex: 20, flex: 1, minWidth: 0 }}>
+          <ProductSearch />
+        </div>
         <div className="header-icons">
           <Tooltip title="Order History">
             <IconButton

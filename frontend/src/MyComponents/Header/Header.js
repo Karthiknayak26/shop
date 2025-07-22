@@ -6,6 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { Link } from 'react-router-dom';
 import NetworkStatus from './NetworkStatus';
 
+
 export default function Header() {
   // State to manage selected address
   const [selectedAddress, setSelectedAddress] = useState('Bhopal, Misrod');
@@ -91,7 +92,40 @@ export default function Header() {
       }
     };
 
-    fetchLocations();
+    // Helper: Try to detect user location and set selected address
+    const detectAndSetLocation = async () => {
+      if (!('geolocation' in navigator)) return;
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        try {
+          const { latitude, longitude } = position.coords;
+          const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+          const data = await response.json();
+          const city = data.address.city || data.address.town || data.address.village || data.address.hamlet;
+          const state = data.address.state;
+          if (city && state) {
+            const detected = `${city}, ${state}`;
+            setSelectedAddress(detected);
+            setAddresses(prev => {
+              // Only add if not already present
+              if (prev.includes(detected)) return prev;
+              return [detected, ...prev];
+            });
+          }
+        } catch (e) {
+          // Ignore geolocation errors
+        }
+      }, (err) => {
+        // Ignore geolocation errors
+      });
+    };
+
+    // Fetch locations, then try to detect user location
+    fetchLocations().then(() => {
+      // Use a timeout to ensure addresses state is updated
+      setTimeout(() => {
+        detectAndSetLocation();
+      }, 500);
+    });
   }, []);
 
   // Handle address change when user selects a new address from the dropdown
@@ -155,6 +189,7 @@ export default function Header() {
           </div>
         </Container>
       </Navbar>
+
     </>
   );
 }

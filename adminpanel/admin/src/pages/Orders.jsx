@@ -41,6 +41,7 @@ const Orders = () => {
                 <th className="text-left px-4 py-2">Payment</th>
                 <th className="text-left px-4 py-2">Status</th>
                 <th className="text-left px-4 py-2">Date</th>
+                <th className="text-left px-4 py-2">Out for Delivery</th> {/* New column */}
               </tr>
             </thead>
             <tbody>
@@ -50,7 +51,7 @@ const Orders = () => {
                     className="border-t hover:bg-gray-50 transition-all cursor-pointer"
                     onClick={() => toggleOrderExpand(order._id)}
                   >
-                    <td className="px-4 py-2">{order._id.substring(0, 8)}...</td>
+                    <td className="px-4 py-2">{order.orderId ? order.orderId : 'ORD-UNKNOWN'}</td>
                     <td className="px-4 py-2">{order.shippingAddress?.name || 'N/A'}</td>
                     <td className="px-4 py-2">
                       <div className="max-w-xs text-sm">
@@ -116,6 +117,26 @@ const Orders = () => {
                     </td>
                     <td className="px-4 py-2">
                       {new Date(order.orderDate).toLocaleDateString()}
+                    </td>
+                    <td className="px-4 py-2">
+                      <input
+                        type="checkbox"
+                        checked={order.status === 'Out for Delivery'}
+                        disabled={order.status === 'Out for Delivery' || order.status === 'Delivered' || order.status === 'Cancelled'}
+                        onChange={async (e) => {
+                          e.stopPropagation();
+                          if (order.status !== 'Out for Delivery') {
+                            try {
+                              const res = await api.put(`/orders/${order._id}/out-for-delivery`);
+                              setOrders((prev) => prev.map(o =>
+                                o._id === order._id ? { ...o, ...res.data } : o
+                              ));
+                            } catch {
+                              alert('Failed to update order status');
+                            }
+                          }
+                        }}
+                      />
                     </td>
                   </tr>
                   {expandedOrder === order._id && (
@@ -220,8 +241,8 @@ const Orders = () => {
                                   {order.paymentInfo.paymentStatus && (
                                     <p>Payment Status:
                                       <span className={`ml-1 px-2 py-1 rounded text-xs ${order.paymentInfo.paymentStatus === 'completed'
-                                          ? 'bg-green-100 text-green-800'
-                                          : 'bg-yellow-100 text-yellow-800'
+                                        ? 'bg-green-100 text-green-800'
+                                        : 'bg-yellow-100 text-yellow-800'
                                         }`}>
                                         {order.paymentInfo.paymentStatus}
                                       </span>
