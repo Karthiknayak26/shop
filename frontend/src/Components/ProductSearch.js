@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useCart } from "../MyComponents/Header/CartContext";
 
-const API_URL = "https://script.google.com/macros/s/AKfycbyG8C2ly8LvcIqxj9gesiTZDrekhGotvnbp9kg3-3s9LsUvHwP9Z_8wMENfX-rw62Q0GQ/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbytjEMd87XgeQiYYO_5Jrc3-Xg1LOUW1ybIshCwJMr0FRpaBbbPC3Stg_ULYe7d3Fom/exec";
 
 const ProductSearch = () => {
   const [products, setProducts] = useState([]);

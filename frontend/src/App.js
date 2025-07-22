@@ -8,8 +8,8 @@ import Header1 from './MyComponents/Header/Header1';
 import Footer from './MyComponents/Footer';
 import Section from './MyComponents/Section';
 import Login from './MyComponents/Header/Login';
-import Electronics from './MyComponents/Body/Electronics';
-import Homelifestyle from './MyComponents/Body/Homelifestyle';
+import Electronics, { ElectronicsCategories, ElectronicsProducts } from './MyComponents/Body/Electronics';
+import Homelifestyle, { HomelifestylesCategories, HomelifestylesProducts } from './MyComponents/Body/Homelifestyle';
 import ProductDetail from './MyComponents/ProductDetail';
 import Slider from './MyComponents/Body/Slider';
 import Register from './MyComponents/Header/Register';
@@ -88,6 +88,13 @@ function App() {
               <Route path="/groceries" element={<GroceryCategories />} />
               <Route path="/groceries/products" element={<GroceryProducts />} />
               <Route path="/groceries/products/:categoryId" element={<GroceryProducts />} />
+              <Route path="/electronics" element={< ElectronicsCategories />} />
+              <Route path="/electronics/products" element={<ElectronicsProducts />} />
+              <Route path="/electronics/products/:categoryId" element={<ElectronicsProducts />} />
+              <Route path="/homelifestyle" element={<HomelifestylesCategories />} />
+              <Route path="/homelifestyles/products" element={<HomelifestylesProducts />} />
+              <Route path="/homelifestyles/products/:categoryId" element={<HomelifestylesProducts />} />
+
 
               {/* Cart & Checkout Routes */}
               <Route path="/cart" element={<CartPage />} />
