@@ -1,102 +1,69 @@
-.card-container {
-  perspective: 1000px;
+/* Force each slick slide to behave like a block */
+.slick-slide {
+  display: flex !important;
+  justify-content: center;
+  align-items: stretch;
+  height: auto !important;
 }
 
+.slick-slide>div {
+  flex: 1;
+  max-width: 100%;
+  height: auto;
+  display: flex !important;
+}
 
+/* Container for each card */
+.card-container {
+  width: 100%;
+  max-width: 380px;
+  box-sizing: border-box;
+  padding: 0 8px;
+  margin: 0 auto;
+}
+
+/* Aspect-ratio box for uniform height */
 .group {
   position: relative;
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
-  transform-style: preserve-3d;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  /* uniform size */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  padding: 1.5rem;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-
 
 .group:hover {
   transform: translateY(-5px) scale(1.02);
   box-shadow: 0 15px 30px -8px rgba(0, 0, 0, 0.2);
 }
 
+/* Card title */
+.card-title {
+  white-space: normal;
+  word-wrap: break-word;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  /* white text for contrast */
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
 
-.card-title,
-.discount-badge,
-.product-image,
-.shop-button {
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
 }
-
 
 .group:hover .card-title {
-  transform: translateZ(40px);
-  color: #1868df;
+  color: #ffeb3b;
 }
 
-.group:hover .discount-badge {
-  transform: scale(1.15) translateZ(50px);
-}
-
-.group:hover .product-image {
-  transform: translateZ(80px) rotateY(-15deg) scale(1.25);
-}
-
-
-.group:hover .shop-button {
-  transform: translateZ(30px);
-  box-shadow: 0 10px 20px rgba(11, 62, 113, 0.3);
-}
-
-
-.shop-button {
-  z-index: 30;
-  position: relative;
-  pointer-events: auto;
-  transition: all 0.3s ease;
-}
-
-.group:hover .shop-button {
-  transform: translateY(-5px) scale(1.02);
-  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
-  background: linear-gradient(135deg, #879fe1 0%, #4ef412 100%);
-
-  animation: none;
-
-}
-
-@keyframes pulse-glow {
-  0% {
-    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7);
-  }
-
-  70% {
-    box-shadow: 0 0 0 15px rgba(37, 99, 235, 0);
-  }
-
-  100% {
-    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0);
-  }
-}
-
-
-.bg-overlay {
-  pointer-events: none;
-}
-
-
-.group {
-  min-height: 320px;
-}
-
-
-.bg-energy-drinks,
-.bg-glam-up,
-.bg-gradient-purple,
-.bg-gradient-pink,
-.bg-perfumes,
-.bg-health-essentials,
-.bg-electronics {
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
+/* Background images */
 .bg-electronics {
   background-image: url('./cleaningessentionsals.png');
 }
@@ -111,5 +78,30 @@
 
 .bg-health-essentials {
   background-image: url('./babycare.png');
+}
 
+/* Slick dots */
+.slick-dots li button:before {
+  font-size: 10px;
+  color: #333;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #1868df;
+}
+
+/* Mobile fix */
+@media (max-width: 768px) {
+  .card-container {
+    max-width: 100%;
+    padding: 0 4px;
+  }
+
+  .group {
+    aspect-ratio: 4 / 3;
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+  }
 }
