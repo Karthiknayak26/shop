@@ -376,5 +376,4 @@ For support and questions:
 
 **Made with ❤️ for Kandukuru Supermarket**
 
-*Last updated: December 2024* #   s h o p  
- 
+*Last updated: December 2024* 
