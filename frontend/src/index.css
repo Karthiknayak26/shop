@@ -1,0 +1,204 @@
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  line-height: 1.5;
+  font-family: 'Segoe UI', 'Roboto', sans-serif;
+  background: #f8f6ef;
+  color: #2e3d27;
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+
+button,
+a,
+input,
+select,
+textarea {
+  min-height: 44px;
+  min-width: 44px;
+  font-size: 16px;
+  padding: 10px;
+}
+
+
+.header {
+  background: linear-gradient(90deg, #f9d923 0%, #fffbe7 100%);
+  color: #a05d00;
+  font-family: 'Noto Serif Kannada', serif;
+  padding: 1rem 2rem;
+  box-shadow: 0 2px 8px rgba(200, 150, 50, 0.07);
+}
+
+.banner {
+  background: url('temple-outline.svg') no-repeat center right/contain, linear-gradient(90deg, #eafbf2 0%, #fffbe7 100%);
+  min-height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2rem;
+}
+
+.category-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(44, 62, 80, 0.07);
+  margin: 1rem;
+  transition: transform 0.2s;
+}
+
+.category-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(44, 62, 80, 0.13);
+}
+
+.button-primary {
+  background: linear-gradient(90deg, #f9d923 0%, #f7b32b 100%);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.button-primary:hover {
+  background: linear-gradient(90deg, #f7b32b 0%, #f9d923 100%);
+}
+
+.footer {
+  background: #2e3d27;
+  color: #fffbe7;
+  padding: 2rem;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: 15px;
+  }
+
+  .header {
+    padding: 0.75rem 1rem;
+  }
+
+  .banner {
+    min-height: 180px;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+
+  .header {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .banner {
+    min-height: 150px;
+    padding: 1rem;
+  }
+}

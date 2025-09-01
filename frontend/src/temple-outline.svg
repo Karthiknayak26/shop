@@ -1,0 +1,24 @@
+<!-- temple-outline.svg -->
+<svg
+  width="80"
+  height="80"
+  viewBox="0 0 80 80"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <g stroke="#d4a017" stroke-width="2" fill="none">
+    <!-- Main temple base -->
+    <rect x="20" y="50" width="40" height="20" rx="3" />
+    <!-- Middle tier -->
+    <rect x="26" y="40" width="28" height="10" rx="2" />
+    <!-- Upper tier -->
+    <rect x="32" y="32" width="16" height="8" rx="2" />
+    <!-- Gopuram (spire) -->
+    <polygon points="40,10 36,32 44,32" />
+    <!-- Door -->
+    <rect x="37" y="60" width="6" height="10" rx="1" />
+    <!-- Steps -->
+    <rect x="34" y="70" width="12" height="4" rx="1" />
+    <rect x="32" y="74" width="16" height="3" rx="1" />
+  </g>
+</svg>

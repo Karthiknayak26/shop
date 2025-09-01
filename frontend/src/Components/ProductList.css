@@ -1,0 +1,32 @@
+.product-list-container {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.product-card-wrapper {
+  display: flex;
+  height: 100%;
+}
+
+
+@media (max-width: 640px) {
+  .product-list-container {
+    padding: 8px;
+  }
+}
+
+
+@media (max-width: 320px) {
+  .product-list-container {
+    padding: 6px;
+    gap: 10px;
+  }
+}
+
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .product-list-container {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}

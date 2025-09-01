@@ -1,0 +1,167 @@
+.electronics-categories {
+  padding: 20px;
+  font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  margin-bottom: 30px;
+  background-color: #fffaf5;
+
+}
+
+.electronics-categories header {
+  background: linear-gradient(135deg, #0d7ff1 0%, #2c3e50 100%);
+
+  padding: 30px;
+  margin: -20px -20px 30px -20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.electronics-categories header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  opacity: 0.1;
+  background-repeat: repeat;
+}
+
+.electronics-categories header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  letter-spacing: 1px;
+  animation: fadeInDown 0.5s ease-out;
+  position: relative;
+}
+
+.deals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 25px;
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.deal-card {
+  border: none;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  background: white;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  position: relative;
+  border-top: 3px solid #1a2a6c;
+
+}
+
+.deal-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+}
+
+.deal-card a {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.deal-card img {
+  max-width: 100%;
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+  height: 160px;
+  object-fit: contain;
+  margin-bottom: 15px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.deal-card:hover img {
+  transform: scale(1.05);
+}
+
+.deal-card h3 {
+  margin: 15px 0 10px;
+  color: #e74c3c;
+
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.deal-card p {
+  margin: 0;
+  font-size: 1rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.deal-card::after {
+  content: "Tech";
+  position: absolute;
+  top: 10px;
+  right: -25px;
+  background: #1a2a6c;
+  color: white;
+  padding: 3px 25px;
+  font-size: 0.8rem;
+  transform: rotate(45deg);
+  transform-origin: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.deal-card:hover::after {
+  opacity: 1;
+}
+
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+@media (max-width: 768px) {
+  .Electronics header h1 {
+    font-size: 1.8rem;
+  }
+
+  .deals-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    padding: 15px;
+  }
+}
+
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1a2a6c;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #0d324d;
+}

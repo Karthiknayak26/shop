@@ -1,0 +1,216 @@
+.order-tracking {
+  max-width: 800px;
+
+  width: 50%;
+
+  margin: 30px auto;
+  padding: 25px;
+  background-color: #fff8f0;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  border: 1px solid #e0d0b8;
+  position: relative;
+
+}
+
+.order-tracking h1 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #3568d6;
+
+  font-size: 2rem;
+  font-weight: 600;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.order-tracking h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 25%;
+  width: 50%;
+  height: 3px;
+  background: linear-gradient(90deg, #3369ef, #1264f3, #1a91db);
+  border-radius: 3px;
+}
+
+.tracking-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.tracking-form label {
+  font-size: 1.1rem;
+  color: #5c4d3d;
+
+  font-weight: 500;
+}
+
+.tracking-form input {
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #d1c7b7;
+  border-radius: 6px;
+  background-color: #fffdf9;
+  transition: all 0.3s ease;
+}
+
+.tracking-form input:focus {
+  outline: none;
+  border-color: #128af3;
+  box-shadow: 0 0 0 3px rgba(243, 156, 18, 0.2);
+}
+
+.tracking-form button {
+  padding: 12px 18px;
+  font-size: 1.1rem;
+  color: #fff;
+  background: linear-gradient(to right, #2270e6, #0054d3);
+
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.tracking-form button:disabled {
+  background: #d1c7b7;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.tracking-form button:hover:not(:disabled) {
+  background: linear-gradient(to right, #0082d3, #e67e22);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.tracking-form button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.error {
+  color: #c0392b;
+  font-weight: bold;
+  margin-top: 10px;
+  text-align: center;
+  padding: 10px;
+  background-color: #fde8e6;
+  border-radius: 6px;
+  border-left: 4px solid #c0392b;
+}
+
+.order-details {
+  margin-top: 25px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e8e1d5;
+}
+
+.order-details h2 {
+  margin-bottom: 15px;
+  color: #5c4d3d;
+  font-size: 1.5rem;
+  border-bottom: 2px solid #f1c40f;
+  padding-bottom: 8px;
+}
+
+.order-details p {
+  margin-bottom: 12px;
+  font-size: 1rem;
+  color: #5c4d3d;
+  line-height: 1.5;
+}
+
+.order-details p strong {
+  color: #d35400;
+}
+
+.order-details ul {
+  list-style-type: none;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.order-details ul li {
+  font-size: 1rem;
+  padding: 8px 0;
+  border-bottom: 1px dashed #e8e1d5;
+  color: #5c4d3d;
+}
+
+.order-details ul li:last-child {
+  border-bottom: none;
+}
+
+
+.order-tracking::before {
+
+  position: absolute;
+  top: -15px;
+  left: 15px;
+  font-size: 30px;
+  color: #f39c12;
+  background: white;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+
+.min-h-screen::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234CAF50' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: -1;
+  animation: float 20s ease-in-out infinite;
+}
+
+.fab-home {
+  position: fixed;
+  top: 30px;
+  left: 30px;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(145deg, #246dc0, #6195ea);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 0 0 4px rgba(52, 152, 219, 0.2),
+    0 8px 25px rgba(52, 152, 219, 0.15),
+    inset 0 2px 4px rgba(52, 152, 219, 0.1);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 100;
+  border: none;
+}
+
+.fab-home:hover {
+  transform: translateY(-5px) scale(1.05);
+  box-shadow:
+    0 0 0 4px rgba(52, 152, 219, 0.2),
+    0 8px 25px rgba(52, 152, 219, 0.15),
+    inset 0 2px 4px rgba(52, 152, 219, 0.1);
+}

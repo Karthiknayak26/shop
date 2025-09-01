@@ -1,0 +1,93 @@
+.cart-sync-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.cart-sync-indicator.synced {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: #4caf50;
+}
+
+.cart-sync-indicator.out-of-sync {
+  background-color: rgba(255, 152, 0, 0.1);
+  color: #ff9800;
+}
+
+.cart-sync-indicator.syncing {
+  background-color: rgba(33, 150, 243, 0.1);
+  color: #2196f3;
+}
+
+.sync-button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 3px;
+  transition: background-color 0.2s ease;
+  font-size: inherit;
+  color: inherit;
+}
+
+.sync-button:hover:not(:disabled) {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sync-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.sync-icon {
+  font-size: 14px;
+  animation: spin 1s linear infinite;
+}
+
+.cart-sync-indicator.synced .sync-icon {
+  animation: none;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.sync-text {
+  font-weight: 500;
+}
+
+.last-sync {
+  font-size: 10px;
+  opacity: 0.7;
+  text-align: center;
+}
+
+
+@media (max-width: 768px) {
+  .cart-sync-indicator {
+    font-size: 10px;
+    padding: 2px 4px;
+  }
+
+  .sync-text {
+    display: none;
+  }
+
+  .last-sync {
+    display: none;
+  }
+}
