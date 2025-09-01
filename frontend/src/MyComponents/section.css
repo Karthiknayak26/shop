@@ -17,18 +17,17 @@
 .card-container {
   width: 100%;
   max-width: 380px;
-  /* neat size on desktop */
   box-sizing: border-box;
   padding: 0 8px;
   margin: 0 auto;
 }
 
-/* Card uniform aspect ratio */
+/* Desktop / default cards */
 .group {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
-  /* desktop ratio */
+  /* wide banner look on desktop */
   border-radius: 1.5rem;
   overflow: hidden;
   transition: all 0.3s ease;
@@ -43,7 +42,7 @@
   box-shadow: 0 15px 30px -8px rgba(0, 0, 0, 0.2);
 }
 
-/* Title top-left */
+/* Title pinned top-left */
 .card-title {
   position: absolute;
   top: 1rem;
@@ -56,7 +55,6 @@
   font-weight: 700;
   border-radius: 0.5rem;
   max-width: 70%;
-  /* prevent overflow */
   word-wrap: break-word;
 }
 
@@ -91,17 +89,19 @@
   color: #1868df;
 }
 
-/* Mobile responsiveness */
+/* 📱 Mobile + tablet adjustments */
 @media (max-width: 768px) {
   .card-container {
     max-width: 100%;
-    /* full width on mobile */
     padding: 0 4px;
   }
 
+  /* Instead of aspect-ratio, give fixed responsive heights */
   .group {
-    aspect-ratio: 4 / 3;
-    /* taller for mobile */
+    aspect-ratio: unset;
+    /* disable ratio */
+    height: 220px;
+    /* default height on small phones */
   }
 
   .card-title {
@@ -110,5 +110,12 @@
     left: 0.5rem;
     padding: 0.3rem 0.6rem;
     max-width: 80%;
+  }
+}
+
+/* Slightly taller for medium tablets */
+@media (min-width: 600px) and (max-width: 768px) {
+  .group {
+    height: 260px;
   }
 }
