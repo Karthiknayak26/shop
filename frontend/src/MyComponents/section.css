@@ -13,29 +13,25 @@
   display: flex !important;
 }
 
-/* Container for each card */
+/* Card container */
 .card-container {
   width: 100%;
   max-width: 380px;
+  /* neat size on desktop */
   box-sizing: border-box;
   padding: 0 8px;
   margin: 0 auto;
 }
 
-/* Aspect-ratio box for uniform height */
+/* Card uniform aspect ratio */
 .group {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
-  /* uniform size */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+  /* desktop ratio */
   border-radius: 1.5rem;
   overflow: hidden;
   transition: all 0.3s ease;
-  padding: 1.5rem;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -47,20 +43,25 @@
   box-shadow: 0 15px 30px -8px rgba(0, 0, 0, 0.2);
 }
 
-/* Card title */
+/* Title top-left */
 .card-title {
-  white-space: normal;
-  word-wrap: break-word;
-  font-size: 1.5rem;
-  font-weight: 700;
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  margin: 0;
+  padding: 0.5rem 1rem;
+  background: rgba(0, 0, 0, 0.55);
   color: #fff;
-  /* white text for contrast */
-  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-
+  font-size: 1.25rem;
+  font-weight: 700;
+  border-radius: 0.5rem;
+  max-width: 70%;
+  /* prevent overflow */
+  word-wrap: break-word;
 }
 
 .group:hover .card-title {
-  color: #ffeb3b;
+  background: rgba(24, 104, 223, 0.7);
 }
 
 /* Background images */
@@ -90,18 +91,24 @@
   color: #1868df;
 }
 
-/* Mobile fix */
+/* Mobile responsiveness */
 @media (max-width: 768px) {
   .card-container {
     max-width: 100%;
+    /* full width on mobile */
     padding: 0 4px;
   }
 
   .group {
     aspect-ratio: 4 / 3;
+    /* taller for mobile */
   }
 
   .card-title {
-    font-size: 1.25rem;
+    font-size: 1rem;
+    top: 0.5rem;
+    left: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    max-width: 80%;
   }
 }
