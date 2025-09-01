@@ -29,7 +29,7 @@ describe('Login Component', () => {
         </UserProvider>
       </BrowserRouter>
     );
-    
+
     expect(screen.getByPlaceholderText(/email/i)).toBeInTheDocument();
     expect(screen.getByPlaceholderText(/password/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /sign in/i })).toBeInTheDocument();
@@ -53,7 +53,7 @@ describe('Login Component', () => {
         </UserProvider>
       </BrowserRouter>
     );
-    
+
     // Fill in the form
     fireEvent.change(screen.getByPlaceholderText(/email/i), {
       target: { value: 'test@example.com' }
@@ -61,13 +61,13 @@ describe('Login Component', () => {
     fireEvent.change(screen.getByPlaceholderText(/password/i), {
       target: { value: 'password123' }
     });
-    
+
     // Submit the form
     fireEvent.click(screen.getByRole('button', { name: /sign in/i }));
-    
+
     // Wait for the API call to complete
     await waitFor(() => {
-      expect(fetch).toHaveBeenCalledWith('http:/\/localhost:5000/api/auth/login', {
+      expect(fetch).toHaveBeenCalledWith('https://shop-backend-92zc.onrender.com/api/auth/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -75,13 +75,13 @@ describe('Login Component', () => {
         body: JSON.stringify({ email: 'test@example.com', password: 'password123' }),
       });
     });
-    
+
     // Check if user was stored in localStorage
     await waitFor(() => {
       const storedUser = JSON.parse(localStorage.getItem('user'));
       expect(storedUser).toEqual({ id: '123', name: 'Test User', email: 'test@example.com' });
     });
-    
+
     // Check if navigation occurred
     expect(mockNavigate).toHaveBeenCalledWith('/');
   });
@@ -101,7 +101,7 @@ describe('Login Component', () => {
         </UserProvider>
       </BrowserRouter>
     );
-    
+
     // Fill in the form
     fireEvent.change(screen.getByPlaceholderText(/email/i), {
       target: { value: 'test@example.com' }
@@ -109,15 +109,15 @@ describe('Login Component', () => {
     fireEvent.change(screen.getByPlaceholderText(/password/i), {
       target: { value: 'wrongpassword' }
     });
-    
+
     // Submit the form
     fireEvent.click(screen.getByRole('button', { name: /sign in/i }));
-    
+
     // Wait for error message to appear
     await waitFor(() => {
       expect(screen.getByText(/Invalid credentials/i)).toBeInTheDocument();
     });
-    
+
     // Check that navigation did not occur
     expect(mockNavigate).not.toHaveBeenCalled();
   });
@@ -137,7 +137,7 @@ describe('Login Component', () => {
         </UserProvider>
       </BrowserRouter>
     );
-    
+
     // Fill in the form
     fireEvent.change(screen.getByPlaceholderText(/email/i), {
       target: { value: 'nonexistent@example.com' }
@@ -145,15 +145,15 @@ describe('Login Component', () => {
     fireEvent.change(screen.getByPlaceholderText(/password/i), {
       target: { value: 'password123' }
     });
-    
+
     // Submit the form
     fireEvent.click(screen.getByRole('button', { name: /sign in/i }));
-    
+
     // Wait for error message to appear
     await waitFor(() => {
       expect(screen.getByText(/No account found. Please sign up./i)).toBeInTheDocument();
     });
-    
+
     // Wait for navigation to register page (after timeout)
     jest.advanceTimersByTime(2000);
     await waitFor(() => {

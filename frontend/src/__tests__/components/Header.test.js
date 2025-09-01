@@ -56,7 +56,7 @@ describe('Header Component', () => {
     
     // Verify that fetch was called
     expect(fetch).toHaveBeenCalledTimes(1);
-    expect(fetch).toHaveBeenCalledWith('http:/\/localhost:5000/api/locations');
+    expect(fetch).toHaveBeenCalledWith('https://shop-backend-92zc.onrender.com/api/locations');
     
     // Wait for locations to be loaded
     await waitFor(() => {
