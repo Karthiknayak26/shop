@@ -1,0 +1,33 @@
+# Kandukuru Supermarket Robots.txt
+# https://www.robotstxt.org/robotstxt.html
+
+User-agent: *
+Allow: /
+
+# Allow important pages
+Allow: /groceries
+Allow: /electronics
+Allow: /homelifestyle
+Allow: /product/
+Allow: /cart
+Allow: /checkout
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /login
+Disallow: /register
+Disallow: /profile
+Disallow: /orders
+
+# Disallow search and filter URLs
+Disallow: /*?search=*
+Disallow: /*?filter=*
+Disallow: /*?sort=*
+Disallow: /*?page=*
+
+# Allow sitemap
+Sitemap: https://kandukuru-supermarket.com/sitemap.xml
+
+# Crawl delay (optional - be respectful to search engines)
+Crawl-delay: 1

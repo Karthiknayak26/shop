@@ -1,0 +1,88 @@
+{
+  "short_name": "Kandukuru Supermarket",
+  "name": "Kandukuru Supermarket - Fresh Groceries & More",
+  "description": "Your one-stop shop for fresh groceries, quality electronics, and home lifestyle products in Andhra Pradesh",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#1976d2",
+  "background_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en",
+  "categories": [
+    "shopping",
+    "food",
+    "lifestyle"
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "screenshot-narrow.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Groceries",
+      "short_name": "Groceries",
+      "description": "Browse fresh groceries",
+      "url": "/groceries",
+      "icons": [
+        {
+          "src": "icon-grocery.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Electronics",
+      "short_name": "Electronics",
+      "description": "Browse electronics",
+      "url": "/electronics",
+      "icons": [
+        {
+          "src": "icon-electronics.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Cart",
+      "short_name": "Cart",
+      "description": "View shopping cart",
+      "url": "/cart",
+      "icons": [
+        {
+          "src": "icon-cart.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ]
+}
