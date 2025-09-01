@@ -19,7 +19,7 @@ const OrderTracking = () => {
 
     try {
       // Replace this URL with your backend endpoint for order tracking
-      const response = await fetch(`http:/\/localhost:5000/api/orders/track/${orderId}`);
+      const response = await fetch(`https://shop-backend-92zc.onrender.com/api/orders/track/${orderId}`);
       if (!response.ok) {
         throw new Error('Order not found. Please check your Order ID.');
       }

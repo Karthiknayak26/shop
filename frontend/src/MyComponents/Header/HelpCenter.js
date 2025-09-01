@@ -24,7 +24,7 @@ const HelpCenter = () => {
     const orderData = JSON.parse(localStorage.getItem('orderData'));
     const orderId = orderData?._id || '';
     try {
-      await axios.post('http:/\/localhost:5000/api/feedback', {
+      await axios.post('https://shop-backend-92zc.onrender.com/api/feedback', {
         name: formData.name,
         email: formData.email,
         orderId,

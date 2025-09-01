@@ -30,7 +30,7 @@ const ProfilePage = () => {
       if (userData.id) {
         setAddressLoading(true);
         try {
-          const response = await fetch(`http:/\/localhost:5000/api/auth/${userData.id}/shipping-address`);
+          const response = await fetch(`https://shop-backend-92zc.onrender.com/api/auth/${userData.id}/shipping-address`);
           if (response.ok) {
             const data = await response.json();
             if (data.shippingAddress) {
@@ -54,7 +54,7 @@ const ProfilePage = () => {
     setSuccess('');
     setError('');
     try {
-      const response = await fetch(`http:/\/localhost:5000/api/auth/${userData.id}`, {
+      const response = await fetch(`https://shop-backend-92zc.onrender.com/api/auth/${userData.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ const ProfilePage = () => {
     setAddressSuccess('');
     setAddressError('');
     try {
-      const response = await fetch(`http:/\/localhost:5000/api/auth/${userData.id}/shipping-address`, {
+      const response = await fetch(`https://shop-backend-92zc.onrender.com/api/auth/${userData.id}/shipping-address`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

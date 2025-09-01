@@ -45,7 +45,7 @@ class PaymentService {
   // Create payment order
   async createPaymentOrder(amount, currency = 'INR') {
     try {
-      const response = await fetch('http:/\/localhost:5000/api/payments/create-order', {
+      const response = await fetch('https://shop-backend-92zc.onrender.com/api/payments/create-order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -97,7 +97,7 @@ class PaymentService {
         };
 
         // Create order in database
-        const orderResponse = await fetch('http:/\/localhost:5000/api/orders', {
+        const orderResponse = await fetch('https://shop-backend-92zc.onrender.com/api/orders', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -133,7 +133,7 @@ class PaymentService {
         handler: async (response) => {
           try {
             // Verify payment on backend
-            const verificationResponse = await fetch('http:/\/localhost:5000/api/payments/verify', {
+            const verificationResponse = await fetch('https://shop-backend-92zc.onrender.com/api/payments/verify', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -160,7 +160,7 @@ class PaymentService {
               };
 
               // Create order in database
-              const orderResponse = await fetch('http:/\/localhost:5000/api/orders', {
+              const orderResponse = await fetch('https://shop-backend-92zc.onrender.com/api/orders', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -254,7 +254,7 @@ class PaymentService {
         };
 
         // Create order in database
-        const orderResponse = await fetch('http:/\/localhost:5000/api/orders', {
+        const orderResponse = await fetch('https://shop-backend-92zc.onrender.com/api/orders', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -303,7 +303,7 @@ class PaymentService {
         handler: async (response) => {
           try {
             // Verify payment on backend
-            const verificationResponse = await fetch('http:/\/localhost:5000/api/payments/verify', {
+            const verificationResponse = await fetch('https://shop-backend-92zc.onrender.com/api/payments/verify', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -331,7 +331,7 @@ class PaymentService {
               };
 
               // Create order in database
-              const orderResponse = await fetch('http:/\/localhost:5000/api/orders', {
+              const orderResponse = await fetch('https://shop-backend-92zc.onrender.com/api/orders', {
                 method: 'POST',
                 headers: {
                   'Content-Type': 'application/json',
@@ -388,7 +388,7 @@ class PaymentService {
   // Generate UPI QR Code
   async generateUPIQRCode(amount, upiId, orderId) {
     try {
-      const response = await fetch('http:/\/localhost:5000/api/payments/generate-upi-qr', {
+      const response = await fetch('https://shop-backend-92zc.onrender.com/api/payments/generate-upi-qr', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -412,7 +412,7 @@ class PaymentService {
   // Check UPI payment status
   async checkUPIPaymentStatus(orderId) {
     try {
-      const response = await fetch(`http:/\/localhost:5000/api/payments/check-status/${orderId}`);
+      const response = await fetch(`https://shop-backend-92zc.onrender.com/api/payments/check-status/${orderId}`);
       const data = await response.json();
       return data;
     } catch (error) {
@@ -424,7 +424,7 @@ class PaymentService {
   // Verify payment
   async verifyPayment(paymentData) {
     try {
-      const response = await fetch('http:/\/localhost:5000/api/payments/verify', {
+      const response = await fetch('https://shop-backend-92zc.onrender.com/api/payments/verify', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -443,7 +443,7 @@ class PaymentService {
   // Get payment details
   async getPaymentDetails(paymentId) {
     try {
-      const response = await fetch(`http:/\/localhost:5000/api/payments/payment/${paymentId}`);
+      const response = await fetch(`https://shop-backend-92zc.onrender.com/api/payments/payment/${paymentId}`);
       const data = await response.json();
       return data;
     } catch (error) {

@@ -27,7 +27,7 @@ const OrderHistoryPage = () => {
     }
     const fetchOrders = async () => {
       try {
-        const response = await fetch(`http:/\/localhost:5000/api/orders/user/${userId}`);
+        const response = await fetch(`https://shop-backend-92zc.onrender.com/api/orders/user/${userId}`);
         if (!response.ok) throw new Error('Failed to fetch orders');
         const data = await response.json();
         setOrders(data);
@@ -59,7 +59,7 @@ const OrderHistoryPage = () => {
     if (!window.confirm('Are you sure you want to cancel this order?')) return;
     setCanceling(true);
     try {
-      const response = await fetch(`http:/\/localhost:5000/api/orders/${orderId}/cancel`, {
+      const response = await fetch(`https://shop-backend-92zc.onrender.com/api/orders/${orderId}/cancel`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
       });

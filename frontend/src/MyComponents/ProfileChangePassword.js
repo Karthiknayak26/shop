@@ -21,7 +21,7 @@ const ProfileChangePassword = () => {
     }
     setLoading(true);
     try {
-      const response = await fetch('/api/auth/change-password', {
+      const response = await fetch('https://shop-backend-92zc.onrender.com/api/auth/change-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId, currentPassword, newPassword }),

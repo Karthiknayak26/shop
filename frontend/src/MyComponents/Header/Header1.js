@@ -54,7 +54,7 @@ export default function Header1() {
     const fetchOrderCount = async () => {
       if (user && user.email) {
         try {
-          const response = await fetch(`http:/\/localhost:5000/api/orders/count?email=${user.email}`);
+          const response = await fetch(`https://shop-backend-92zc.onrender.com/api/orders/count?email=${user.email}`);
           const data = await response.json();
           setOrderCount(data.count || 0);
         } catch (error) {

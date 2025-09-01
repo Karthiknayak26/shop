@@ -151,7 +151,7 @@ const UPIPaymentModal = ({ open, onClose, amount, orderData, onPaymentSuccess })
       };
 
       // Create order in database
-      const orderResponse = await fetch('http:/\/localhost:5000/api/orders', {
+      const orderResponse = await fetch('https://shop-backend-92zc.onrender.com/api/orders', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

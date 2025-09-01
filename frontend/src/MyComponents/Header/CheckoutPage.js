@@ -63,7 +63,7 @@ const CheckoutPage = () => {
       if (user?.user?.id) {
         setIsLoadingAddress(true);
         try {
-          const response = await fetch(`http://localhost:5000/api/auth/${user.user.id}/shipping-address`);
+          const response = await fetch(`https://shop-backend-92zc.onrender.com/api/auth/${user.user.id}/shipping-address`);
           if (response.ok) {
             const data = await response.json();
             if (data.shippingAddress && Object.values(data.shippingAddress).some(value => value)) {
@@ -207,7 +207,7 @@ const CheckoutPage = () => {
 
       if (userLocal?.id && saveAddress) {
         try {
-          await fetch(`http://localhost:5000/api/auth/${userLocal.id}/shipping-address`, {
+          await fetch(`https://shop-backend-92zc.onrender.com/api/auth/${userLocal.id}/shipping-address`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ shippingAddress }),
