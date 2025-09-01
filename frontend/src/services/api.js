@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https:/\/shop-backend-92zc.onrender.com"; // Backend URL
+const API_URL = "https://shop-backend-92zc.onrender.com"; // Backend URL
 
 // Create axios instance with default config
 const apiClient = axios.create({
