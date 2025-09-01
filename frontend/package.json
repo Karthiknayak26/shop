@@ -49,7 +49,7 @@
     "eject": "react-scripts eject",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "build:analyze": "npm run build && npm run analyze",
-    "lighthouse": "lighthouse http://localhost:5000 --output html --output-path ./lighthouse-report.html",
+    "lighthouse": "lighthouse http://localhost:3000 --output html --output-path ./lighthouse-report.html",
     "performance": "npm run build && npm run lighthouse"
   },
   "eslintConfig": {
