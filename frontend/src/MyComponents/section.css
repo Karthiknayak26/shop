@@ -49,7 +49,7 @@
   left: 1rem;
   margin: 0;
   padding: 0.5rem 1rem;
-  background: rgba(0, 0, 0, 0.55);
+
   color: #fff;
   font-size: 1.25rem;
   font-weight: 700;
@@ -59,7 +59,7 @@
 }
 
 .group:hover .card-title {
-  background: rgba(24, 104, 223, 0.7);
+  background: rgba(130, 171, 233, 0.7);
 }
 
 /* Background images */
