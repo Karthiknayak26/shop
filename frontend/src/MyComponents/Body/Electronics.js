@@ -6,7 +6,7 @@ import QuantitySelector from '../Header/QuantitySelector';
 import './electronics.css';
 import { useLocation } from 'react-router-dom';
 
-const API_URL = "https:/\/script.google.com/macros/s/AKfycbyWg9bxMA2QIFnvdO_3eBaavqvMLzTYw5dUDdB1Tazapi8VxC5ZjVb82tlmQNGpbZ5u/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbyWg9bxMA2QIFnvdO_3eBaavqvMLzTYw5dUDdB1Tazapi8VxC5ZjVb82tlmQNGpbZ5u/exec";
 // <-- Replace with your Apps Script deployment URL
 
 // 📌 Electronics Categories Component
