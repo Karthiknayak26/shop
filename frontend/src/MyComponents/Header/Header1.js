@@ -258,6 +258,15 @@ export default function Header1() {
         </div>
 
         <div className={`header-actions ${mobileMenuOpen ? 'mobile-open' : ''} hidden md:flex`}>
+
+          {mobileMenuOpen && (
+            <button
+              className="mobile-back-button"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Back
+            </button>
+          )}
           <div className="header-icons">
             <Tooltip title="Order History">
               <IconButton

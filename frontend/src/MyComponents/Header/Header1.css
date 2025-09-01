@@ -1006,3 +1006,19 @@
     background-position: 0% 50%;
   }
 }
+
+.mobile-back-button {
+  width: 100%;
+  padding: 12px;
+  background-color: #f0f0f0;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: left;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.mobile-back-button:hover {
+  background-color: #e0e0e0;
+}
