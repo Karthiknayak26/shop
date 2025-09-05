@@ -164,18 +164,17 @@
 
   /* --- Special Styling for the 'Actions' Buttons --- */
 
-  /* Target the cell containing the buttons */
   .order-table td[data-label="Actions"] {
     padding-left: 0;
-    /* Remove the extra left padding */
-    text-align: right;
-    /* Align the buttons to the right */
     padding-top: 10px;
-  }
 
-  /* We don't need to show the text "Actions:" */
-  .order-table td[data-label="Actions"]::before {
-    content: "";
-    /* Hides the label for the actions row */
+    /* Use Flexbox for robust alignment and spacing */
+    display: flex;
+    justify-content: flex-end;
+    /* Aligns buttons to the right edge */
+    flex-wrap: wrap;
+    /* Allows buttons to stack on very narrow screens */
+    gap: 8px;
+    /* This is the magic! Adds space between buttons */
   }
 }
