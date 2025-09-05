@@ -1,4 +1,8 @@
 /* Grocery Deals Section */
+* {
+  box-sizing: border-box;
+}
+
 .grocery-deals {
   background: #f9f9f9;
   padding: 40px 20px;
@@ -120,6 +124,7 @@
   padding: 20px;
   font-family: 'Poppins', sans-serif;
   background-color: #fffaf5;
+  overflow-x: hidden;
 }
 
 .breadcrumb {
