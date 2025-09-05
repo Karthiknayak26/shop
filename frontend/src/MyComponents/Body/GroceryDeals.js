@@ -6,34 +6,47 @@ import QuantitySelector from '../Header/QuantitySelector';
 import './grocery-deals.css';
 import { useLocation } from 'react-router-dom';
 
-const API_URL = "https://script.google.com/macros/s/AKfycbyWg9bxMA2QIFnvdO_3eBaavqvMLzTYw5dUDdB1Tazapi8VxC5ZjVb82tlmQNGpbZ5u/exec"; // <-- Replace YOUR_SCRIPT_ID
+const API_URL = "https://script.google.com/macros/s/AKfycbyK3-QR1T1wHfxqfmVUroEEN4K5IyNGXHVVmRvx1SivCcrTCgz82ropyDabjXjtt_J4/exec"; // <-- Replace YOUR_SCRIPT_ID
 
-// 📌 Grocery Categories Component
+// 📌 Grocery Categories Component (No changes here)
 const GroceryCategories = () => {
   const navigate = useNavigate();
 
   const categories = [
     {
-      id: 'biscuits-packaged',
-      name: "Snacks and Drinks",
+      id: 'Chocolates, Biscuits & Sweets',
+      name: "Chocolates, Biscuits & Sweets",
       img: require("./snacks and drinks.png"),
     },
     {
-      id: 'cooking',
-      name: "Cooking Essentials",
+      id: 'Pickles, chutneys, sauces, and spreads',
+      name: "Pickles, chutneys, sauces, and spreads",
       img: require("./cookingessentinals.png"),
     },
     {
-      id: 'flours and pulses',
-      name: "Flours and Pulses",
+      id: 'Ready-to-cook and eat',
+      name: "Ready-to-cook and eat",
       img: require("./flours and pulses.png"),
     },
+
+    {
+      id: 'Semolina & Vermicelli',
+      name: "Semolina & Vermicelli",
+      img: require("./flours and pulses.png"),
+    },
+
+    {
+      id: 'drinks and jucies',
+      name: "Drinks and Jucies",
+      img: require("./flours and pulses.png"),
+    },
+
   ];
 
   return (
     <div className="grocery-categories">
       <header>
-        <h1>Best Deals on Groceries</h1>
+        <h1>Biscuits, drinks, and packaged foods</h1>
       </header>
       <div className="categories-grid">
         {categories.map((category) => (
@@ -55,50 +68,35 @@ const GroceryCategories = () => {
   );
 };
 
-// 📌 Grocery Products Component (Dynamic)
+// 📌 Grocery Products Component (Updated for performance)
 const GroceryProducts = () => {
   const { categoryId } = useParams();
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState(categoryId);
-  const [products, setProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]); // State to hold ALL products
   const [fetchError, setFetchError] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [cache, setCache] = useState({});
+  const [loading, setLoading] = useState(true); // Set initial loading to true
   const [selectedProduct, setSelectedProduct] = useState(null);
   const { addToCart } = useCart();
   const [searchQuery, setSearchQuery] = useState('');
   const [successMessage, setSuccessMessage] = useState(null);
 
   const categories = [
-    { id: 'biscuits-packaged', name: 'Biscuits & Packaged Foods' },
-    { id: 'cooking', name: 'Cooking Essentials' },
-    { id: 'flours and pulses', name: 'Flours and Pulses' },
+    { id: 'Chocolates, Biscuits & Sweets', name: 'Chocolates, Biscuits & Sweets' },
+    { id: 'Pickles, chutneys, sauces, and spreads', name: 'Pickles, chutneys, sauces, and spreads' },
+    { id: 'Ready-to-cook and eat', name: 'Ready-to-cook and eat' },
   ];
 
-  // ✅ Fetch products from Google Sheet API (server-side filtering)
+  // ✅ Fetch ALL products only ONCE when the component mounts
   useEffect(() => {
-    const fetchProducts = async () => {
-      let url = API_URL;
-      if (activeCategory) {
-        url += `?category=${encodeURIComponent(activeCategory)}`;
-      }
-
-      // If category already cached, use it
-      if (cache[activeCategory || 'all']) {
-        setProducts(cache[activeCategory || 'all']);
-        return;
-      }
-
+    const fetchAllProducts = async () => {
       setLoading(true);
       try {
-        const res = await fetch(url);
+        const res = await fetch(API_URL); // Fetch without category parameter
         const data = await res.json();
 
         if (!Array.isArray(data)) {
-          setFetchError('API did not return an array.');
-          setProducts([]);
-          setLoading(false);
-          return;
+          throw new Error('API did not return an array.');
         }
 
         const formatted = data.map((item, index) => ({
@@ -109,11 +107,7 @@ const GroceryProducts = () => {
           category: item.category,
         }));
 
-        setProducts(formatted);
-        setCache((prev) => ({
-          ...prev,
-          [activeCategory || 'all']: formatted,
-        }));
+        setAllProducts(formatted); // Store all products
         setFetchError(null);
       } catch (err) {
         console.error('Error fetching sheet data', err);
@@ -123,18 +117,19 @@ const GroceryProducts = () => {
       }
     };
 
-    fetchProducts();
-  }, [activeCategory, cache]);
+    fetchAllProducts();
+  }, []); // Empty dependency array means this runs only once
 
+  // This effect now only handles updating the URL
   useEffect(() => {
-    if (activeCategory) {
-      navigate(`/groceries/products/${activeCategory}`, { replace: true });
-    } else {
-      navigate('/groceries/products', { replace: true });
-    }
+    const path = activeCategory ? `/groceries/products/${activeCategory}` : '/groceries/products';
+    navigate(path, { replace: true });
   }, [activeCategory, navigate]);
 
-  const filteredProducts = products;
+  // Filter products on the client-side from the 'allProducts' state
+  const filteredProducts = activeCategory
+    ? allProducts.filter((product) => product.category === activeCategory)
+    : allProducts;
 
   const searchedProducts = searchQuery
     ? filteredProducts.filter((product) =>
@@ -165,7 +160,7 @@ const GroceryProducts = () => {
       <div className="breadcrumb">
         <span onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>Home</span>
         <ChevronRight size={16} />
-        <span onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>Groceries</span>
+        <span onClick={() => navigate('/groceries')} style={{ cursor: 'pointer' }}>Groceries</span>
         {activeCategory && (
           <>
             <ChevronRight size={16} />
@@ -184,7 +179,7 @@ const GroceryProducts = () => {
 
       <div className="category-filters">
         <button
-          onClick={() => setActiveCategory(null)}
+          onClick={() => setActiveCategory(undefined)}
           className={!activeCategory ? 'active' : ''}
         >
           All Categories
@@ -203,7 +198,7 @@ const GroceryProducts = () => {
       <div className="search-container" style={{ marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
         <input
           type="text"
-          placeholder="Search products in this category..."
+          placeholder="Search products..."
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           style={{
@@ -257,7 +252,7 @@ const GroceryProducts = () => {
   );
 };
 
-// 📌 Combined Export
+// 📌 Combined Export (No changes here)
 const GroceryDeals = () => {
   const { pathname } = useLocation();
 

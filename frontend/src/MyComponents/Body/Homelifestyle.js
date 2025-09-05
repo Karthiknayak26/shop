@@ -5,7 +5,7 @@ import { useCart } from '../Header/CartContext';
 import './Home.css';
 import { useLocation } from 'react-router-dom';
 
-const API_URL = "https://script.google.com/macros/s/AKfycbwd_c3v7MORVTbRI5ztQR5xcKXJUolvtgcUMotqzXyqpuIb_1Eqs0AyFLYni-MZTuFj/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbyK3-QR1T1wHfxqfmVUroEEN4K5IyNGXHVVmRvx1SivCcrTCgz82ropyDabjXjtt_J4/exec";
 // <-- Replace with your Apps Script deployment URL
 
 // 📌 Home & Lifestyle Categories Component
