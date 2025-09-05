@@ -131,35 +131,10 @@
 
   .order-table td {
     padding: 0.75rem 0;
+    /* Keeps the vertical spacing */
     border-bottom: 1px solid #f0f0f0;
-    position: relative;
-    /* This is crucial for positioning the label */
-
-    /* This creates space on the left for our label */
-    padding-left: 130px;
-
-    /* Align the data text (the value) to the left */
     text-align: left;
-    min-height: 24px;
-    /* Ensures the row has height */
-  }
-
-  .order-table td:last-child {
-    border-bottom: none;
-    /* Remove the line from the last item in a card */
-  }
-
-  /* This styles the LABEL (e.g., "Order ID:") */
-  .order-table td::before {
-    content: attr(data-label);
-    /* Reads the label from the data-label attribute */
-    position: absolute;
-    left: 0;
-    /* Aligns the label to the far left of the cell */
-    width: 120px;
-    /* Gives the label a fixed width */
-    font-weight: bold;
-    text-align: left;
+    /* Aligns all text to the left */
   }
 
   /* --- Special Styling for the 'Actions' Buttons --- */
