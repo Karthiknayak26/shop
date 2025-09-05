@@ -1,3 +1,15 @@
+* {
+  box-sizing: border-box;
+}
+
+
+.homelifestyles-products {
+  padding: 20px;
+  font-family: 'Poppins', sans-serif;
+  background-color: #fffaf5;
+  overflow-x: hidden;
+}
+
 .homelifestyles-categories {
   padding: 20px;
   font-family: 'Poppins', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
