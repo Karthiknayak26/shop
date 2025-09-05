@@ -101,3 +101,54 @@
   /* This is the magic property! */
   width: 100%;
 }
+
+/* In order-history.css */
+
+/* --- Responsive Card View for Mobile --- */
+@media screen and (max-width: 768px) {
+  .order-table thead {
+    /* Hide the table headers, we will add them back in the data cells */
+    display: none;
+  }
+
+  .order-table,
+  .order-table tbody,
+  .order-table tr,
+  .order-table td {
+    display: block;
+    /* Make each element stack vertically */
+    width: 100%;
+  }
+
+  .order-table tr {
+    margin-bottom: 1.5rem;
+    /* Space between each order "card" */
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  }
+
+  .order-table td {
+    text-align: right;
+    /* Align the cell content to the right */
+    position: relative;
+    padding-left: 50%;
+    /* Make space for the label on the left */
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .order-table td:last-child {
+    border-bottom: none;
+    /* Remove border from the last cell in a card */
+  }
+
+  .order-table td::before {
+    /* This is the magic to add the labels back */
+    content: attr(data-label);
+    /* We'll need to add a data-label attribute */
+    position: absolute;
+    left: 1rem;
+    font-weight: bold;
+    text-align: left;
+  }
+}
