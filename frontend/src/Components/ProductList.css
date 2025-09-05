@@ -25,6 +25,21 @@
 }
 
 
+@media (max-width: 768px) {
+  .product-list-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .product-card-wrapper {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 20px;
+  }
+}
+
 @media (max-height: 500px) and (orientation: landscape) {
   .product-list-container {
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));

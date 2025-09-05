@@ -1,5 +1,3 @@
-
-
 .checkout-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -233,7 +231,7 @@
   left: 50px;
   width: 150px;
   height: 50px;
-  
+
 }
 
 .return-to-cart {
@@ -423,11 +421,14 @@
   }
 
   .order-item {
-    padding: 12px 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
   }
 
   .item-info {
-    gap: 12px;
+    width: 100%;
+    justify-content: flex-start;
   }
 
   .item-image {
@@ -444,7 +445,7 @@
   }
 
   .item-total {
-    font-size: 15px;
+    align-self: flex-end;
   }
 
   .total-row {
