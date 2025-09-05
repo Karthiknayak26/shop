@@ -103,11 +103,11 @@
 }
 
 /* In order-history.css */
+/* REPLACE your previous @media block with this one */
 
-/* --- Responsive Card View for Mobile --- */
 @media screen and (max-width: 768px) {
   .order-table thead {
-    /* Hide the table headers, we will add them back in the data cells */
+    /* Hide the original table headers on mobile */
     display: none;
   }
 
@@ -116,39 +116,66 @@
   .order-table tr,
   .order-table td {
     display: block;
-    /* Make each element stack vertically */
+    /* Make everything stack vertically */
     width: 100%;
   }
 
   .order-table tr {
     margin-bottom: 1.5rem;
-    /* Space between each order "card" */
-    border: 1px solid #ccc;
+    border: 1px solid #e0e0e0;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    padding: 0.5rem 1rem;
+    /* Add some padding inside each card */
   }
 
   .order-table td {
-    text-align: right;
-    /* Align the cell content to the right */
-    position: relative;
-    padding-left: 50%;
-    /* Make space for the label on the left */
+    padding: 0.75rem 0;
     border-bottom: 1px solid #f0f0f0;
+    position: relative;
+    /* This is crucial for positioning the label */
+
+    /* This creates space on the left for our label */
+    padding-left: 130px;
+
+    /* Align the data text (the value) to the left */
+    text-align: left;
+    min-height: 24px;
+    /* Ensures the row has height */
   }
 
   .order-table td:last-child {
     border-bottom: none;
-    /* Remove border from the last cell in a card */
+    /* Remove the line from the last item in a card */
   }
 
+  /* This styles the LABEL (e.g., "Order ID:") */
   .order-table td::before {
-    /* This is the magic to add the labels back */
     content: attr(data-label);
-    /* We'll need to add a data-label attribute */
+    /* Reads the label from the data-label attribute */
     position: absolute;
-    left: 1rem;
+    left: 0;
+    /* Aligns the label to the far left of the cell */
+    width: 120px;
+    /* Gives the label a fixed width */
     font-weight: bold;
     text-align: left;
+  }
+
+  /* --- Special Styling for the 'Actions' Buttons --- */
+
+  /* Target the cell containing the buttons */
+  .order-table td[data-label="Actions"] {
+    padding-left: 0;
+    /* Remove the extra left padding */
+    text-align: right;
+    /* Align the buttons to the right */
+    padding-top: 10px;
+  }
+
+  /* We don't need to show the text "Actions:" */
+  .order-table td[data-label="Actions"]::before {
+    content: "";
+    /* Hides the label for the actions row */
   }
 }
