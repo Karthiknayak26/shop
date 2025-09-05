@@ -93,3 +93,11 @@
   background-color: #f0f0f0;
   cursor: pointer;
 }
+
+/* In order-history.css */
+
+.table-responsive-wrapper {
+  overflow-x: auto;
+  /* This is the magic property! */
+  width: 100%;
+}

@@ -80,89 +80,91 @@ const OrderHistoryPage = () => {
   if (error) return <div style={{ color: 'red' }}>{error}</div>;
 
   return (
-    <div className="order-history-container">
-      <button
-        onClick={() => navigate('/')}
-        className="fab-home"
-        aria-label="Go back to home"
-      >
-        <Home className="h-6 w-6" />
-      </button>
-      <h2 className="order-history-title">Order History</h2>
-      <div className="filter-container">
-        <label>Status Filter: </label>
-        <select value={filter} onChange={handleFilterChange} className="filter-select">
-          <option value="All">All</option>
-          <option value="Pending">Pending</option>
-          <option value="Delivered">Delivered</option>
-          <option value="Cancelled">Cancelled</option>
-        </select>
-      </div>
-      {filteredOrders.length === 0 ? (
-        <p>No orders found.</p>
-      ) : (
-        <table className="order-table">
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Order Date</th>
-              <th>Total Amount</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredOrders.map(order => (
-              <tr key={order._id}>
-                <td>{order.orderId ? order.orderId : 'ORD-UNKNOWN'}</td>
-                <td>{new Date(order.orderDate).toLocaleString()}</td>
-                <td>₹{order.totalAmount}</td>
-                <td>{order.status}</td>
-                <td>
-                  <button onClick={() => openModal(order)}>View Details</button>
-                  {order.status !== 'Delivered' && order.status !== 'Cancelled' && (
-                    <button
-                      className="button-margin"
-                      onClick={() => handleCancelOrder(order._id)}
-                      disabled={canceling}
-                    >
-                      {canceling ? 'Cancelling...' : 'Cancel'}
-                    </button>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-
-      {/* Order Details Modal */}
-      {modalOpen && selectedOrder && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <h3>Order Details</h3>
-            <p><b>Order ID:</b> {selectedOrder.orderId ? selectedOrder.orderId : 'ORD-UNKNOWN'}</p>
-            <p><b>Order Date:</b> {new Date(selectedOrder.orderDate).toLocaleString()}</p>
-            <p><b>Status:</b> {selectedOrder.status}</p>
-            <p><b>Total Amount:</b> ₹{selectedOrder.totalAmount}</p>
-            <p><b>Shipping Address:</b><br />
-              {selectedOrder.shippingAddress.name}, {selectedOrder.shippingAddress.email}<br />
-              {selectedOrder.shippingAddress.address}, {selectedOrder.shippingAddress.city}, {selectedOrder.shippingAddress.postalCode}<br />
-              Phone: {selectedOrder.shippingAddress.phone}
-            </p>
-            <p><b>Payment Method:</b> {selectedOrder.paymentMethod}</p>
-            <div>
-              <b>Items:</b>
-              <ul>
-                {selectedOrder.items.map((item, idx) => (
-                  <li key={idx}>{item.name} x {item.quantity} (₹{item.price} each)</li>
-                ))}
-              </ul>
-            </div>
-            <button onClick={closeModal}>Close</button>
-          </div>
+    <div className="table-responsive-wrapper">
+      <div className="order-history-container">
+        <button
+          onClick={() => navigate('/')}
+          className="fab-home"
+          aria-label="Go back to home"
+        >
+          <Home className="h-6 w-6" />
+        </button>
+        <h2 className="order-history-title">Order History</h2>
+        <div className="filter-container">
+          <label>Status Filter: </label>
+          <select value={filter} onChange={handleFilterChange} className="filter-select">
+            <option value="All">All</option>
+            <option value="Pending">Pending</option>
+            <option value="Delivered">Delivered</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
         </div>
-      )}
+        {filteredOrders.length === 0 ? (
+          <p>No orders found.</p>
+        ) : (
+          <table className="order-table">
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                <th>Order Date</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredOrders.map(order => (
+                <tr key={order._id}>
+                  <td>{order.orderId ? order.orderId : 'ORD-UNKNOWN'}</td>
+                  <td>{new Date(order.orderDate).toLocaleString()}</td>
+                  <td>₹{order.totalAmount}</td>
+                  <td>{order.status}</td>
+                  <td>
+                    <button onClick={() => openModal(order)}>View Details</button>
+                    {order.status !== 'Delivered' && order.status !== 'Cancelled' && (
+                      <button
+                        className="button-margin"
+                        onClick={() => handleCancelOrder(order._id)}
+                        disabled={canceling}
+                      >
+                        {canceling ? 'Cancelling...' : 'Cancel'}
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+
+        {/* Order Details Modal */}
+        {modalOpen && selectedOrder && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <h3>Order Details</h3>
+              <p><b>Order ID:</b> {selectedOrder.orderId ? selectedOrder.orderId : 'ORD-UNKNOWN'}</p>
+              <p><b>Order Date:</b> {new Date(selectedOrder.orderDate).toLocaleString()}</p>
+              <p><b>Status:</b> {selectedOrder.status}</p>
+              <p><b>Total Amount:</b> ₹{selectedOrder.totalAmount}</p>
+              <p><b>Shipping Address:</b><br />
+                {selectedOrder.shippingAddress.name}, {selectedOrder.shippingAddress.email}<br />
+                {selectedOrder.shippingAddress.address}, {selectedOrder.shippingAddress.city}, {selectedOrder.shippingAddress.postalCode}<br />
+                Phone: {selectedOrder.shippingAddress.phone}
+              </p>
+              <p><b>Payment Method:</b> {selectedOrder.paymentMethod}</p>
+              <div>
+                <b>Items:</b>
+                <ul>
+                  {selectedOrder.items.map((item, idx) => (
+                    <li key={idx}>{item.name} x {item.quantity} (₹{item.price} each)</li>
+                  ))}
+                </ul>
+              </div>
+              <button onClick={closeModal}>Close</button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
