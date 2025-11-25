@@ -24,6 +24,13 @@ router.post('/register', async (req, res) => {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // DEBUG: Log password details
+    console.log('[REGISTRATION DEBUG]');
+    console.log('  Email:', email);
+    console.log('  Original password length:', password.length);
+    console.log('  Original password:', password);
+    console.log('  Hashed password:', hashedPassword);
+
     // Create new user
     const newUser = new User({
       name,
@@ -32,6 +39,10 @@ router.post('/register', async (req, res) => {
     });
 
     await newUser.save();
+
+    // DEBUG: Verify saved password
+    console.log('  Saved user password:', newUser.password);
+    console.log('[END REGISTRATION DEBUG]');
 
     // Return created user data
     const userData = {
@@ -135,7 +146,18 @@ router.post('/login', async (req, res) => {
       return res.status(404).json({ message: 'No account found' });
     }
 
+    // DEBUG: Log login attempt details
+    console.log('[LOGIN DEBUG]');
+    console.log('  Email:', email);
+    console.log('  Password provided length:', password.length);
+    console.log('  Password provided:', password);
+    console.log('  Stored hash:', user.password);
+
     const validPassword = await bcrypt.compare(password, user.password);
+
+    console.log('  Comparison result:', validPassword);
+    console.log('[END LOGIN DEBUG]');
+
     if (!validPassword) {
       return res.status(401).json({ message: 'Invalid password' });
     }
@@ -199,7 +221,7 @@ router.post('/change-password', async (req, res) => {
     }
     user.password = await bcrypt.hash(newPassword, 10);
     await user.save();
-    
+
     // Send notification email
     try {
       await emailService.sendNotification(
@@ -211,7 +233,7 @@ router.post('/change-password', async (req, res) => {
       console.error('Failed to send password change notification email:', emailError);
       // Continue with the response even if email fails
     }
-    
+
     res.json({ message: 'Password changed successfully.' });
   } catch (err) {
     console.error('Change password error:', err);
