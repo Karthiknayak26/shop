@@ -15,16 +15,14 @@ router.post('/', async (req, res) => {
     const randomNum = Math.floor(1000 + Math.random() * 9000); // 4-digit random
     newOrder.orderId = `ORD${dateStr}-${randomNum}`;
     await newOrder.save();
-    
-    // Send order confirmation email
-    try {
-      await emailService.sendOrderConfirmation(newOrder);
-      console.log('Order confirmation email sent successfully');
-    } catch (emailError) {
-      console.error('Failed to send order confirmation email:', emailError);
-      // Continue with the response even if email fails
-    }
-    
+
+    // Send order confirmation email asynchronously (non-blocking)
+    // Don't await - let it run in the background
+    emailService.sendOrderConfirmation(newOrder)
+      .then(() => console.log('Order confirmation email sent successfully'))
+      .catch(emailError => console.error('Failed to send order confirmation email:', emailError));
+
+    // Respond immediately without waiting for email
     res.status(201).json({ message: 'Order saved successfully', order: newOrder });
   } catch (err) {
     console.error('Order creation error:', err);

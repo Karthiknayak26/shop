@@ -9,7 +9,11 @@ const transporter = nodemailer.createTransport({
   auth: {
     user: process.env.EMAIL_USER || 'karthiknayakgj26@gmail.com',
     pass: process.env.EMAIL_PASS || 'kgol ipxr rnlh flae'
-  }
+  },
+  // Add timeout configurations to prevent blocking
+  connectionTimeout: 10000, // 10 seconds
+  greetingTimeout: 10000, // 10 seconds
+  socketTimeout: 15000 // 15 seconds
 });
 
 /**
