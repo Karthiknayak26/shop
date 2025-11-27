@@ -13,9 +13,6 @@ const analyticsRoutes = require('./routes/analyticsRoutes');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
-const mongoSanitize = require('express-mongo-sanitize'); // Check if installed, if not, skip or install.
-// package.json didn't show mongoSanitize. I'll skip it for now to avoid install issues, or check.
-// I'll stick to what's in package.json: helmet, hpp, express-rate-limit.
 
 require('dotenv').config();
 
