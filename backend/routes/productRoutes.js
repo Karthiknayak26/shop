@@ -55,8 +55,8 @@ router.get('/:id', async (req, res) => {
 // POST create a new product
 router.post('/', async (req, res) => {
   try {
-    const { name, price, description, category, stock, imageUrl } = req.body;
-    const product = new Product({ name, price, description, category, stock, imageUrl });
+    const { name, price, description, category, stock, imageUrl, unit, unitSize } = req.body;
+    const product = new Product({ name, price, description, category, stock, imageUrl, unit, unitSize });
     await product.save();
     res.status(201).json(product); // Return the created product
   } catch (error) {
