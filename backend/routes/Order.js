@@ -17,10 +17,13 @@ router.post('/', async (req, res) => {
     await newOrder.save();
 
     // Send order confirmation email asynchronously (non-blocking)
-    // Don't await - let it run in the background
-    emailService.sendOrderConfirmation(newOrder)
-      .then(() => console.log('Order confirmation email sent successfully'))
-      .catch(emailError => console.error('Failed to send order confirmation email:', emailError));
+    // Use setImmediate to ensure it runs after the current I/O cycle (response sending)
+    setImmediate(() => {
+      console.log(`[${new Date().toISOString()}] Attempting to send order confirmation email for ${newOrder.orderId}`);
+      emailService.sendOrderConfirmation(newOrder)
+        .then(() => console.log(`[${new Date().toISOString()}] Order confirmation email sent successfully for ${newOrder.orderId}`))
+        .catch(emailError => console.error(`[${new Date().toISOString()}] Failed to send order confirmation email for ${newOrder.orderId}:`, emailError));
+    });
 
     // Respond immediately without waiting for email
     res.status(201).json({ message: 'Order saved successfully', order: newOrder });
