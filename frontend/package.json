@@ -50,7 +50,8 @@
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "build:analyze": "npm run build && npm run analyze",
     "lighthouse": "lighthouse http://localhost:5000 --output html --output-path ./lighthouse-report.html",
-    "performance": "npm run build && npm run lighthouse"
+    "performance": "npm run build && npm run lighthouse",
+    "cy:run": "cypress run"
   },
   "eslintConfig": {
     "extends": [
@@ -72,6 +73,7 @@
   },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "cypress": "^15.7.0",
     "lighthouse": "^11.6.0",
     "postcss-safe-parser": "^7.0.1",
     "source-map-explorer": "^2.5.3",
