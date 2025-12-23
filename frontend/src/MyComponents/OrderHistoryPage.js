@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './order-history.css';
 import { useNavigate } from 'react-router-dom';
 import { Home } from 'lucide-react';
-
+import { useUser } from './Header/UserContext';
 
 
 const OrderHistoryPage = () => {
@@ -15,16 +15,25 @@ const OrderHistoryPage = () => {
   const [canceling, setCanceling] = useState(false);
   const navigate = useNavigate();
 
-  // Assume user info is stored in localStorage after login
-  const user = JSON.parse(localStorage.getItem('user'));
-  const userId = user ? user.id : null;
+  const { user, isLoading: userLoading } = useUser();
+  // Debug what we are getting
+  console.log('OrderHistoryPage: user object:', user);
+  console.log('OrderHistoryPage: isLoading:', userLoading);
+
+  // Check if we need to access user.user.id or user.id
+  const userId = user?.user?.id || user?.id || user?._id || null;
+  console.log('OrderHistoryPage: Resolved userId:', userId);
 
   useEffect(() => {
+    if (userLoading) return; // Wait for user to load
+
     if (!userId) {
       setError('You must be logged in to view your order history.');
       setLoading(false);
       return;
     }
+    setError(null); // Clear previous errors if any
+
     const fetchOrders = async () => {
       try {
         const response = await fetch(`https://shop-backend-92zc.onrender.com/api/orders/user/${userId}`);
@@ -38,7 +47,10 @@ const OrderHistoryPage = () => {
       }
     };
     fetchOrders();
-  }, [userId]);
+  }, [userId, userLoading]);
+
+  // If user context is still loading, show a loading state
+  if (userLoading) return <div>Loading user session...</div>;
 
   const handleFilterChange = (e) => setFilter(e.target.value);
 

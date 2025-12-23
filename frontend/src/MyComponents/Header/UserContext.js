@@ -15,7 +15,10 @@ const saveUserToStorage = (userData) => {
 const loadUserFromStorage = () => {
   try {
     const userData = localStorage.getItem('kandukuru_user');
-    return userData ? JSON.parse(userData) : null;
+    console.log('UserContext: Loading from storage. Raw:', userData);
+    const parsed = userData ? JSON.parse(userData) : null;
+    console.log('UserContext: Parsed user:', parsed);
+    return parsed;
   } catch (error) {
     console.error('Error loading user from localStorage:', error);
     return null;
