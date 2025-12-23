@@ -16,13 +16,7 @@ const OrderHistoryPage = () => {
   const navigate = useNavigate();
 
   const { user, isLoading: userLoading } = useUser();
-  // Debug what we are getting
-  console.log('OrderHistoryPage: user object:', user);
-  console.log('OrderHistoryPage: isLoading:', userLoading);
-
-  // Check if we need to access user.user.id or user.id
-  const userId = user?.user?.id || user?.id || user?._id || null;
-  console.log('OrderHistoryPage: Resolved userId:', userId);
+  const userId = user ? user.id : null;
 
   useEffect(() => {
     if (userLoading) return; // Wait for user to load
