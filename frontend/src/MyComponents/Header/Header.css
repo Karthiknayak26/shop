@@ -13,7 +13,7 @@
 .custom-list {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 0 0 0 3rem;
   display: flex;
   gap: 1rem;
   font-weight: bold;
@@ -306,6 +306,9 @@
   width: 100%;
 }
 
+.ml-8 {
+  margin-left: 2rem;
+}
 
 .ml-8 .no-underline {
   background-color: #ffd700;
