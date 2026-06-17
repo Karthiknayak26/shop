@@ -30,7 +30,15 @@ const ProfilePage = () => {
       if (userData.id) {
         setAddressLoading(true);
         try {
-          const response = await fetch(`https://shop-backend-92zc.onrender.com/api/auth/${userData.id}/shipping-address`);
+          const token = localStorage.getItem('authToken');
+          const baseUrl = (process.env.REACT_APP_API_URL || "http://localhost:5000").endsWith('/api')
+            ? (process.env.REACT_APP_API_URL || "http://localhost:5000")
+            : (process.env.REACT_APP_API_URL || "http://localhost:5000") + '/api';
+          const response = await fetch(`${baseUrl}/auth/shipping-address`, {
+            headers: {
+              'Authorization': token ? `Bearer ${token}` : ''
+            }
+          });
           if (response.ok) {
             const data = await response.json();
             if (data.shippingAddress) {
@@ -54,10 +62,15 @@ const ProfilePage = () => {
     setSuccess('');
     setError('');
     try {
-      const response = await fetch(`https://shop-backend-92zc.onrender.com/api/auth/${userData.id}`, {
+      const token = localStorage.getItem('authToken');
+      const baseUrl = (process.env.REACT_APP_API_URL || "http://localhost:5000").endsWith('/api')
+        ? (process.env.REACT_APP_API_URL || "http://localhost:5000")
+        : (process.env.REACT_APP_API_URL || "http://localhost:5000") + '/api';
+      const response = await fetch(`${baseUrl}/auth/profile`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': token ? `Bearer ${token}` : ''
         },
         body: JSON.stringify({ name, email }),
       });
@@ -86,10 +99,15 @@ const ProfilePage = () => {
     setAddressSuccess('');
     setAddressError('');
     try {
-      const response = await fetch(`https://shop-backend-92zc.onrender.com/api/auth/${userData.id}/shipping-address`, {
+      const token = localStorage.getItem('authToken');
+      const baseUrl = (process.env.REACT_APP_API_URL || "http://localhost:5000").endsWith('/api')
+        ? (process.env.REACT_APP_API_URL || "http://localhost:5000")
+        : (process.env.REACT_APP_API_URL || "http://localhost:5000") + '/api';
+      const response = await fetch(`${baseUrl}/auth/shipping-address`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': token ? `Bearer ${token}` : ''
         },
         body: JSON.stringify({ shippingAddress }),
       });

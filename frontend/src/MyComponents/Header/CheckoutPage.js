@@ -62,7 +62,15 @@ const CheckoutPage = () => {
       if (user?.user?.id) {
         setIsLoadingAddress(true);
         try {
-          const response = await fetch(`https://shop-backend-92zc.onrender.com/api/auth/${user.user.id}/shipping-address`);
+          const token = localStorage.getItem('authToken');
+          const baseUrl = (process.env.REACT_APP_API_URL || "http://localhost:5000").endsWith('/api')
+            ? (process.env.REACT_APP_API_URL || "http://localhost:5000")
+            : (process.env.REACT_APP_API_URL || "http://localhost:5000") + '/api';
+          const response = await fetch(`${baseUrl}/auth/shipping-address`, {
+            headers: {
+              'Authorization': token ? `Bearer ${token}` : ''
+            }
+          });
           if (response.ok) {
             const data = await response.json();
             if (data.shippingAddress && Object.values(data.shippingAddress).some(value => value)) {
@@ -226,10 +234,15 @@ const CheckoutPage = () => {
       // Save shipping address if user is logged in and checkbox is checked
       if (user?.id && saveAddress) {
         try {
-          const response = await fetch(`https://shop-backend-92zc.onrender.com/api/auth/${user.id}/shipping-address`, {
+          const token = localStorage.getItem('authToken');
+          const baseUrl = (process.env.REACT_APP_API_URL || "http://localhost:5000").endsWith('/api')
+            ? (process.env.REACT_APP_API_URL || "http://localhost:5000")
+            : (process.env.REACT_APP_API_URL || "http://localhost:5000") + '/api';
+          const response = await fetch(`${baseUrl}/auth/shipping-address`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
+              'Authorization': token ? `Bearer ${token}` : '',
             },
             body: JSON.stringify({ shippingAddress }),
           });
@@ -271,10 +284,15 @@ const CheckoutPage = () => {
           // Handle COD order
           setIsProcessingPayment(true);
 
-          const response = await fetch('https://shop-backend-92zc.onrender.com/api/orders', {
+          const token = localStorage.getItem('authToken');
+          const baseUrl = (process.env.REACT_APP_API_URL || "http://localhost:5000").endsWith('/api')
+            ? (process.env.REACT_APP_API_URL || "http://localhost:5000")
+            : (process.env.REACT_APP_API_URL || "http://localhost:5000") + '/api';
+          const response = await fetch(`${baseUrl}/orders`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
+              'Authorization': token ? `Bearer ${token}` : '',
             },
             body: JSON.stringify(orderData),
           });

@@ -112,6 +112,18 @@ router.get('/', authMiddleware, adminMiddleware, async (req, res) => {
 });
 
 // ============================================
+// GET USER'S ORDER COUNT (Authenticated)
+// ============================================
+router.get('/count', authMiddleware, async (req, res) => {
+  try {
+    const count = await Order.countDocuments({ user: req.user._id, status: { $ne: 'Cancelled' } });
+    res.json({ count });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to count orders' });
+  }
+});
+
+// ============================================
 // GET USER'S OWN ORDERS (Authenticated)
 // ============================================
 router.get('/my-orders', authMiddleware, async (req, res) => {

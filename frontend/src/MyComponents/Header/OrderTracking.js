@@ -19,7 +19,10 @@ const OrderTracking = () => {
 
     try {
       // Replace this URL with your backend endpoint for order tracking
-      const response = await fetch(`https://shop-backend-92zc.onrender.com/api/orders/track/${orderId}`);
+      const baseUrl = (process.env.REACT_APP_API_URL || "http://localhost:5000").endsWith('/api')
+        ? (process.env.REACT_APP_API_URL || "http://localhost:5000")
+        : (process.env.REACT_APP_API_URL || "http://localhost:5000") + '/api';
+      const response = await fetch(`${baseUrl}/orders/track/${orderId}`);
       if (!response.ok) {
         throw new Error('Order not found. Please check your Order ID.');
       }

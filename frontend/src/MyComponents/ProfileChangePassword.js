@@ -21,9 +21,16 @@ const ProfileChangePassword = () => {
     }
     setLoading(true);
     try {
-      const response = await fetch('https://shop-backend-92zc.onrender.com/api/auth/change-password', {
+      const token = localStorage.getItem('authToken');
+      const baseUrl = (process.env.REACT_APP_API_URL || "http://localhost:5000").endsWith('/api')
+        ? (process.env.REACT_APP_API_URL || "http://localhost:5000")
+        : (process.env.REACT_APP_API_URL || "http://localhost:5000") + '/api';
+      const response = await fetch(`${baseUrl}/auth/change-password`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': token ? `Bearer ${token}` : ''
+        },
         body: JSON.stringify({ userId, currentPassword, newPassword }),
       });
       const data = await response.json();

@@ -52,9 +52,17 @@ export default function Header1() {
   // Fetch order count when user changes
   useEffect(() => {
     const fetchOrderCount = async () => {
-      if (user && user.email) {
+      if (user) {
         try {
-          const response = await fetch(`https://shop-backend-92zc.onrender.com/api/orders/count?email=${user.email}`);
+          const token = localStorage.getItem('authToken');
+          const baseUrl = (process.env.REACT_APP_API_URL || "http://localhost:5000").endsWith('/api')
+            ? (process.env.REACT_APP_API_URL || "http://localhost:5000")
+            : (process.env.REACT_APP_API_URL || "http://localhost:5000") + '/api';
+          const response = await fetch(`${baseUrl}/orders/count`, {
+            headers: {
+              'Authorization': token ? `Bearer ${token}` : ''
+            }
+          });
           const data = await response.json();
           setOrderCount(data.count || 0);
         } catch (error) {

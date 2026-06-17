@@ -30,7 +30,15 @@ const OrderHistoryPage = () => {
 
     const fetchOrders = async () => {
       try {
-        const response = await fetch(`https://shop-backend-92zc.onrender.com/api/orders/user/${userId}`);
+        const token = localStorage.getItem('authToken');
+        const baseUrl = (process.env.REACT_APP_API_URL || "http://localhost:5000").endsWith('/api')
+          ? (process.env.REACT_APP_API_URL || "http://localhost:5000")
+          : (process.env.REACT_APP_API_URL || "http://localhost:5000") + '/api';
+        const response = await fetch(`${baseUrl}/orders/user/${userId}`, {
+          headers: {
+            'Authorization': token ? `Bearer ${token}` : ''
+          }
+        });
         if (!response.ok) throw new Error('Failed to fetch orders');
         const data = await response.json();
         setOrders(data);
@@ -65,9 +73,16 @@ const OrderHistoryPage = () => {
     if (!window.confirm('Are you sure you want to cancel this order?')) return;
     setCanceling(true);
     try {
-      const response = await fetch(`https://shop-backend-92zc.onrender.com/api/orders/${orderId}/cancel`, {
+      const token = localStorage.getItem('authToken');
+      const baseUrl = (process.env.REACT_APP_API_URL || "http://localhost:5000").endsWith('/api')
+        ? (process.env.REACT_APP_API_URL || "http://localhost:5000")
+        : (process.env.REACT_APP_API_URL || "http://localhost:5000") + '/api';
+      const response = await fetch(`${baseUrl}/orders/${orderId}/cancel`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': token ? `Bearer ${token}` : ''
+        },
       });
       if (!response.ok) throw new Error('Failed to cancel order');
       // Update order status in UI

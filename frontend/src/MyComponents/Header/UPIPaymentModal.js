@@ -151,10 +151,15 @@ const UPIPaymentModal = ({ open, onClose, amount, orderData, onPaymentSuccess })
       };
 
       // Create order in database
-      const orderResponse = await fetch('https://shop-backend-92zc.onrender.com/api/orders', {
+      const token = localStorage.getItem('authToken');
+      const baseUrl = (process.env.REACT_APP_API_URL || "http://localhost:5000").endsWith('/api')
+        ? (process.env.REACT_APP_API_URL || "http://localhost:5000")
+        : (process.env.REACT_APP_API_URL || "http://localhost:5000") + '/api';
+      const orderResponse = await fetch(`${baseUrl}/orders`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': token ? `Bearer ${token}` : '',
         },
         body: JSON.stringify(updatedOrderData),
       });

@@ -24,7 +24,10 @@ const HelpCenter = () => {
     const orderData = JSON.parse(localStorage.getItem('orderData'));
     const orderId = orderData?._id || '';
     try {
-      await axios.post('https://shop-backend-92zc.onrender.com/api/feedback', {
+      const baseUrl = (process.env.REACT_APP_API_URL || "http://localhost:5000").endsWith('/api')
+        ? (process.env.REACT_APP_API_URL || "http://localhost:5000")
+        : (process.env.REACT_APP_API_URL || "http://localhost:5000") + '/api';
+      await axios.post(`${baseUrl}/feedback`, {
         name: formData.name,
         email: formData.email,
         orderId,

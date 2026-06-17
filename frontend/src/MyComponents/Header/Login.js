@@ -22,7 +22,10 @@ const LoginPage = () => {
     setLoading(true);
 
     try {
-      const response = await fetch('https://shop-backend-92zc.onrender.com/api/auth/login', {
+      const baseUrl = (process.env.REACT_APP_API_URL || "http://localhost:5000").endsWith('/api')
+        ? (process.env.REACT_APP_API_URL || "http://localhost:5000")
+        : (process.env.REACT_APP_API_URL || "http://localhost:5000") + '/api';
+      const response = await fetch(`${baseUrl}/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

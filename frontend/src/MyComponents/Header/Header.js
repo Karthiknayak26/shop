@@ -22,7 +22,10 @@ export default function Header() {
     const fetchLocations = async () => {
       try {
         // Fetching location data from backend API
-        const response = await fetch('https://shop-backend-92zc.onrender.com/api/locations');
+        const baseUrl = (process.env.REACT_APP_API_URL || "http://localhost:5000").endsWith('/api')
+          ? (process.env.REACT_APP_API_URL || "http://localhost:5000")
+          : (process.env.REACT_APP_API_URL || "http://localhost:5000") + '/api';
+        const response = await fetch(`${baseUrl}/locations`);
         if (!response.ok) {
           throw new Error(`Error: ${response.status} ${response.statusText}`);
         }
