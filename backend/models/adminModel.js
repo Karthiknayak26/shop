@@ -125,6 +125,11 @@ AdminSchema.virtual('isLocked').get(function () {
   return !!(this.lockoutUntil && this.lockoutUntil > Date.now());
 });
 
+// Virtual for admin check
+AdminSchema.virtual('isAdmin').get(function () {
+  return ['super_admin', 'admin', 'manager', 'staff'].includes(this.role);
+});
+
 // Method to increment login attempts
 AdminSchema.methods.incLoginAttempts = function () {
   // If we have a previous lock that has expired, restart at 1

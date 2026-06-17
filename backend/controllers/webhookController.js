@@ -2,10 +2,20 @@ const crypto = require('crypto');
 const Payment = require('../models/Payment');
 const Order = require('../models/Order');
 const razorpayConfig = require('../config/razorpay');
+const logger = require('../utils/logger');
 
 // Verify webhook signature
 const verifyWebhookSignature = (body, signature) => {
   try {
+    if (!signature) {
+      logger.error('Webhook signature header missing');
+      return false;
+    }
+    if (!razorpayConfig.webhook_secret) {
+      logger.error('Webhook secret not configured in backend');
+      return false;
+    }
+
     const expectedSignature = crypto
       .createHmac('sha256', razorpayConfig.webhook_secret)
       .update(body, 'utf8')
@@ -16,7 +26,7 @@ const verifyWebhookSignature = (body, signature) => {
       Buffer.from(signature, 'hex')
     );
   } catch (error) {
-    console.error('Webhook signature verification error:', error);
+    logger.error('Webhook signature verification exception', { error: error.message });
     return false;
   }
 };
@@ -26,78 +36,77 @@ const processPaymentCaptured = async (payload) => {
   try {
     const { id, order_id, amount, currency, method, bank, card, upi, email, contact, fee, tax, error_code, error_description } = payload;
 
-    console.log(`💰 Processing payment captured webhook for payment ID: ${id}`);
+    logger.info(`Processing payment captured webhook`, { paymentId: id, orderId: order_id });
 
-    // Find existing payment record
+    // Look up order to associate correctly
+    const order = await Order.findOne({ 'paymentInfo.razorpayOrderId': order_id });
+
+    // Find or create payment record
     let payment = await Payment.findOne({ razorpayPaymentId: id });
 
     if (!payment) {
-      console.log(`⚠️ Payment record not found for payment ID: ${id}, creating new record`);
-
-      // Create new payment record
       payment = new Payment({
         paymentId: id,
         orderId: order_id,
-        receipt: `receipt_${Date.now()}`,
+        receipt: order?.orderId || `receipt_${Date.now()}`,
         amount: amount,
         currency: currency,
         amountInRupees: amount / 100,
-        method: method,
+        method: method || 'online',
         bank: bank || null,
         cardNetwork: card?.network || null,
         upiId: upi?.vpa || null,
         status: 'captured',
         captureStatus: 'captured',
         captureDate: new Date(),
-        customerEmail: email,
-        customerPhone: contact,
+        customerEmail: email || order?.shippingAddress?.email,
+        customerPhone: contact || order?.shippingAddress?.phone,
+        customerName: order?.shippingAddress?.name || 'Customer',
+        customerId: order?.user || null,
+        orderReference: order?._id || null,
         razorpayPaymentId: id,
         razorpayOrderId: order_id,
         isVerified: true,
         verificationDate: new Date(),
         metadata: {
-          fee: fee || 0,
-          tax: tax || 0,
-          errorCode: error_code || null,
-          errorDescription: error_description || null
+          fee: fee ? fee.toString() : '0',
+          tax: tax ? tax.toString() : '0',
+          errorCode: error_code || '',
+          errorDescription: error_description || ''
         }
       });
     } else {
-      // Update existing payment record
       payment.status = 'captured';
       payment.captureStatus = 'captured';
       payment.captureDate = new Date();
       payment.isVerified = true;
       payment.verificationDate = new Date();
-      payment.method = method;
+      payment.method = method || payment.method;
       payment.bank = bank || payment.bank;
       payment.cardNetwork = card?.network || payment.cardNetwork;
       payment.upiId = upi?.vpa || payment.upiId;
-
-      if (payment.metadata) {
-        payment.metadata.set('fee', fee || 0);
-        payment.metadata.set('tax', tax || 0);
-        payment.metadata.set('errorCode', error_code || null);
-        payment.metadata.set('errorDescription', error_description || null);
+      if (order) {
+        payment.orderReference = order._id;
+        payment.customerId = order.user;
+        if (!payment.customerName) payment.customerName = order.shippingAddress?.name;
       }
     }
 
     await payment.save();
-    console.log(`✅ Payment captured successfully for payment ID: ${id}`);
+    logger.info(`Payment record saved`, { paymentId: id });
 
-    // Update order status if order reference exists
-    if (payment.orderReference) {
-      await Order.findByIdAndUpdate(payment.orderReference, {
-        paymentStatus: 'completed',
-        status: 'confirmed',
-        updatedAt: new Date()
-      });
-      console.log(`✅ Order status updated for order ID: ${payment.orderReference}`);
+    // Update order status if found
+    if (order) {
+      order.paymentInfo.razorpayPaymentId = id;
+      order.paymentInfo.paymentStatus = 'completed';
+      order.status = 'Confirmed';
+      await order.save();
+      logger.info(`Order status updated to Confirmed`, { orderId: order.orderId });
     }
 
     return { success: true, paymentId: id };
   } catch (error) {
-    console.error('❌ Error processing payment captured webhook:', error);
+    logger.error('Error processing payment captured webhook', { error: error.message });
     throw error;
   }
 };
@@ -107,60 +116,64 @@ const processPaymentFailed = async (payload) => {
   try {
     const { id, order_id, amount, currency, method, error_code, error_description } = payload;
 
-    console.log(`❌ Processing payment failed webhook for payment ID: ${id}`);
+    logger.warn(`Processing payment failed webhook`, { paymentId: id, orderId: order_id });
 
-    // Find existing payment record
+    const order = await Order.findOne({ 'paymentInfo.razorpayOrderId': order_id });
+
     let payment = await Payment.findOne({ razorpayPaymentId: id });
 
     if (!payment) {
-      console.log(`⚠️ Payment record not found for payment ID: ${id}, creating new record`);
-
-      // Create new payment record for failed payment
       payment = new Payment({
         paymentId: id,
         orderId: order_id,
-        receipt: `receipt_${Date.now()}`,
+        receipt: order?.orderId || `receipt_${Date.now()}`,
         amount: amount,
         currency: currency,
         amountInRupees: amount / 100,
-        method: method,
+        method: method || 'online',
         status: 'failed',
         captureStatus: 'failed',
-        errorCode: error_code,
-        errorDescription: error_description,
-        failureReason: error_description,
+        errorCode: error_code || '',
+        errorDescription: error_description || '',
+        failureReason: error_description || '',
         razorpayPaymentId: id,
         razorpayOrderId: order_id,
+        customerEmail: order?.shippingAddress?.email,
+        customerPhone: order?.shippingAddress?.phone,
+        customerName: order?.shippingAddress?.name || 'Customer',
+        customerId: order?.user || null,
+        orderReference: order?._id || null,
         isVerified: true,
         verificationDate: new Date()
       });
     } else {
-      // Update existing payment record
       payment.status = 'failed';
       payment.captureStatus = 'failed';
-      payment.errorCode = error_code;
-      payment.errorDescription = error_description;
-      payment.failureReason = error_description;
+      payment.errorCode = error_code || '';
+      payment.errorDescription = error_description || '';
+      payment.failureReason = error_description || '';
       payment.isVerified = true;
       payment.verificationDate = new Date();
+      if (order) {
+        payment.orderReference = order._id;
+        payment.customerId = order.user;
+      }
     }
 
     await payment.save();
-    console.log(`✅ Payment failed status recorded for payment ID: ${id}`);
+    logger.warn(`Failed payment record saved`, { paymentId: id });
 
-    // Update order status if order reference exists
-    if (payment.orderReference) {
-      await Order.findByIdAndUpdate(payment.orderReference, {
-        paymentStatus: 'failed',
-        status: 'cancelled',
-        updatedAt: new Date()
-      });
-      console.log(`✅ Order status updated for failed payment, order ID: ${payment.orderReference}`);
+    if (order) {
+      order.paymentInfo.razorpayPaymentId = id;
+      order.paymentInfo.paymentStatus = 'failed';
+      order.status = 'Cancelled'; // Cancel order on payment failure
+      await order.save();
+      logger.warn(`Order status set to Cancelled due to payment failure`, { orderId: order.orderId });
     }
 
     return { success: true, paymentId: id };
   } catch (error) {
-    console.error('❌ Error processing payment failed webhook:', error);
+    logger.error('Error processing payment failed webhook', { error: error.message });
     throw error;
   }
 };
@@ -168,37 +181,35 @@ const processPaymentFailed = async (payload) => {
 // Process refund created webhook
 const processRefundCreated = async (payload) => {
   try {
-    const { id, payment_id, amount, currency, receipt, speed, status, notes } = payload;
+    const { id, payment_id, amount, currency, status, notes } = payload;
 
-    console.log(`🔄 Processing refund created webhook for refund ID: ${id}`);
+    logger.info(`Processing refund created webhook`, { refundId: id, paymentId: payment_id });
 
-    // Find the original payment
     const payment = await Payment.findOne({ razorpayPaymentId: payment_id });
 
     if (!payment) {
-      console.log(`⚠️ Original payment not found for refund ID: ${id}`);
+      logger.error(`Original payment not found for refund`, { refundId: id, paymentId: payment_id });
       return { success: false, error: 'Original payment not found' };
     }
 
-    // Update payment with refund information
-    const refundAmount = amount / 100; // Convert from paise to rupees
+    const refundAmount = amount / 100;
     await payment.processRefund(refundAmount, notes || 'Customer request');
 
-    console.log(`✅ Refund processed successfully for payment ID: ${payment_id}, refund ID: ${id}`);
+    logger.info(`Refund status updated on payment record`, { paymentId: payment_id });
 
-    // Update order status if order reference exists
     if (payment.orderReference) {
-      await Order.findByIdAndUpdate(payment.orderReference, {
-        paymentStatus: 'refunded',
-        status: 'refunded',
-        updatedAt: new Date()
-      });
-      console.log(`✅ Order status updated for refund, order ID: ${payment.orderReference}`);
+      const order = await Order.findById(payment.orderReference);
+      if (order) {
+        order.paymentInfo.paymentStatus = 'refunded';
+        order.status = 'Cancelled'; // Mark cancelled on full refund
+        await order.save();
+        logger.info(`Order status updated to Cancelled/Refunded`, { orderId: order.orderId });
+      }
     }
 
     return { success: true, refundId: id, paymentId: payment_id };
   } catch (error) {
-    console.error('❌ Error processing refund created webhook:', error);
+    logger.error('Error processing refund created webhook', { error: error.message });
     throw error;
   }
 };
@@ -207,18 +218,31 @@ const processRefundCreated = async (payload) => {
 exports.handleWebhook = async (req, res) => {
   try {
     const signature = req.headers['x-razorpay-signature'];
-    const body = JSON.stringify(req.body);
+    
+    let rawBody;
+    let eventData;
+
+    if (Buffer.isBuffer(req.body)) {
+      rawBody = req.body.toString('utf8');
+      eventData = JSON.parse(rawBody);
+    } else if (typeof req.body === 'string') {
+      rawBody = req.body;
+      eventData = JSON.parse(rawBody);
+    } else {
+      rawBody = JSON.stringify(req.body);
+      eventData = req.body;
+    }
 
     // Verify webhook signature
-    if (!verifyWebhookSignature(body, signature)) {
-      console.error('❌ Invalid webhook signature');
+    if (!verifyWebhookSignature(rawBody, signature)) {
+      logger.error('Invalid webhook signature');
       return res.status(400).json({ error: 'Invalid signature' });
     }
 
-    const event = req.body.event;
-    const payload = req.body.payload;
+    const event = eventData.event;
+    const payload = eventData.payload;
 
-    console.log(`📡 Webhook received: ${event}`);
+    logger.info(`Webhook received`, { event });
 
     let result;
 
@@ -236,54 +260,18 @@ exports.handleWebhook = async (req, res) => {
         break;
 
       case 'order.paid':
-        // This event is handled by payment.captured
-        result = { success: true, message: 'Order paid event handled' };
+        result = { success: true, message: 'order.paid handled via payment.captured' };
         break;
 
       default:
-        console.log(`ℹ️ Unhandled webhook event: ${event}`);
+        logger.info(`Unhandled webhook event`, { event });
         result = { success: true, message: 'Event not handled' };
     }
 
     res.json({ success: true, result });
-
   } catch (error) {
-    console.error('❌ Webhook processing error:', error);
+    logger.error('Webhook processing failure', { error: error.message });
     res.status(500).json({ error: 'Webhook processing failed' });
-  }
-};
-
-// Test webhook endpoint (for development)
-exports.testWebhook = async (req, res) => {
-  try {
-    const { event, payload } = req.body;
-
-    console.log(`🧪 Testing webhook: ${event}`);
-
-    let result;
-
-    switch (event) {
-      case 'payment.captured':
-        result = await processPaymentCaptured(payload);
-        break;
-
-      case 'payment.failed':
-        result = await processPaymentFailed(payload);
-        break;
-
-      case 'refund.created':
-        result = await processRefundCreated(payload);
-        break;
-
-      default:
-        result = { success: true, message: 'Test event processed' };
-    }
-
-    res.json({ success: true, result });
-
-  } catch (error) {
-    console.error('❌ Test webhook error:', error);
-    res.status(500).json({ error: 'Test webhook failed' });
   }
 };
 
@@ -295,6 +283,6 @@ exports.getWebhookEvents = (req, res) => {
     'order.paid',
     'refund.created'
   ];
-
   res.json({ success: true, events });
 };
+

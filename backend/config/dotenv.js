@@ -91,61 +91,33 @@ const config = {
 
 // Validation for critical configuration
 const validateConfig = () => {
-  function validateConfig(config) {
-    if (process.env.NODE_ENV === 'production') {
-      if (!config.JWT_SECRET) {
-        console.error('FATAL ERROR: JWT_SECRET is not defined.');
-        process.exit(1);
-      }
-      if (!config.MONGODB_URI) {
-        console.error('FATAL ERROR: MONGODB_URI is not defined.');
-        process.exit(1);
-      }
-      // Temporarily comment out Razorpay validation
-      /*
-      if (!config.RAZORPAY_KEY_ID || !config.RAZORPAY_KEY_SECRET) {
-        console.error('FATAL ERROR: Razorpay credentials are not defined.');
-        process.exit(1);
-      }
-      */
-    }
-  }
-  const requiredVars = ['JWT_SECRET', 'MONGODB_URI'];
-  const missing = requiredVars.filter(variable => {
-    if (variable === 'JWT_SECRET') {
-      return !config.JWT_SECRET || config.JWT_SECRET === 'your_super_secret_jwt_key_change_this_in_production';
-    } else if (variable === 'MONGODB_URI') {
-      return !config.MONGODB_URI; // Corrected logic: directly check MONGODB_URI
-    }
-    return false; // Should not reach here for requiredVars
-  });
-
-  if (missing.length > 0 && config.isProduction()) {
-    console.error('❌ Critical environment variables missing in production:', missing);
-    process.exit(1);
-  }
-
   if (config.isProduction()) {
-    // Additional production validations
-    // if (config.RAZORPAY.KEY_ID.includes('YOUR_') || config.RAZORPAY.KEY_SECRET.includes('YOUR_')) {
-    //   console.warn('⚠️  Warning: Using placeholder Razorpay credentials in production');
-    // }
+    const missing = [];
+
+    if (!config.JWT_SECRET || config.JWT_SECRET === 'your_super_secret_jwt_key_change_this_in_production') {
+      missing.push('JWT_SECRET');
+    }
+
+    if (!config.MONGODB_URI || config.MONGODB_URI.includes('localhost') || config.MONGODB_URI.includes('127.0.0.1')) {
+      missing.push('MONGODB_URI');
+    }
+
+    if (!config.RAZORPAY.KEY_ID || config.RAZORPAY.KEY_ID.includes('YOUR_') || config.RAZORPAY.KEY_ID === 'rzp_test_YOUR_TEST_KEY_ID') {
+      missing.push('RAZORPAY.KEY_ID');
+    }
+
+    if (!config.RAZORPAY.KEY_SECRET || config.RAZORPAY.KEY_SECRET.includes('YOUR_') || config.RAZORPAY.KEY_SECRET === 'YOUR_TEST_KEY_SECRET') {
+      missing.push('RAZORPAY.KEY_SECRET');
+    }
+
+    if (missing.length > 0) {
+      console.error('❌ Critical environment variables missing or placeholders in production:', missing);
+      process.exit(1);
+    }
 
     if (!config.EMAIL.USER || config.EMAIL.USER === '') {
       console.warn('⚠️  Warning: Email configuration not set up');
     }
-    // Validate Razorpay credentials in production
-    // if (process.env.NODE_ENV === 'production') {
-    //     if (!config.RAZORPAY_KEY_ID || config.RAZORPAY_KEY_ID === 'YOUR_RAZORPAY_KEY_ID') {
-    //         console.warn('WARNING: RAZORPAY_KEY_ID is not set or is a placeholder. Payments will not function correctly.');
-    //     }
-    //     if (!config.RAZORPAY_KEY_SECRET || config.RAZORPAY_KEY_SECRET === 'YOUR_RAZORPAY_KEY_SECRET') {
-    //         console.warn('WARNING: RAZORPAY_KEY_SECRET is not set or is a placeholder. Payments will not function correctly.');
-    //     }
-    //     if (!config.RAZORPAY_MODE || !['test', 'live'].includes(config.RAZORPAY_MODE)) {
-    //         console.warn('WARNING: RAZORPAY_MODE is not set or is invalid. Payments may not function correctly.');
-    //     }
-    // }
   }
 };
 

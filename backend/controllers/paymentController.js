@@ -2,8 +2,10 @@ const Razorpay = require('razorpay');
 const crypto = require('crypto');
 const QRCode = require('qrcode');
 const razorpayConfig = require('../config/razorpay');
+const config = require('../config/dotenv');
 const Payment = require('../models/Payment');
 const Order = require('../models/Order');
+const logger = require('../utils/logger');
 
 // Initialize Razorpay with your keys
 const razorpay = new Razorpay({
@@ -195,49 +197,173 @@ exports.verifyPayment = async (req, res) => {
       razorpay_signature
     } = req.body;
 
-    // Check if we're in demo mode
-    if (!razorpayConfig.isLive && (razorpayConfig.key_id === 'rzp_test_YOUR_TEST_KEY_ID' || razorpayConfig.key_secret === 'YOUR_TEST_KEY_SECRET')) {
-      // Demo mode - simulate payment verification
-      console.log('🔄 Demo Mode: Simulating payment verification');
-
-      // Check if it's a demo order
-      if (razorpay_order_id && razorpay_order_id.includes('_demo')) {
-        res.json({
-          success: true,
-          message: 'Payment verified successfully (Demo Mode)',
-          paymentId: razorpay_payment_id || `pay_${Date.now()}_demo`,
-          orderId: razorpay_order_id,
-          demo: true
-        });
-        return;
-      }
+    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+      return res.status(400).json({ success: false, error: 'Missing payment verification fields' });
     }
 
-    // Create the signature string
-    const sign = razorpay_order_id + "|" + razorpay_payment_id;
+    const isDemo = razorpay_order_id.includes('_demo');
 
-    // Generate expected signature
+    // Check if we're in demo mode
+    if (isDemo) {
+      if (config.isProduction() || razorpayConfig.isLive) {
+        return res.status(400).json({ success: false, error: 'Demo mode is not allowed in production.' });
+      }
+
+      logger.info('Demo Mode: Simulating payment verification', { razorpay_order_id });
+
+      const order = await Order.findOne({ 'paymentInfo.razorpayOrderId': razorpay_order_id });
+      if (!order) {
+        return res.status(404).json({ success: false, error: 'Order not found for demo verification' });
+      }
+
+      // Record simulated payment
+      let paymentRecord = await Payment.findOne({ razorpayPaymentId: razorpay_payment_id });
+      if (!paymentRecord) {
+        paymentRecord = new Payment({
+          paymentId: razorpay_payment_id || `pay_${Date.now()}_demo`,
+          orderId: razorpay_order_id,
+          receipt: order.orderId,
+          amount: order.totalAmount * 100,
+          currency: 'INR',
+          amountInRupees: order.totalAmount,
+          method: 'upi',
+          status: 'captured',
+          captureStatus: 'captured',
+          captureDate: new Date(),
+          customerEmail: order.shippingAddress.email,
+          customerPhone: order.shippingAddress.phone,
+          customerName: order.shippingAddress.name,
+          customerId: order.user,
+          orderReference: order._id,
+          razorpayPaymentId: razorpay_payment_id || `pay_${Date.now()}_demo`,
+          razorpayOrderId: razorpay_order_id,
+          isVerified: true,
+          verificationDate: new Date()
+        });
+        await paymentRecord.save();
+      }
+
+      // Update order status
+      order.paymentInfo.razorpayPaymentId = razorpay_payment_id || `pay_${Date.now()}_demo`;
+      order.paymentInfo.paymentStatus = 'completed';
+      order.status = 'Confirmed';
+      await order.save();
+
+      return res.json({
+        success: true,
+        message: 'Payment verified successfully (Demo Mode)',
+        paymentId: paymentRecord.paymentId,
+        orderId: razorpay_order_id,
+        demo: true
+      });
+    }
+
+    // Real Razorpay signature verification
+    const sign = razorpay_order_id + "|" + razorpay_payment_id;
     const expectedSign = crypto
       .createHmac("sha256", razorpayConfig.key_secret)
       .update(sign.toString())
       .digest("hex");
 
-    // Verify signature
-    if (razorpay_signature === expectedSign) {
-      res.json({
-        success: true,
-        message: 'Payment verified successfully',
+    const signatureBuffer = Buffer.from(razorpay_signature, 'utf8');
+    const expectedBuffer = Buffer.from(expectedSign, 'utf8');
+
+    if (signatureBuffer.length !== expectedBuffer.length || !crypto.timingSafeEqual(signatureBuffer, expectedBuffer)) {
+      logger.error('Invalid payment signature', { razorpay_order_id, razorpay_payment_id });
+      return res.status(400).json({ success: false, error: 'Invalid payment signature' });
+    }
+
+    // Retrieve order from database to verify amount
+    const order = await Order.findOne({ 'paymentInfo.razorpayOrderId': razorpay_order_id });
+    if (!order) {
+      logger.error('Order not found for signature verification', { razorpay_order_id });
+      return res.status(404).json({ success: false, error: 'Order not found in database' });
+    }
+
+    // Check for duplicate verification
+    const existingPayment = await Payment.findOne({ razorpayPaymentId: razorpay_payment_id });
+    if (existingPayment && existingPayment.isVerified) {
+      return res.status(400).json({ success: false, error: 'Payment already verified' });
+    }
+
+    // Fetch real payment details from Razorpay to verify the amount
+    let razorpayPayment;
+    try {
+      razorpayPayment = await razorpay.payments.fetch(razorpay_payment_id);
+    } catch (err) {
+      logger.error('Failed to fetch payment details from Razorpay API', { error: err.message, paymentId: razorpay_payment_id });
+      return res.status(400).json({ success: false, error: 'Could not fetch payment details from Razorpay' });
+    }
+
+    if (razorpayPayment.status !== 'captured' && razorpayPayment.status !== 'authorized') {
+      logger.error('Payment not successfully authorized/captured on Razorpay', { status: razorpayPayment.status, paymentId: razorpay_payment_id });
+      return res.status(400).json({ success: false, error: `Payment is in ${razorpayPayment.status} state, not captured.` });
+    }
+
+    // Verify amount (paise vs rupees)
+    const expectedAmountPaise = Math.round(order.totalAmount * 100);
+    if (razorpayPayment.amount !== expectedAmountPaise) {
+      logger.error('Payment amount mismatch between local order and Razorpay API', {
+        localAmountPaise: expectedAmountPaise,
+        razorpayAmount: razorpayPayment.amount
+      });
+      return res.status(400).json({ success: false, error: 'Payment amount mismatch. Order verification rejected.' });
+    }
+
+    // Create or update local Payment record
+    let paymentRecord = existingPayment;
+    if (!paymentRecord) {
+      paymentRecord = new Payment({
         paymentId: razorpay_payment_id,
-        orderId: razorpay_order_id
+        orderId: razorpay_order_id,
+        receipt: order.orderId,
+        amount: razorpayPayment.amount,
+        currency: razorpayPayment.currency,
+        amountInRupees: razorpayPayment.amount / 100,
+        method: razorpayPayment.method || 'online',
+        bank: razorpayPayment.bank || null,
+        cardNetwork: razorpayPayment.card?.network || null,
+        upiId: razorpayPayment.upi?.vpa || null,
+        status: razorpayPayment.status,
+        captureStatus: razorpayPayment.status,
+        captureDate: new Date(),
+        customerEmail: razorpayPayment.email || order.shippingAddress.email,
+        customerPhone: razorpayPayment.contact || order.shippingAddress.phone,
+        customerName: order.shippingAddress.name,
+        customerId: order.user,
+        orderReference: order._id,
+        razorpayPaymentId: razorpay_payment_id,
+        razorpayOrderId: razorpay_order_id,
+        razorpaySignature: razorpay_signature,
+        isVerified: true,
+        verificationDate: new Date()
       });
     } else {
-      res.status(400).json({
-        success: false,
-        error: 'Invalid payment signature'
-      });
+      paymentRecord.status = razorpayPayment.status;
+      paymentRecord.captureStatus = razorpayPayment.status;
+      paymentRecord.isVerified = true;
+      paymentRecord.verificationDate = new Date();
+      paymentRecord.orderReference = order._id;
+      paymentRecord.customerId = order.user;
     }
+    await paymentRecord.save();
+
+    // Update Order payment status and confirm it
+    order.paymentInfo.razorpayPaymentId = razorpay_payment_id;
+    order.paymentInfo.paymentStatus = 'completed';
+    order.status = 'Confirmed';
+    await order.save();
+
+    logger.info('Payment verified and order confirmed successfully', { orderId: order.orderId, paymentId: razorpay_payment_id });
+
+    res.json({
+      success: true,
+      message: 'Payment verified successfully',
+      paymentId: razorpay_payment_id,
+      orderId: razorpay_order_id
+    });
   } catch (error) {
-    console.error('Payment verification error:', error);
+    logger.error('Payment verification exception', { error: error.message });
     res.status(500).json({
       success: false,
       error: 'Payment verification failed'

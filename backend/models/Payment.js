@@ -14,8 +14,8 @@ const PaymentSchema = new mongoose.Schema({
   // Payment method details
   method: {
     type: String,
-    enum: ['card', 'upi', 'netbanking', 'wallet', 'emi', 'cod'],
-    required: true
+    required: true,
+    default: 'online'
   },
   bank: { type: String }, // Bank name for UPI/Netbanking
   cardNetwork: { type: String }, // Visa, Mastercard, etc.
@@ -31,8 +31,8 @@ const PaymentSchema = new mongoose.Schema({
 
   // Customer details
   customerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  customerName: { type: String, required: true },
-  customerEmail: { type: String, required: true },
+  customerName: { type: String },
+  customerEmail: { type: String },
   customerPhone: { type: String },
 
   // Order reference

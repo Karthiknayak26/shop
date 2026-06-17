@@ -13,13 +13,40 @@ const App = () => {
 
   // Check authentication status on app load
   useEffect(() => {
-    const checkAuth = () => {
-      const authStatus = localStorage.getItem('isAuthenticated');
-      setIsAuthenticated(authStatus === 'true');
-      setIsLoading(false);
+    const verifyToken = async () => {
+      const token = localStorage.getItem('adminToken');
+      if (!token) {
+        setIsAuthenticated(false);
+        setIsLoading(false);
+        return;
+      }
+      try {
+        const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+        const response = await fetch(`${API_URL}/api/admin/auth/verify`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (response.ok) {
+          setIsAuthenticated(true);
+        } else {
+          localStorage.removeItem('adminToken');
+          localStorage.removeItem('isAuthenticated');
+          setIsAuthenticated(false);
+        }
+      } catch (err) {
+        console.error('Admin verification error:', err);
+        // On network failure, clear auth to fail safe
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('isAuthenticated');
+        setIsAuthenticated(false);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
-    checkAuth();
+    verifyToken();
   }, []);
 
   const handleLogin = () => {

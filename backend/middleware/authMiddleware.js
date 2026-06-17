@@ -95,7 +95,12 @@ const authMiddleware = async (req, res, next) => {
     }
 
     // Find user by ID
-    const user = await User.findById(decoded.userId).select('-password');
+    let user;
+    if (decoded.isAdmin) {
+      user = await Admin.findById(decoded.userId).select('-password');
+    } else {
+      user = await User.findById(decoded.userId).select('-password');
+    }
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -236,7 +241,12 @@ const optionalAuthMiddleware = async (req, res, next) => {
     }
 
     // Find user
-    const user = await User.findById(decoded.userId).select('-password');
+    let user;
+    if (decoded.isAdmin) {
+      user = await Admin.findById(decoded.userId).select('-password');
+    } else {
+      user = await User.findById(decoded.userId).select('-password');
+    }
     if (user && user.isActive && !user.isBlocked) {
       req.user = user;
       req.token = token;
@@ -276,7 +286,10 @@ const refreshTokenMiddleware = async (req, res, next) => {
     }
 
     // Find user
-    const user = await User.findById(decoded.userId).select('-password');
+    let user = await User.findById(decoded.userId).select('-password');
+    if (!user) {
+      user = await Admin.findById(decoded.userId).select('-password');
+    }
     if (!user || !user.isActive || user.isBlocked) {
       return res.status(401).json({
         success: false,

@@ -30,23 +30,31 @@ const Login = ({ onLogin }) => {
     setError('');
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1200));
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const response = await fetch(`${API_URL}/api/admin/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username: formData.username,
+          password: formData.password
+        })
+      });
 
-      // Debug: Log submitted values
-      console.log('Submitted values:', formData.username, formData.password);
+      const data = await response.json();
 
-      // Credential check
-      if (formData.username === 'harshitha' && formData.password === 'harshu@123') {
-        localStorage.setItem('isAuthenticated', 'true');
-        localStorage.setItem('userRole', 'admin');
-        localStorage.setItem('adminName', formData.username); // Store admin name
-        onLogin(); // Ensure this is called
-        console.log('Navigating to dashboard...');
-        navigate('/dashboard');
-      } else {
-        throw new Error('Invalid admin credentials');
+      if (!response.ok) {
+        throw new Error(data.message || 'Invalid admin credentials');
       }
+
+      localStorage.setItem('adminToken', data.token);
+      localStorage.setItem('isAuthenticated', 'true');
+      localStorage.setItem('userRole', 'admin');
+      localStorage.setItem('adminName', data.admin.username);
+
+      onLogin();
+      navigate('/');
     } catch (err) {
       setError(err.message || 'Authentication failed. Please try again.');
     } finally {

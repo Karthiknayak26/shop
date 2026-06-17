@@ -38,7 +38,7 @@ const Dashboard = () => {
   const fetchFeedbacks = async () => {
     setFeedbackLoading(true);
     try {
-      const res = await axios.get('https://shop-backend-92zc.onrender.com/api/feedback');
+      const res = await api.get('/feedback');
       setFeedbacks(res.data);
       setFeedbackError(null);
     } catch {
@@ -53,10 +53,10 @@ const Dashboard = () => {
       setIsLoading(true);
       try {
         const res = await api.get('/orders');
-        setOrders(res.data); // ✅ No mock transformation
+        setOrders(res.data.orders || res.data); // Support paginated object or array
       } catch (err) {
         console.error(err);
-        setOrders([]); // fallback to empty
+        setOrders([]);
       } finally {
         setTimeout(() => setIsLoading(false), 1000);
       }
@@ -69,7 +69,7 @@ const Dashboard = () => {
   const handleDeleteFeedback = async (id) => {
     if (!window.confirm('Are you sure you want to delete this feedback?')) return;
     try {
-      await axios.delete(`https://shop-backend-92zc.onrender.com/api/feedback/${id}`);
+      await api.delete(`/feedback/${id}`);
       setFeedbacks(feedbacks.filter(fb => fb._id !== id));
     } catch {
       alert('Failed to delete feedback');
@@ -78,6 +78,8 @@ const Dashboard = () => {
 
   // Logout handler (should match App.jsx logic)
   const handleLogout = () => {
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminName');
     localStorage.removeItem('isAuthenticated');
     localStorage.removeItem('userEmail');
     setShowProfileDropdown(false);

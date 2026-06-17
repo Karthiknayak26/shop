@@ -1,0 +1,79 @@
+name: Kandukuru Supermarket CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  backend-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install backend dependencies
+        run: |
+          cd backend
+          npm ci
+
+      - name: Lint and typecheck check
+        run: |
+          cd backend
+          # Runs check if scripts exist, otherwise true
+          npm run lint --if-present
+          npm run test --if-present
+
+  frontend-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Build customer frontend
+        run: |
+          cd frontend
+          CI=false npm run build
+
+  adminpanel-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: adminpanel/admin/package-lock.json
+
+      - name: Install admin panel dependencies
+        run: |
+          cd adminpanel/admin
+          npm ci
+
+      - name: Build admin panel
+        run: |
+          cd adminpanel/admin
+          npm run build

@@ -1,85 +1,218 @@
 const express = require('express');
 const router = express.Router();
 const Order = require('../models/Order');
+const Product = require('../models/Product');
 const orderController = require('../controllers/orderController');
-const mongoose = require('mongoose'); // Add this at the top for ObjectId validation
-const { setOutForDelivery } = require('../controllers/orderController');
+const mongoose = require('mongoose');
 const emailService = require('../services/emailService');
+const { authMiddleware, adminMiddleware } = require('../middleware/authMiddleware');
+const logger = require('../utils/logger');
 
-router.post('/', async (req, res) => {
+// ============================================
+// CREATE ORDER (Authenticated)
+// ============================================
+router.post('/', authMiddleware, async (req, res) => {
   try {
-    const newOrder = new Order(req.body);
-    // Generate a user-friendly orderId
-    const today = new Date();
-    const dateStr = today.toISOString().slice(0, 10).replace(/-/g, ''); // e.g., 20240714
-    const randomNum = Math.floor(1000 + Math.random() * 9000); // 4-digit random
-    newOrder.orderId = `ORD${dateStr}-${randomNum}`;
-    await newOrder.save();
+    // Whitelist fields — prevent mass assignment
+    const { items, shippingAddress, paymentMethod, paymentInfo } = req.body;
 
-    // Send order confirmation email asynchronously (non-blocking)
-    // Use setImmediate to ensure it runs after the current I/O cycle (response sending)
-    setImmediate(() => {
-      console.log(`[${new Date().toISOString()}] Attempting to send order confirmation email for ${newOrder.orderId}`);
-      emailService.sendOrderConfirmation(newOrder)
-        .then(() => console.log(`[${new Date().toISOString()}] Order confirmation email sent successfully for ${newOrder.orderId}`))
-        .catch(emailError => console.error(`[${new Date().toISOString()}] Failed to send order confirmation email for ${newOrder.orderId}:`, emailError));
+    if (!items || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ error: 'Order must contain at least one item' });
+    }
+
+    // Server-side total calculation — never trust client total
+    let totalAmount = 0;
+    const validatedItems = [];
+
+    for (const item of items) {
+      const product = await Product.findById(item.id);
+      if (!product) {
+        return res.status(400).json({ error: `Product not found: ${item.id}` });
+      }
+      if (product.stock < item.quantity) {
+        return res.status(400).json({ error: `Insufficient stock for ${product.name}` });
+      }
+
+      validatedItems.push({
+        id: product._id.toString(),
+        name: product.name,
+        price: product.price,
+        quantity: item.quantity,
+        img: product.imageUrl,
+      });
+      totalAmount += product.price * item.quantity;
+    }
+
+    // Deduct stock
+    for (const item of validatedItems) {
+      await Product.findByIdAndUpdate(item.id, {
+        $inc: { stock: -item.quantity },
+      });
+    }
+
+    // Generate user-friendly orderId
+    const today = new Date();
+    const dateStr = today.toISOString().slice(0, 10).replace(/-/g, '');
+    const randomNum = Math.floor(1000 + Math.random() * 9000);
+
+    const newOrder = new Order({
+      items: validatedItems,
+      user: req.user._id, // From auth middleware — never from request body
+      shippingAddress,
+      paymentMethod,
+      paymentInfo: {
+        upiId: paymentInfo?.upiId,
+        razorpayOrderId: paymentInfo?.razorpayOrderId,
+        razorpayPaymentId: paymentInfo?.razorpayPaymentId,
+        paymentStatus: paymentInfo?.paymentStatus || 'pending',
+      },
+      totalAmount,
+      orderId: `ORD${dateStr}-${randomNum}`,
+      status: 'Pending',
     });
 
-    // Respond immediately without waiting for email
+    await newOrder.save();
+
+    // Send confirmation email asynchronously
+    setImmediate(() => {
+      emailService.sendOrderConfirmation(newOrder)
+        .then(() => logger.info('Order confirmation email sent', { orderId: newOrder.orderId }))
+        .catch(emailError => logger.error('Failed to send order email', { orderId: newOrder.orderId, error: emailError.message }));
+    });
+
+    logger.info('Order created', { orderId: newOrder.orderId, userId: req.user._id });
     res.status(201).json({ message: 'Order saved successfully', order: newOrder });
   } catch (err) {
-    console.error('Order creation error:', err);
+    logger.error('Order creation error', { error: err.message });
     res.status(500).json({ error: 'Failed to save order' });
   }
 });
 
-router.get('/', async (req, res) => {
+// ============================================
+// GET ALL ORDERS (Admin only)
+// ============================================
+router.get('/', authMiddleware, adminMiddleware, async (req, res) => {
   try {
-    const orders = await Order.find().sort({ orderDate: -1 });
-    // Add default status and ensure orderId is present
-    const ordersWithStatus = orders.map(order => ({
-      ...order._doc,
-      status: order.status || 'Pending',
-      orderId: order.orderId || `ORD${order._id.toString().substring(0, 8).toUpperCase()}`
-    }));
-    res.json(ordersWithStatus);
+    const { page = 1, limit = 20 } = req.query;
+    const orders = await Order.find()
+      .sort({ orderDate: -1 })
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit))
+      .lean();
+
+    const total = await Order.countDocuments();
+
+    res.json({
+      orders,
+      pagination: { page: parseInt(page), limit: parseInt(limit), total, pages: Math.ceil(total / limit) },
+    });
   } catch (err) {
     res.status(500).json({ error: 'Failed to fetch orders' });
   }
 });
 
-// Get all orders for a specific user
-router.get('/user/:userId', orderController.getOrdersByUser);
+// ============================================
+// GET USER'S OWN ORDERS (Authenticated)
+// ============================================
+router.get('/my-orders', authMiddleware, async (req, res) => {
+  try {
+    const orders = await Order.find({ user: req.user._id }).sort({ orderDate: -1 }).lean();
+    res.json(orders);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to fetch orders' });
+  }
+});
 
-// Cancel an order by ID
-router.put('/:orderId/cancel', async (req, res) => {
+// Get orders for a specific user (admin or own orders)
+router.get('/user/:userId', authMiddleware, async (req, res) => {
+  // Allow admin to fetch any user's orders, or user to fetch own orders only
+  if (req.user.role !== 'admin' && req.user.role !== 'super_admin' && req.user._id.toString() !== req.params.userId) {
+    return res.status(403).json({ error: 'Access denied' });
+  }
+  return orderController.getOrdersByUser(req, res);
+});
+
+// ============================================
+// CANCEL ORDER (Authenticated — own order only)
+// ============================================
+router.put('/:orderId/cancel', authMiddleware, async (req, res) => {
   try {
     const { orderId } = req.params;
-    console.log('Cancel request for orderId:', orderId);
     if (!mongoose.Types.ObjectId.isValid(orderId)) {
-      console.log('Invalid ObjectId for cancel:', orderId);
       return res.status(400).json({ error: 'Invalid order ID' });
     }
-    const order = await Order.findByIdAndUpdate(orderId, { status: 'Cancelled' }, { new: true });
+
+    const order = await Order.findById(orderId);
     if (!order) {
-      console.log('Order not found for cancel:', orderId);
       return res.status(404).json({ error: 'Order not found' });
     }
+
+    // Only owner or admin can cancel
+    if (order.user.toString() !== req.user._id.toString() && req.user.role !== 'admin' && req.user.role !== 'super_admin') {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    // Can only cancel pending orders
+    if (order.status !== 'Pending') {
+      return res.status(400).json({ error: 'Only pending orders can be cancelled' });
+    }
+
+    // Restore stock
+    for (const item of order.items) {
+      await Product.findByIdAndUpdate(item.id, {
+        $inc: { stock: item.quantity },
+      });
+    }
+
+    order.status = 'Cancelled';
+    await order.save();
+
+    logger.info('Order cancelled', { orderId, userId: req.user._id });
     res.json({ message: 'Order cancelled', order });
   } catch (err) {
-    console.error('Cancel order error:', err);
+    logger.error('Cancel order error', { error: err.message });
     res.status(500).json({ error: 'Failed to cancel order' });
   }
 });
 
-// Set order as Out for Delivery and set expected delivery date
-router.put('/:id/out-for-delivery', setOutForDelivery);
+// ============================================
+// UPDATE ORDER STATUS (Admin only)
+// ============================================
+router.put('/:id/out-for-delivery', authMiddleware, adminMiddleware, orderController.setOutForDelivery);
 
-// Track order by custom orderId
+router.put('/:id/status', authMiddleware, adminMiddleware, async (req, res) => {
+  try {
+    const { status } = req.body;
+    const validStatuses = ['Pending', 'Confirmed', 'Processing', 'Out for Delivery', 'Delivered', 'Cancelled'];
+
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({ error: 'Invalid status' });
+    }
+
+    const order = await Order.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+
+    if (!order) {
+      return res.status(404).json({ error: 'Order not found' });
+    }
+
+    logger.info('Order status updated', { orderId: order.orderId, status, adminId: req.user._id });
+    res.json({ message: 'Order status updated', order });
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to update order status' });
+  }
+});
+
+// ============================================
+// TRACK ORDER (Public — by custom orderId)
+// ============================================
 router.get('/track/:orderId', async (req, res) => {
   try {
     const { orderId } = req.params;
-    const order = await Order.findOne({ orderId });
+    const order = await Order.findOne({ orderId }).select('orderId status orderDate outForDeliveryDate expectedDelivery').lean();
     if (!order) {
       return res.status(404).json({ error: 'Order not found' });
     }

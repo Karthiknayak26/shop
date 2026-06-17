@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import { api } from '../utils/api';
 
 const Feedback = () => {
   const [feedbacks, setFeedbacks] = useState([]);
@@ -9,7 +9,7 @@ const Feedback = () => {
   const fetchFeedbacks = async () => {
     setLoading(true);
     try {
-      const res = await axios.get('https://shop-backend-92zc.onrender.com/api/feedback');
+      const res = await api.get('/feedback');
       setFeedbacks(res.data);
       setError(null);
     } catch {
@@ -26,7 +26,7 @@ const Feedback = () => {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this feedback?')) return;
     try {
-      await axios.delete(`https://shop-backend-92zc.onrender.com/api/feedback/${id}`);
+      await api.delete(`/feedback/${id}`);
       setFeedbacks(feedbacks.filter(fb => fb._id !== id));
     } catch {
       alert('Failed to delete feedback');

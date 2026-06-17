@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://shop-backend-92zc.onrender.com"; // Backend URL
+const API_URL = process.env.REACT_APP_API_URL || "http://localhost:5000/api";
 
 // Create axios instance with default config
 const apiClient = axios.create({
@@ -22,15 +22,77 @@ apiClient.interceptors.request.use(
   }
 );
 
-// Response interceptor for error handling
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+  failedQueue = [];
+};
+
+// Response interceptor for error handling and token refresh
 apiClient.interceptors.response.use(
   (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      // Token expired or invalid
-      localStorage.removeItem('authToken');
-      window.location.href = '/login';
+  async (error) => {
+    const originalRequest = error.config;
+
+    // Prevent infinite loop if refresh token call itself fails
+    if (error.response?.status === 401 && !originalRequest._retry && !originalRequest.url.includes('/auth/refresh-token')) {
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        })
+          .then((token) => {
+            originalRequest.headers.Authorization = `Bearer ${token}`;
+            return apiClient(originalRequest);
+          })
+          .catch((err) => {
+            return Promise.reject(err);
+          });
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      const refreshToken = localStorage.getItem('refreshToken');
+      if (refreshToken) {
+        try {
+          const response = await axios.post(`${API_URL}/auth/refresh-token`, { refreshToken });
+          const { token: newAccessToken, refreshToken: newRefreshToken } = response.data;
+
+          localStorage.setItem('authToken', newAccessToken);
+          if (newRefreshToken) {
+            localStorage.setItem('refreshToken', newRefreshToken);
+          }
+
+          apiClient.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+          originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+
+          processQueue(null, newAccessToken);
+          isRefreshing = false;
+
+          return apiClient(originalRequest);
+        } catch (refreshError) {
+          processQueue(refreshError, null);
+          isRefreshing = false;
+
+          localStorage.removeItem('authToken');
+          localStorage.removeItem('refreshToken');
+          window.location.href = '/login';
+          return Promise.reject(refreshError);
+        }
+      } else {
+        localStorage.removeItem('authToken');
+        window.location.href = '/login';
+      }
     }
+
     return Promise.reject(error);
   }
 );
@@ -43,15 +105,12 @@ export const api = {
         params: { query, page },
       });
 
-      console.log("🟢 API Response in Frontend:", response.data); // Debugging
-
       if (!response.data.success || !Array.isArray(response.data.products)) {
         throw new Error("Invalid product data received from backend.");
       }
 
       return response.data.products;
     } catch (error) {
-      console.error("❌ Fetch Error:", error.message);
       throw new Error(error.response?.data?.error || "Failed to fetch products.");
     }
   },
@@ -62,7 +121,6 @@ export const api = {
       const response = await apiClient.get('/cart');
       return response.data.cart;
     } catch (error) {
-      console.error('Error fetching cart:', error);
       throw new Error(error.response?.data?.message || 'Failed to fetch cart');
     }
   },
@@ -72,7 +130,6 @@ export const api = {
       const response = await apiClient.post('/cart/add', { productId, quantity });
       return response.data.cart;
     } catch (error) {
-      console.error('Error adding to cart:', error);
       throw new Error(error.response?.data?.message || 'Failed to add item to cart');
     }
   },
@@ -82,7 +139,6 @@ export const api = {
       const response = await apiClient.put('/cart/update', { productId, quantity });
       return response.data.cart;
     } catch (error) {
-      console.error('Error updating cart item:', error);
       throw new Error(error.response?.data?.message || 'Failed to update cart item');
     }
   },
@@ -92,7 +148,6 @@ export const api = {
       const response = await apiClient.delete(`/cart/remove/${productId}`);
       return response.data.cart;
     } catch (error) {
-      console.error('Error removing from cart:', error);
       throw new Error(error.response?.data?.message || 'Failed to remove item from cart');
     }
   },
@@ -102,7 +157,6 @@ export const api = {
       const response = await apiClient.delete('/cart/clear');
       return response.data.cart;
     } catch (error) {
-      console.error('Error clearing cart:', error);
       throw new Error(error.response?.data?.message || 'Failed to clear cart');
     }
   },
@@ -112,7 +166,6 @@ export const api = {
       const response = await apiClient.post('/cart/sync', { localCartItems });
       return response.data.cart;
     } catch (error) {
-      console.error('Error syncing cart:', error);
       throw new Error(error.response?.data?.message || 'Failed to sync cart');
     }
   },
@@ -124,9 +177,11 @@ export const api = {
       if (response.data.token) {
         localStorage.setItem('authToken', response.data.token);
       }
+      if (response.data.refreshToken) {
+        localStorage.setItem('refreshToken', response.data.refreshToken);
+      }
       return response.data;
     } catch (error) {
-      console.error('Login error:', error);
       throw new Error(error.response?.data?.message || 'Login failed');
     }
   },
@@ -137,14 +192,17 @@ export const api = {
       if (response.data.token) {
         localStorage.setItem('authToken', response.data.token);
       }
+      if (response.data.refreshToken) {
+        localStorage.setItem('refreshToken', response.data.refreshToken);
+      }
       return response.data;
     } catch (error) {
-      console.error('Registration error:', error);
       throw new Error(error.response?.data?.message || 'Registration failed');
     }
   },
 
   logout() {
     localStorage.removeItem('authToken');
+    localStorage.removeItem('refreshToken');
   }
 };
