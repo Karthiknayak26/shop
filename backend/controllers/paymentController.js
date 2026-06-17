@@ -18,8 +18,8 @@ exports.createPaymentOrder = async (req, res) => {
   try {
     const { amount, currency = 'INR', receipt, customerDetails } = req.body;
 
-    // Check if we're in demo mode (no real Razorpay keys)
-    if (!razorpayConfig.isLive && (razorpayConfig.key_id === 'rzp_test_YOUR_TEST_KEY_ID' || razorpayConfig.key_secret === 'YOUR_TEST_KEY_SECRET')) {
+    // Check if we're in demo mode (no real Razorpay keys or explicit demo mode)
+    if (razorpayConfig.mode === 'demo' || (!razorpayConfig.isLive && (razorpayConfig.key_id === 'rzp_test_YOUR_TEST_KEY_ID' || razorpayConfig.key_secret === 'YOUR_TEST_KEY_SECRET'))) {
       // Demo mode - simulate payment order creation
       console.log('🔄 Demo Mode: Simulating payment order creation');
 
@@ -123,7 +123,7 @@ exports.checkPaymentStatus = async (req, res) => {
     const { orderId } = req.params;
 
     // Check if we're in demo mode
-    if (!razorpayConfig.isLive && (razorpayConfig.key_id === 'rzp_test_YOUR_TEST_KEY_ID' || razorpayConfig.key_secret === 'YOUR_TEST_KEY_SECRET')) {
+    if (razorpayConfig.mode === 'demo' || (!razorpayConfig.isLive && (razorpayConfig.key_id === 'rzp_test_YOUR_TEST_KEY_ID' || razorpayConfig.key_secret === 'YOUR_TEST_KEY_SECRET'))) {
       // Demo mode - simulate payment status check
       console.log('🔄 Demo Mode: Simulating payment status check');
 
@@ -201,11 +201,11 @@ exports.verifyPayment = async (req, res) => {
       return res.status(400).json({ success: false, error: 'Missing payment verification fields' });
     }
 
-    const isDemo = razorpay_order_id.includes('_demo');
+    const isDemo = razorpay_order_id.includes('_demo') || razorpayConfig.mode === 'demo';
 
     // Check if we're in demo mode
     if (isDemo) {
-      if (config.isProduction() || razorpayConfig.isLive) {
+      if (razorpayConfig.mode !== 'demo' && (config.isProduction() || razorpayConfig.isLive)) {
         return res.status(400).json({ success: false, error: 'Demo mode is not allowed in production.' });
       }
 

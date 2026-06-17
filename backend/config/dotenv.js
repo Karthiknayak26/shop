@@ -102,12 +102,15 @@ const validateConfig = () => {
       missing.push('MONGODB_URI');
     }
 
-    if (!config.RAZORPAY.KEY_ID || config.RAZORPAY.KEY_ID.includes('YOUR_') || config.RAZORPAY.KEY_ID === 'rzp_test_YOUR_TEST_KEY_ID') {
-      missing.push('RAZORPAY.KEY_ID');
-    }
+    // Validate Razorpay unless we are explicitly running in demo mode
+    if (config.RAZORPAY.MODE !== 'demo') {
+      if (!config.RAZORPAY.KEY_ID || config.RAZORPAY.KEY_ID.includes('YOUR_') || config.RAZORPAY.KEY_ID === 'rzp_test_YOUR_TEST_KEY_ID') {
+        missing.push('RAZORPAY.KEY_ID');
+      }
 
-    if (!config.RAZORPAY.KEY_SECRET || config.RAZORPAY.KEY_SECRET.includes('YOUR_') || config.RAZORPAY.KEY_SECRET === 'YOUR_TEST_KEY_SECRET') {
-      missing.push('RAZORPAY.KEY_SECRET');
+      if (!config.RAZORPAY.KEY_SECRET || config.RAZORPAY.KEY_SECRET.includes('YOUR_') || config.RAZORPAY.KEY_SECRET === 'YOUR_TEST_KEY_SECRET') {
+        missing.push('RAZORPAY.KEY_SECRET');
+      }
     }
 
     if (missing.length > 0) {

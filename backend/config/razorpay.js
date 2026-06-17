@@ -7,8 +7,8 @@ const razorpayConfig = {
   webhook_secret: config.RAZORPAY.WEBHOOK_SECRET,
 
   // Environment detection
-  isLive: config.RAZORPAY.MODE === 'live' || config.isProduction(),
-  mode: config.RAZORPAY.MODE,
+  isLive: config.RAZORPAY.MODE === 'live' || (config.isProduction() && config.RAZORPAY.MODE !== 'demo'),
+  mode: config.RAZORPAY.MODE || 'test',
 
   // Additional configuration
   currency: 'INR',
@@ -73,6 +73,11 @@ const razorpayConfig = {
 
   // Validation method
   validate: function () {
+    if (this.mode === 'demo') {
+      console.log('ℹ️ Razorpay configured in DEMO mode (simulated payments)');
+      return true;
+    }
+
     if (this.isLive) {
       if (this.key_id.includes('test') || this.key_id.includes('YOUR_')) {
         // Temporarily comment out this line to prevent crashing with placeholder keys
