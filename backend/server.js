@@ -20,6 +20,7 @@ const paymentRoutes = require('./routes/paymentRoutes');
 const productRoutes = require('./routes/productRoutes');
 const feedbackRoutes = require('./routes/feedbackRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
+const locationRoutes = require('./routes/locationRoutes');
 
 const app = express();
 
@@ -122,6 +123,7 @@ app.use('/api/payments', paymentRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/analytics', analyticsRoutes);
+app.use('/api/locations', locationRoutes);
 
 // ============================================
 // ERROR HANDLING
