@@ -48,6 +48,7 @@ const LoginPage = () => {
       // Store user data and token in context
       setUser({ user: data.user, token: data.token });
       // Store user in localStorage for persistence
+      localStorage.setItem('authToken', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
       navigate('/'); // Redirect to main page
     } catch (err) {

@@ -48,6 +48,9 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     if (user) {
       saveUserToStorage(user);
+      if (user.token) {
+        localStorage.setItem('authToken', user.token);
+      }
     } else {
       clearUserFromStorage();
     }
