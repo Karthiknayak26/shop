@@ -68,15 +68,21 @@ const OrderTracking = () => {
             <h2>Order Details</h2>
             <p><strong>Order ID:</strong> {orderDetails.orderId}</p>
             <p><strong>Status:</strong> {orderDetails.status}</p>
-            <p><strong>Items:</strong></p>
-            <ul>
-              {orderDetails.items.map((item, index) => (
-                <li key={index}>
-                  {item.name} - {item.quantity} x ₹{item.price}
-                </li>
-              ))}
-            </ul>
-            <p><strong>Total Amount:</strong> ₹{orderDetails.totalAmount}</p>
+            {orderDetails.items && orderDetails.items.length > 0 && (
+              <>
+                <p><strong>Items:</strong></p>
+                <ul>
+                  {orderDetails.items.map((item, index) => (
+                    <li key={index}>
+                      {item.name} - {item.quantity} x ₹{item.price}
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+            {orderDetails.totalAmount && (
+              <p><strong>Total Amount:</strong> ₹{orderDetails.totalAmount}</p>
+            )}
             <p>
               <strong>Expected Delivery:</strong>{' '}
               {orderDetails.expectedDelivery
