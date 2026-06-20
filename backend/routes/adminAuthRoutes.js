@@ -7,6 +7,31 @@ const logger = require('../utils/logger');
 const router = express.Router();
 
 // ============================================
+// ADMIN SEED — Temporary route to seed admin
+// ============================================
+router.get('/seed', async (req, res) => {
+  try {
+    const existingAdmin = await Admin.findOne({ email: 'admin@kandukuru-supermarket.com' });
+    if (existingAdmin) {
+      return res.json({ message: 'Admin already exists' });
+    }
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash('Admin@123456', salt);
+    const admin = new Admin({
+      username: 'admin',
+      email: 'admin@kandukuru-supermarket.com',
+      password: hashedPassword,
+      fullName: 'Super Admin',
+      role: 'super_admin'
+    });
+    await admin.save();
+    res.json({ message: 'Admin seeded successfully' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ============================================
 // ADMIN LOGIN — Server-side JWT auth
 // ============================================
 router.post('/login', async (req, res) => {
