@@ -16,7 +16,7 @@ const OrderHistoryPage = () => {
   const navigate = useNavigate();
 
   const { user, isLoading: userLoading } = useUser();
-  const userId = user ? user.id : null;
+  const userId = user?.id || user?._id || user?.user?.id || user?.user?._id || null;
 
   useEffect(() => {
     if (userLoading) return; // Wait for user to load
