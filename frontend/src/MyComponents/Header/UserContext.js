@@ -46,6 +46,8 @@ export const UserProvider = ({ children }) => {
 
   // Save user to localStorage whenever it changes
   useEffect(() => {
+    if (isLoading) return; // Prevent wiping localStorage on initial mount
+    
     if (user) {
       saveUserToStorage(user);
       if (user.token) {
@@ -54,7 +56,7 @@ export const UserProvider = ({ children }) => {
     } else {
       clearUserFromStorage();
     }
-  }, [user]);
+  }, [user, isLoading]);
 
   const login = async (credentials) => {
     try {
