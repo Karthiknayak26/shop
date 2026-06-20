@@ -12,7 +12,7 @@ const Orders = () => {
 
   useEffect(() => {
     api.get('/orders')
-      .then((res) => setOrders(res.data))
+      .then((res) => setOrders(res.data.orders || res.data))
       .catch((err) => {
         console.error(err);
         setError('Failed to load orders');
