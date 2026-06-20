@@ -84,7 +84,7 @@ router.post('/', authMiddleware, async (req, res) => {
     res.status(201).json({ message: 'Order saved successfully', order: newOrder });
   } catch (err) {
     logger.error('Order creation error', { error: err.message });
-    res.status(500).json({ error: 'Failed to save order' });
+    res.status(500).json({ error: 'Failed to save order', details: err.message, stack: err.stack });
   }
 });
 
