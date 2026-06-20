@@ -25,29 +25,41 @@ router.post('/', authMiddleware, async (req, res) => {
     const validatedItems = [];
 
     for (const item of items) {
-      const product = await Product.findById(item.id);
-      if (!product) {
-        return res.status(400).json({ error: `Product not found: ${item.id}` });
-      }
-      if (product.stock < item.quantity) {
-        return res.status(400).json({ error: `Insufficient stock for ${product.name}` });
+      let product = null;
+      let validObjectId = mongoose.Types.ObjectId.isValid(item.id);
+
+      if (validObjectId) {
+        product = await Product.findById(item.id).catch(() => null);
       }
 
-      validatedItems.push({
-        id: product._id.toString(),
-        name: product.name,
-        price: product.price,
-        quantity: item.quantity,
-        img: product.imageUrl,
-      });
-      totalAmount += product.price * item.quantity;
-    }
-
-    // Deduct stock
-    for (const item of validatedItems) {
-      await Product.findByIdAndUpdate(item.id, {
-        $inc: { stock: -item.quantity },
-      });
+      if (product) {
+        if (product.stock < item.quantity) {
+          return res.status(400).json({ error: `Insufficient stock for ${product.name}` });
+        }
+        validatedItems.push({
+          id: product._id.toString(),
+          name: product.name,
+          price: product.price,
+          quantity: item.quantity,
+          img: product.imageUrl,
+        });
+        totalAmount += product.price * item.quantity;
+        
+        // Deduct stock
+        await Product.findByIdAndUpdate(item.id, {
+          $inc: { stock: -item.quantity },
+        });
+      } else {
+        // Fallback for items from Google Sheets API that don't exist in MongoDB
+        validatedItems.push({
+          id: item.id.toString(),
+          name: item.name,
+          price: Number(item.price),
+          quantity: Number(item.quantity),
+          img: item.img || '',
+        });
+        totalAmount += Number(item.price) * Number(item.quantity);
+      }
     }
 
     // Generate user-friendly orderId
