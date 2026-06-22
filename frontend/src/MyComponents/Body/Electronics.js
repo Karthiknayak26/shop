@@ -7,7 +7,7 @@ import './electronics.css';
 import { useLocation } from 'react-router-dom';
 import { useQuery, useQueryClient } from 'react-query';
 import { api } from '../../services/api';
-import ProductSkeleton from '../Skeletons/ProductSkeleton';
+import ProductSkeleton from '../../Components/Skeletons/ProductSkeleton';
 // 📌 Electronics Categories Component
 const ElectronicsCategories = () => {
   const navigate = useNavigate();
