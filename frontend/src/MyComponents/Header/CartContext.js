@@ -32,7 +32,16 @@ export const CartProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [lastSync, setLastSync] = useState(null);
   const [hasInitialized, setHasInitialized] = useState(false);
+  const [toastInfo, setToastInfo] = useState({ show: false, message: '' });
   const { user } = useUser();
+
+  const showCartToast = useCallback((message) => {
+    setToastInfo({ show: true, message });
+  }, []);
+
+  const hideCartToast = useCallback(() => {
+    setToastInfo(prev => ({ ...prev, show: false }));
+  }, []);
 
   // Load cart from localStorage on mount
   useEffect(() => {
@@ -112,6 +121,7 @@ export const CartProvider = ({ children }) => {
     }
 
     setCartItems(newCartItems);
+    showCartToast("✓ Product Added To Cart");
 
     // Sync with backend if user is logged in
     if (user?.id) {
@@ -209,6 +219,7 @@ export const CartProvider = ({ children }) => {
       cartItems,
       isLoading,
       lastSync,
+      toastInfo,
       addToCart,
       removeFromCart,
       updateQuantity,
@@ -217,7 +228,9 @@ export const CartProvider = ({ children }) => {
       getTotalItems,
       forceSync,
       isSynced,
-      syncCartWithBackend
+      syncCartWithBackend,
+      showCartToast,
+      hideCartToast
     }}>
       {children}
     </CartContext.Provider>

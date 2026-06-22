@@ -54,7 +54,6 @@ const HomelifestylesProducts = () => {
   const [cache, setCache] = useState({});
   const { addToCart } = useCart();
   const [searchQuery, setSearchQuery] = useState('');
-  const [successMessage, setSuccessMessage] = useState(null);
 
   const categories = [
     { id: 'Baby-Care-Products', name: 'Baby Care' },
@@ -126,8 +125,6 @@ const HomelifestylesProducts = () => {
 
   const handleAddToCart = (product) => {
     addToCart(product);
-    setSuccessMessage(`${product.name} added to cart!`);
-    setTimeout(() => setSuccessMessage(null), 2000);
   };
 
   return (
@@ -203,8 +200,6 @@ const HomelifestylesProducts = () => {
       {!loading && searchedProducts.length === 0 && (
         <div className="no-products">No products found</div>
       )}
-
-      {successMessage && <div className="success-message">{successMessage}</div>}
     </div>
   );
 };

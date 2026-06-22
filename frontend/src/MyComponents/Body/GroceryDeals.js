@@ -79,7 +79,6 @@ const GroceryProducts = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const { addToCart } = useCart();
   const [searchQuery, setSearchQuery] = useState('');
-  const [successMessage, setSuccessMessage] = useState(null);
 
   const categories = [
     { id: 'Chocolates, Biscuits & Sweets', name: 'Chocolates, Biscuits & Sweets' },
@@ -143,12 +142,6 @@ const GroceryProducts = () => {
 
   const handleQuantityAddToCart = (productWithQuantity) => {
     addToCart(productWithQuantity);
-    setSuccessMessage(
-      `${productWithQuantity.name} (${productWithQuantity.quantity}) added to cart!`
-    );
-    setTimeout(() => {
-      setSuccessMessage(null);
-    }, 2000); // Disappear after 2 seconds
   };
 
   const handleCloseQuantitySelector = () => {
@@ -242,11 +235,6 @@ const GroceryProducts = () => {
           onAddToCart={handleQuantityAddToCart}
           onClose={handleCloseQuantitySelector}
         />
-      )}
-      {successMessage && (
-        <div className="success-message">
-          {successMessage}
-        </div>
       )}
     </div>
   );

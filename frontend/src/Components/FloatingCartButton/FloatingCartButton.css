@@ -1,0 +1,69 @@
+.floating-cart-btn {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: #ff3e6c;
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(255, 62, 108, 0.4);
+  cursor: pointer;
+  z-index: 1000;
+  border: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.floating-cart-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 16px rgba(255, 62, 108, 0.5);
+  background-color: #ff2a5f;
+}
+
+.floating-cart-btn:active {
+  transform: scale(0.95);
+}
+
+.floating-cart-btn.bounce {
+  animation: cart-bounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cart-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background-color: #1a202c;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  height: 24px;
+  min-width: 24px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 6px;
+  border: 2px solid white;
+}
+
+@keyframes cart-bounce {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+@media (max-width: 768px) {
+  .floating-cart-btn {
+    bottom: max(20px, env(safe-area-inset-bottom, 20px));
+    right: 20px;
+    width: 65px;
+    height: 65px;
+  }
+  .cart-icon {
+    width: 28px;
+    height: 28px;
+  }
+}

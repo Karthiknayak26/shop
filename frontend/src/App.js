@@ -16,6 +16,8 @@ import Homelifestyle from './MyComponents/Body/Homelifestyle';
 
 import { CartProvider } from './MyComponents/Header/CartContext';
 import { UserProvider } from './MyComponents/Header/UserContext';
+import FloatingCartButton from './Components/FloatingCartButton/FloatingCartButton';
+import CartToastNotification from './Components/CartToastNotification/CartToastNotification';
 import performanceService from './services/performanceService';
 import { initializeServiceWorker } from './utils/serviceWorkerRegistration';
 
@@ -299,6 +301,8 @@ function App() {
                       }
                     />
                   </Routes>
+                  <FloatingCartButton />
+                  <CartToastNotification />
                 </Suspense>
               </BrowserRouter>
             </CartProvider>

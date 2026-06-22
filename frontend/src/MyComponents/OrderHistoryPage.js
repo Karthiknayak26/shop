@@ -21,10 +21,15 @@ const OrderHistoryPage = () => {
   useEffect(() => {
     if (userLoading) return; // Wait for user to load
 
-    if (!userId) {
+    if (!user) {
       setError('You must be logged in to view your order history.');
       setLoading(false);
       return;
+    }
+    
+    // Debug: If we have a user but no userId, log it to help debugging
+    if (!userId) {
+      console.warn("User is logged in but has no ID:", JSON.stringify(user));
     }
     setError(null); // Clear previous errors if any
 
