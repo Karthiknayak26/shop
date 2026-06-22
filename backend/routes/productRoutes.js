@@ -23,6 +23,7 @@ router.get('/', async (req, res) => {
     if (sort === 'name') sortOption = { name: 1 };
 
     const products = await Product.find(query)
+      .select('name price mrp discount stock imageUrl images category subcategory')
       .sort(sortOption)
       .skip((page - 1) * limit)
       .limit(parseInt(limit))

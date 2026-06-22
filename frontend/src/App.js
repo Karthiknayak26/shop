@@ -20,6 +20,19 @@ import FloatingCartButton from './Components/FloatingCartButton/FloatingCartButt
 import CartToastNotification from './Components/CartToastNotification/CartToastNotification';
 import performanceService from './services/performanceService';
 import { initializeServiceWorker } from './utils/serviceWorkerRegistration';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+// Configure React Query Client
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      cacheTime: 10 * 60 * 1000, // 10 minutes
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
 
 // Lazily load sub-routes and secondary pages to reduce initial bundle size
 const Login = React.lazy(() => import('./MyComponents/Header/Login'));
@@ -198,8 +211,9 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <ErrorBoundary>
-          <UserProvider>
-            <CartProvider>
+          <QueryClientProvider client={queryClient}>
+            <UserProvider>
+              <CartProvider>
               <BrowserRouter>
                 <Suspense fallback={<PageLoader />}>
                   <Routes>
@@ -307,6 +321,7 @@ function App() {
               </BrowserRouter>
             </CartProvider>
           </UserProvider>
+          </QueryClientProvider>
         </ErrorBoundary>
       </ThemeProvider>
     </HelmetProvider>

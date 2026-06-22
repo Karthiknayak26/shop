@@ -5,10 +5,9 @@ import { useCart } from '../Header/CartContext';
 import QuantitySelector from '../Header/QuantitySelector';
 import './electronics.css';
 import { useLocation } from 'react-router-dom';
-
-const API_URL = "https://script.google.com/macros/s/AKfycbyK3-QR1T1wHfxqfmVUroEEN4K5IyNGXHVVmRvx1SivCcrTCgz82ropyDabjXjtt_J4/exec";
-// <-- Replace with your Apps Script deployment URL
-
+import { useQuery, useQueryClient } from 'react-query';
+import { api } from '../../services/api';
+import ProductSkeleton from '../Skeletons/ProductSkeleton';
 // 📌 Electronics Categories Component
 const ElectronicsCategories = () => {
   const navigate = useNavigate();
@@ -50,13 +49,10 @@ const ElectronicsProducts = () => {
   const { categoryId } = useParams();
   const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState(categoryId);
-  const [products, setProducts] = useState([]);
-  const [fetchError, setFetchError] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [cache, setCache] = useState({});
   const [selectedProduct, setSelectedProduct] = useState(null);
-  const { addToCart } = useCart();
   const [searchQuery, setSearchQuery] = useState('');
+  const { addToCart } = useCart();
+  const queryClient = useQueryClient();
 
   const categories = [
     { id: 'Air_Freshners', name: 'Air Freshners' },
@@ -65,53 +61,20 @@ const ElectronicsProducts = () => {
     { id: 'miscellineous', name: 'Miscellineous' }
   ];
 
-  // ✅ Fetch products from Google Sheet API (server-side filtering)
-  useEffect(() => {
-    const fetchProducts = async () => {
-      let url = API_URL;
-      if (activeCategory) {
-        url += `?category=${encodeURIComponent(activeCategory)}`;
-      }
+  const { data: products = [], isLoading: loading, error: fetchError } = useQuery(
+    ['electronics', activeCategory],
+    ({ signal }) => api.getProducts({ category: activeCategory, signal }),
+    {
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 10 * 60 * 1000,
+    }
+  );
 
-      // If cached, use cache
-      if (cache[activeCategory || 'all']) {
-        setProducts(cache[activeCategory || 'all']);
-        return;
-      }
-
-      setLoading(true);
-      try {
-        const res = await fetch(url);
-        const data = await res.json();
-
-        if (!Array.isArray(data)) {
-          setFetchError('API did not return an array.');
-          setProducts([]);
-          setLoading(false);
-          return;
-        }
-
-        const formatted = data.map((item, index) => ({
-          id: item.id || `${item.name}-${index}`,
-          name: item.name,
-          price: parseFloat(item.price),
-          img: item.img,
-          category: item.category,
-        }));
-
-        setProducts(formatted);
-        setCache((prev) => ({ ...prev, [activeCategory || 'all']: formatted }));
-        setFetchError(null);
-      } catch (err) {
-        console.error('Error fetching sheet data', err);
-        setFetchError('Failed to fetch products from Google Sheet API.');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, [activeCategory, cache]);
+  const handlePrefetch = (categoryId) => {
+    queryClient.prefetchQuery(['electronics', categoryId], ({ signal }) => 
+      api.getProducts({ category: categoryId, signal })
+    );
+  };
 
   useEffect(() => {
     if (activeCategory) {
@@ -167,6 +130,7 @@ const ElectronicsProducts = () => {
         {categories.map((category) => (
           <button
             key={category.id}
+            onMouseEnter={() => handlePrefetch(category.id)}
             onClick={() => setActiveCategory(category.id)}
             className={activeCategory === category.id ? 'active' : ''}
           >
@@ -186,7 +150,9 @@ const ElectronicsProducts = () => {
       </div>
 
       {loading ? (
-        <div className="loader">Loading products...</div>
+        <div id="electronics-products-grid" className="products-grid">
+          {[...Array(8)].map((_, i) => <ProductSkeleton key={i} />)}
+        </div>
       ) : (
         <div id="electronics-products-grid" className="products-grid">
           {searchedProducts.map((product) => (

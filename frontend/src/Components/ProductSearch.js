@@ -1,39 +1,28 @@
 import React, { useState, useEffect } from "react";
+import { useQuery } from "react-query";
 import { useCart } from "../MyComponents/Header/CartContext";
 import QuantitySelector from "../MyComponents/Header/QuantitySelector";
 import { getOptimizedImageProps } from "../utils/imageOptimizer";
+import useDebounce from "../utils/useDebounce";
+import { api } from "../services/api";
 import "./ProductSearch.css";
 
-const API_URL = "https:/\/script.google.com/macros/s/AKfycbytjEMd87XgeQiYYO_5Jrc3-Xg1LOUW1ybIshCwJMr0FRpaBbbPC3Stg_ULYe7d3Fom/exec";
-
 const ProductSearch = () => {
-  const [products, setProducts] = useState([]);
   const [query, setQuery] = useState("");
-  const [filtered, setFiltered] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const debouncedQuery = useDebounce(query, 300);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const { addToCart } = useCart();
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  useEffect(() => {
-    setLoading(true);
-    fetch(API_URL)
-      .then(res => res.json())
-      .then(data => setProducts(data))
-      .catch(() => setProducts([]))
-      .finally(() => setLoading(false));
-  }, []);
-
-  useEffect(() => {
-    if (query.trim() === "") {
-      setFiltered([]);
-    } else {
-      setFiltered(
-        products.filter(product =>
-          product.name.toLowerCase().includes(query.toLowerCase())
-        )
-      );
+  const { data: searchResults = [], isLoading } = useQuery(
+    ['searchProducts', debouncedQuery],
+    () => api.searchProducts(debouncedQuery),
+    {
+      enabled: debouncedQuery.trim() !== "",
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 10 * 60 * 1000,
     }
-  }, [query, products]);
+  );
 
   const handleAddToCart = (product) => {
     setSelectedProduct(product);
@@ -54,8 +43,6 @@ const ProductSearch = () => {
   const handleCloseQuantitySelector = () => {
     setSelectedProduct(null);
   };
-
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   useEffect(() => {
     const handleResize = () => {
@@ -85,10 +72,10 @@ const ProductSearch = () => {
           <span className="search-button-text">SEARCH</span>
         </button>
       </div>
-      {loading && <div className="loading-indicator">Loading...</div>}
-      {filtered.length > 0 && (
+      {isLoading && <div className="loading-indicator">Searching...</div>}
+      {searchResults.length > 0 && debouncedQuery.trim() !== "" && (
         <ul className="search-results-list">
-          {filtered.map(product => {
+          {searchResults.map(product => {
             const imageProps = getOptimizedImageProps(
               product.img,
               product.name,

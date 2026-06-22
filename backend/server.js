@@ -21,8 +21,23 @@ const productRoutes = require('./routes/productRoutes');
 const feedbackRoutes = require('./routes/feedbackRoutes');
 const analyticsRoutes = require('./routes/analyticsRoutes');
 const locationRoutes = require('./routes/locationRoutes');
+const path = require('path');
 
 const app = express();
+
+// ============================================
+// STATIC ASSETS & CDN CACHING
+// ============================================
+app.use('/public', express.static(path.join(__dirname, 'public'), {
+  maxAge: '1y',
+  setHeaders: (res, assetPath) => {
+    if (assetPath.endsWith('.html')) {
+      res.setHeader('Cache-Control', 'no-cache');
+    } else {
+      res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    }
+  }
+}));
 
 // ============================================
 // SECURITY MIDDLEWARE

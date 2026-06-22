@@ -98,6 +98,23 @@ apiClient.interceptors.response.use(
 );
 
 export const api = {
+  // Product operations
+  async getProducts({ category, page = 1, limit = 20, signal } = {}) {
+    try {
+      const response = await apiClient.get('/products', {
+        params: { category, page, limit },
+        signal
+      });
+      // Handle the paginated response format
+      return response.data.products || [];
+    } catch (error) {
+      if (axios.isCancel(error)) {
+        throw new Error('Request cancelled');
+      }
+      throw new Error(error.response?.data?.message || "Failed to fetch products.");
+    }
+  },
+
   // Product search
   async searchProducts(query, page = 1) {
     try {

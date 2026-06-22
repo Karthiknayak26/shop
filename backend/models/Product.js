@@ -141,7 +141,9 @@ const ProductSchema = new mongoose.Schema({
 
 // Indexes for better performance
 ProductSchema.index({ name: 'text', description: 'text', tags: 'text' });
-ProductSchema.index({ category: 1, isActive: 1 });
+ProductSchema.index({ category: 1, isActive: 1, createdAt: -1 });
+ProductSchema.index({ category: 1, stock: 1 });
+ProductSchema.index({ name: 1 });
 ProductSchema.index({ price: 1 });
 ProductSchema.index({ 'ratings.average': -1 });
 ProductSchema.index({ createdAt: -1 });
